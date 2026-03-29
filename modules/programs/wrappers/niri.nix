@@ -14,36 +14,39 @@ with lib;
       passthru.providedSessions = [ "niri" ];
       extraPackages = with pkgs; [
         xwayland-satellite
-
       ] ++ config.configurations.packages;
 
       "config.kdl".content = let
         terminal = getExe config.configurations.terminal;
+        appLauncher = getExe config.configurations.appLauncher;
         browser = "zen";
         host = "aaronv";
       in
       ''
         spawn-at-startup "xwayland-satellite"
-      
+        spawn-at-startup "${getExe config.configurations.desktopShell}"
+
         screenshot-path "~/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
         prefer-no-csd
         hotkey-overlay {
           skip-at-startup
         }
-        
+
         environment {
           DISPLAY ":0"
           ELECTRON_OZONE_PLATFORM_HINT "auto"
         }
-      
+
         cursor {
-      
+          // xcursor-theme ""
+          // xcursor-size 
+
           hide-when-typing
           hide-after-inactive-ms 1000
         }
         
         input {
-          mod-key "Alt"
+          mod-key "Super"
           mod-key-nested "Alt"
           warp-mouse-to-focus
           focus-follows-mouse max-scroll-amount="5%"
@@ -79,13 +82,13 @@ with lib;
             proportion 0.5
             proportion 0.66667
           }
-      
+
           preset-window-heights {
             proportion 0.33333
             proportion 0.5
             proportion 0.66667
           } 
-      
+
           focus-ring {
             off
             width 2
@@ -105,7 +108,7 @@ with lib;
             left 13
             right 13
           }
-      
+
           tab-indicator {
               gap 4
               length total-proportion=0.5
@@ -114,7 +117,7 @@ with lib;
               hide-when-single-tab
           }
         }
-      
+
         // Set the overview wallpaper on the backdrop.
         layer-rule {
           match namespace="^noctalia-overview*"
@@ -142,14 +145,14 @@ with lib;
             open-on-workspace "browser"
             open-maximized true
         }
-      
+
         workspace "multimedia"
         window-rule {
             match at-startup=true app-id=r#"^spotify$"#
             open-on-workspace "multimedia"
             open-maximized true
         }
-      
+
         workspace "gaming"
         window-rule {
             match at-startup=true app-id=r#"^steam$"#
@@ -163,9 +166,9 @@ with lib;
             open-on-workspace "chat"
             open-maximized true
         }
-      
+
         workspace "temporal"
-      
+
         window-rule {
           // By default maximized 
           // open-maximized true
@@ -175,19 +178,19 @@ with lib;
         
           // Clips window contents to the rounded corner boundaries.
           clip-to-geometry true
-      
+
           draw-border-with-background false
           opacity 0.95
           variable-refresh-rate true
         }
-      
+
         output "eDP-1" {
           // off
           // mode "1920x1080@59.977"
           scale ${if host == "GPD Win Max 2" then "2.0" else "1.0"}
           variable-refresh-rate on-demand=true
           focus-at-startup
-      
+
           hot-corners {
               // off
               // top-left
@@ -196,13 +199,13 @@ with lib;
               bottom-right
           }
         }
-      
+
         output "DP-4" {
           // off
           mode "1920x1080@143.981"
           variable-refresh-rate on-demand=true
           focus-at-startup
-      
+
           hot-corners {
               // off
               // top-left
@@ -211,14 +214,14 @@ with lib;
               bottom-right
           }
         }
-       
+ 
         output "HDMI-A-2" {
           // off
           mode "2560x1440@74.932"
           position x=-2560 y=0
           variable-refresh-rate on-demand=true
           focus-at-startup
-      
+
           hot-corners {
               // off
               // top-left
@@ -227,7 +230,7 @@ with lib;
               // bottom-right
           }
         } 
-      
+
         debug {
           // Allows notification actions and window activation from Noctalia.
           honor-xdg-activation-with-invalid-serial
@@ -242,22 +245,22 @@ with lib;
           Mod+Shift+Slash { show-hotkey-overlay; }
           Mod+Space repeat=false hotkey-overlay-title="Open a Terminal" { spawn "${terminal}"; }
           Mod+X repeat=false hotkey-overlay-title="Closes the focused window" { close-window; }
-          Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-      
+          Mod+D hotkey-overlay-title="Run the Application Launcher: ${appLauncher}" { spawn "${appLauncher}"; }
+
           // "-l 1.0" limits the volume to 100%.
           XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
           XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
           XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
           XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-      
+
           XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
           XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
           XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
           XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
-      
+
           XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+5%"; }
           XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "5%-"; }
-      
+
           Mod+Left  { focus-column-left; }
           Mod+Down  { focus-window-down; }
           Mod+Up    { focus-window-up; }
@@ -275,7 +278,7 @@ with lib;
           Mod+Shift+J     { move-window-down; }
           Mod+Shift+K     { move-window-up; }
           Mod+Shift+L     { move-column-right; }
-      
+
           Mod+Ctrl+H { consume-or-expel-window-left; }
           Mod+Ctrl+L { consume-or-expel-window-right; }
         
@@ -298,7 +301,7 @@ with lib;
           Mod+Shift+7 { move-column-to-workspace 7; }
           Mod+Shift+8 { move-column-to-workspace 8; }
           Mod+Shift+9 { move-column-to-workspace 9; }
-      
+
           Mod+Minus { set-window-width "-10%"; }
           Mod+Equal { set-window-width "+10%"; }
           Mod+Shift+Minus { set-window-height "-10%"; }
@@ -317,10 +320,10 @@ with lib;
           Mod+Shift+P { move-column-to-workspace "multimedia"; }
           Mod+Shift+G { move-column-to-workspace "gaming"; }
           Mod+Shift+T { move-column-to-workspace "temporal"; }
-      
+
           Mod+Comma { move-workspace-to-monitor-previous; }
           Mod+Period { move-workspace-to-monitor-next; }
-      
+
           Mod+Tab { toggle-column-tabbed-display; }
         
           Mod+F { maximize-column; }

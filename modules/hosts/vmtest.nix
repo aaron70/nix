@@ -18,7 +18,11 @@
     };
     users.groups.vmtest = {};
 
-    preferences.profile = "vmtest";
+    preferences = {
+      profile = "vmtest";
+
+      desktop.enable = true;
+    };
 
 
     boot.loader.systemd-boot.enable = true;

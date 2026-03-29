@@ -14,5 +14,7 @@ with lib;
     mkProfile = profile: preferences: ({ config, pkgs, ... }: {
       config = mkIf (config.preferences.profile == profile) (preferences { inherit config pkgs; });
     });
+
+    resourcesPath = ../../resources;
   };
 }

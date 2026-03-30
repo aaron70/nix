@@ -12,7 +12,10 @@ To keep some sensible files protected **git-crypt** is used to encrypt and decry
 # Export the private key
 git-crypt export-key /path/to/key
 
-# To unlock the crypted files with the exported key
+# To unlock the encrypted files with the exported key
 git-crypt unlock /path/to/key
+
+# To encrypt the files again
+git-crypt lock
 ```
 

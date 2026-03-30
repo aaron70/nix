@@ -1,7 +1,7 @@
 { inputs, self, ... }: 
 
 let
-  host = "gpd";
+  host = "laptop";
 in {
   flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
     modules = [ self.nixosModules.${host} ];
@@ -33,29 +33,21 @@ in {
       [ (modulesPath + "/installer/scan/not-detected.nix")
       ];
   
-    boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
+    boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" ];
     boot.initrd.kernelModules = [ ];
-    boot.kernelModules = [ "kvm-amd" ];
+    boot.kernelModules = [ "kvm-intel" ];
     boot.extraModulePackages = [ ];
   
     fileSystems."/" =
-      { device = "/dev/disk/by-uuid/a382f749-eb68-4cd7-b3ac-4e96d34eb719";
+      { device = "/dev/disk/by-uuid/d7411d9a-9f9a-4d9f-9579-6b16800ad339";
         fsType = "ext4";
       };
   
     fileSystems."/boot" =
-      { device = "/dev/disk/by-uuid/E84A-8A5C";
+      { device = "/dev/disk/by-uuid/46BF-A942";
         fsType = "vfat";
         options = [ "fmask=0077" "dmask=0077" ];
       };
-  
-  
-    fileSystems."/home/aaronv/shared-home" =
-      { device = "/dev/disk/by-uuid/6AB20C7DB20C504D";
-        fsType = "ntfs";
-        options = [ "users" "nofail" "exec" "rw" "uid=1000" "gid=100" ];
-      };
-  
   
     swapDevices = [ ];
   
@@ -64,9 +56,10 @@ in {
     # still possible to use this option, but it's recommended to use it in conjunction
     # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
     networking.useDHCP = lib.mkDefault true;
-    # networking.interfaces.wlp195s0.useDHCP = lib.mkDefault true;
+    # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
+    # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
   
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 }

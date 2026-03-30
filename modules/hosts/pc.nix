@@ -1,7 +1,7 @@
 { inputs, self, ... }: 
 
 let
-  host = "gpd";
+  host = "pc";
 in {
   flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
     modules = [ self.nixosModules.${host} ];
@@ -15,9 +15,9 @@ in {
 
     config = {
       information = {
-        isLaptop = true;
+        isLaptop = false;
         hasBluetooth = true;
-        hasBattery = true;
+        hasBattery = false;
       };
 
       preferences = {
@@ -33,38 +33,29 @@ in {
       [ (modulesPath + "/installer/scan/not-detected.nix")
       ];
   
-    boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
+    boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
     boot.initrd.kernelModules = [ ];
     boot.kernelModules = [ "kvm-amd" ];
     boot.extraModulePackages = [ ];
   
     fileSystems."/" =
-      { device = "/dev/disk/by-uuid/a382f749-eb68-4cd7-b3ac-4e96d34eb719";
+      { device = "/dev/disk/by-uuid/c64dea84-1962-43bc-9866-bc5b451c0314";
         fsType = "ext4";
       };
   
+    # Mount for windows partition
+    fileSystems."/home/aaronv/windows" =
+      { device = "/dev/disk/by-uuid/66B0958CB09562FB";
+        fsType = "ntfs";
+      };
+  
     fileSystems."/boot" =
-      { device = "/dev/disk/by-uuid/E84A-8A5C";
+      { device = "/dev/disk/by-uuid/F494-F2B3";
         fsType = "vfat";
         options = [ "fmask=0077" "dmask=0077" ];
       };
   
-  
-    fileSystems."/home/aaronv/shared-home" =
-      { device = "/dev/disk/by-uuid/6AB20C7DB20C504D";
-        fsType = "ntfs";
-        options = [ "users" "nofail" "exec" "rw" "uid=1000" "gid=100" ];
-      };
-  
-  
     swapDevices = [ ];
-  
-    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-    # (the default) this is the recommended approach. When using systemd-networkd it's
-    # still possible to use this option, but it's recommended to use it in conjunction
-    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-    networking.useDHCP = lib.mkDefault true;
-    # networking.interfaces.wlp195s0.useDHCP = lib.mkDefault true;
   
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
     hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

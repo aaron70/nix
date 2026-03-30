@@ -38,6 +38,14 @@ with lib;
         };
       };
 
+      virtualisation.vmVariant = {
+        virtualisation.graphics = true;
+        virtualisation.qemu.options = [
+          "-device virtio-vga-gl"
+          "-display gtk,gl=on"
+        ];     
+      };
+
       services.printing.enable = true;
 
       security.rtkit.enable = true;

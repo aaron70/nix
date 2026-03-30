@@ -396,7 +396,7 @@
         wallpaper = {
           enabled = true;
           overviewEnabled = true;
-          directory = "/home/aaronv/Pictures/Wallpapers";
+          directory = "${self.lib.resourcesPath}/wallpapers";
           monitorDirectories = [ ];
           enableMultiMonitorDirectories = false;
           showHiddenFiles = false;

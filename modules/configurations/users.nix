@@ -4,19 +4,26 @@ with lib;
 {
 
   flake.nixosModules.configurations = { config, ... }: {
-    config =  let
-      isvmtest = config.profile.user.username == "vmtest";
-    in {
+    config = {
+
       users.users.${config.profile.user.username} = {
-        isSystemUser = true;
+        isNormalUser = true;
         description = config.profile.user.fullname;
         extraGroups = [ "networkmanager" "wheel" "audio" ];
-
-        # Only for vmtest user: sudo nixos-rebuild build-vm
-        initialPassword = mkIf isvmtest "test";
-        group = mkIf isvmtest "vmtest";
+        group = config.profile.user.username;
       };
-      users.groups = mkIf isvmtest { vmtest = {}; };
+      users.groups.${config.profile.user.username} = {};
+
+      virtualisation.vmVariant = {
+        users.users.${config.profile.user.username} = {
+          isNormalUser = true;
+          description = config.profile.user.fullname;
+          extraGroups = [ "networkmanager" "wheel" "audio" ];
+          group = config.profile.user.username;
+          initialPassword = "test";
+        };
+        users.groups.${config.profile.user.username} = {};
+      };
     };
   };
 

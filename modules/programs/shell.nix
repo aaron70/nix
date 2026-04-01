@@ -100,6 +100,7 @@ in {
         gcc
         gh
         git
+        git-crypt
         imgcat
         lazygit
         nh

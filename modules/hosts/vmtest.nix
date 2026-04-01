@@ -13,6 +13,7 @@
 
     config = {
       information = {
+        hostname = "vmtest";
         isLaptop = false;
         hasBluetooth = true;
         hasBattery = false;

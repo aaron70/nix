@@ -12,6 +12,7 @@ with lib;
 
     config = with pkgs; {
       env = config.configurations.envVariables;
+      zshAliases = config.configurations.shellAliases;
 
       extraPackages = [
         # Zsh
@@ -23,8 +24,6 @@ with lib;
         #wrapped
         config.configurations.shellPrompt
       ] ++ config.configurations.packages;
-
-      zshAliases = config.configurations.shellAliases;
 
       zshrc.content = ''
         autoload -Uz compinit

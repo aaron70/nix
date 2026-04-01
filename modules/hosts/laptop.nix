@@ -15,6 +15,7 @@ in {
 
     config = {
       information = {
+        hostname = "laptop";
         isLaptop = true;
         hasBluetooth = true;
         hasBattery = true;

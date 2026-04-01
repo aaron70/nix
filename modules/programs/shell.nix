@@ -26,6 +26,11 @@ in {
         GIT_COMMITER_NAME = GIT_AUTHOR_NAME;
         GIT_COMMITER_EMAIL = GIT_AUTHOR_EMAIL;
       };
+
+      environment.shellAliases = {
+        ntest = "nh os test -H ${config.information.hostname}";
+        nswitch = "nh os switch -H ${config.information.hostname}";
+      };
     };
   };
 
@@ -76,10 +81,12 @@ in {
         ls = "eza";
         find = "fd";
         cd = ". cdfzf";
+        nshell = "nix-shell -p";
       };
 
       envVariables = {
         TERM = "tmux-256color";
+        NH_FLAKE = "~/nix";
       };
 
       packages = with pkgs; [

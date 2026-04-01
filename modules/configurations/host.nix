@@ -29,6 +29,10 @@ with lib;
       isLaptop = mkEnableOption "Whether the host is a laptop.";
       hasBluetooth = mkEnableOption "Whether the host has Bluetooth.";
       hasBattery = mkEnableOption "Whether the host has Bluetooth.";
+      hostname = mkOption {
+        type = types.str;
+        description = "The name of the configuration's host.";
+      };
     };
 
     config = {

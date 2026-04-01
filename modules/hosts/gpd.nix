@@ -15,6 +15,7 @@ in {
 
     config = {
       information = {
+        hostname = "gpd";
         isLaptop = true;
         hasBluetooth = true;
         hasBattery = true;

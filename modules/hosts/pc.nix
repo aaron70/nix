@@ -33,7 +33,7 @@ in {
             #   inherit pkgs; 
             #   configurations.greeting = lib.mkForce "Hello wrapper"; 
             # });
-            configurations.greeting = lib.mkForce "hello program from pc";
+            # configurations.greeting = lib.mkForce "hello program from pc";
           };
         };
       };

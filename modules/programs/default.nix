@@ -45,7 +45,11 @@ with lib;
           description = "The package of the program, it could be a wrapper.";
           default = null;
         };
-        configurations = {};
+        configurations = mkOption {
+          type = types.submodule moduleEvaluated.configurations;
+          description = "The configurations of the program.";
+          default = {};
+        };
       } // (if moduleEvaluated ? options then moduleEvaluated.options else {}));
 
       config = mkIf cfg.enable {

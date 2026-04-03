@@ -46,7 +46,12 @@ with lib;
           default = null;
         };
         configurations = mkOption {
-          type = types.submodule moduleEvaluated.configurations;
+          type = types.submodule {
+            imports = moduleEvaluated.configurations;
+            _module.args = (inputs // { 
+              config = cfg.configurations;
+            });
+          };
           description = "The configurations of the program.";
           default = {};
         };

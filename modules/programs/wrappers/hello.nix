@@ -22,29 +22,30 @@ in {
 
   flake.nixosModules.programs = self.lib.mkNixosProgram name ({ ... }: {});
 
-  flake.definitions.programs.${name} = { ... }: {
+  flake.definitions.programs.${name} = { pkgs, config, ... }: {
     options = {
       greeting = mkOption {
         type = types.str;
         description = "The Ghostty configuration file's contents.";
         # default = "Hello program!";
       };
+
+      other = mkOption {
+        type = types.str;
+        default = "loco";
+      };
     };
 
     config = {
-      greeting = mkDefault "Hello from configurations!";
+      greeting = mkDefault "Hello ${config.other} ${getExe pkgs.hello}!";
     };
   };
 
   flake.wrappers.${name} = { config, wlib, pkgs, ... }: {
     imports = [
+      (self.wrapperHelpers.options.configurations self.definitions.programs.${name})
       wlib.modules.default 
     ];
-
-    options.configurations = mkOption {
-      type = types.submodule self.definitions.programs.${name};
-      description = "The program's configurations";
-    };
 
     config = {
       package = pkgs.hello;

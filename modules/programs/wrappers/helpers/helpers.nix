@@ -23,6 +23,25 @@ in {
   };
 
   config = {
+    # flake.wrapperHelpers.options.configurations = module: ({ pkgs, config, ...}@inputs: 
+    # let
+    #   moduleEvaluated = module (inputs // { config = config.configurations; });
+    # in {
+    #   options.configurations = moduleEvaluated.options;
+    #   config.configurations = moduleEvaluated.config;
+    # });
+
+    flake.wrapperHelpers.options.configurations = module: ({ pkgs, config, ...}@inputs: {
+      options.configurations = mkOption {
+        type = types.submodule {
+          imports = [ module ];
+          _module.args = (inputs // { config = config.configurations; });
+        };
+        description = "The configurations of the program.";
+        default = {};
+      };      
+    });
+    
     flake.wrapperHelpers.modules.theme = { pkgs, ... }: {
       options = {
         colors = mkOption {

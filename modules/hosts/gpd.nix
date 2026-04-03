@@ -26,6 +26,7 @@ in {
 
         programs = {
           desktop.enable = true;
+          hello.enable = true;
         };
       };
     };

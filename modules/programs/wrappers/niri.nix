@@ -32,6 +32,26 @@ in
         appLauncher = getExe config.configurations.appLauncher;
         browser = getExe config.configurations.browser;
         host = "aaronv";
+        monitorConfigurations = concatStringsSep "\n\n" (mapAttrsToList 
+          (
+            name: monitor: let
+              mode = "${toString monitor.width}x${toString monitor.height}@${toString monitor.refreshRate}";
+            in ''
+              output "${name}" {
+                ${if monitor.enabled then "" else "off"}
+                mode "${mode}"
+                position x=${toString monitor.x} y=${toString monitor.y}
+                scale ${toString monitor.scale}
+                variable-refresh-rate on-demand=true
+                ${if monitor.primary then "focus-at-startup" else ""}
+
+                hot-corners {
+                  bottom-right
+                }
+              }
+            ''
+          )
+          config.configurations.monitors);
       in
       ''
         spawn-at-startup "xwayland-satellite"
@@ -195,52 +215,7 @@ in
           variable-refresh-rate true
         }
 
-        output "eDP-1" {
-          // off
-          // mode "1920x1080@59.977"
-          scale ${if host == "GPD Win Max 2" then "2.0" else "1.0"}
-          variable-refresh-rate on-demand=true
-          focus-at-startup
-
-          hot-corners {
-              // off
-              // top-left
-              // top-right
-              // bottom-left
-              bottom-right
-          }
-        }
-
-        output "DP-4" {
-          // off
-          mode "1920x1080@143.981"
-          variable-refresh-rate on-demand=true
-          focus-at-startup
-
-          hot-corners {
-              // off
-              // top-left
-              // top-right
-              // bottom-left
-              bottom-right
-          }
-        }
- 
-        output "HDMI-A-2" {
-          // off
-          mode "2560x1440@74.932"
-          position x=-2560 y=0
-          variable-refresh-rate on-demand=true
-          focus-at-startup
-
-          hot-corners {
-              // off
-              // top-left
-              // top-right
-              bottom-left
-              // bottom-right
-          }
-        } 
+        ${monitorConfigurations}
 
         debug {
           // Allows notification actions and window activation from Noctalia.

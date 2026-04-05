@@ -25,7 +25,28 @@ in {
         profile = "personal";
 
         programs = {
-          desktop.enable = true;
+          desktop = {
+            enable = true;
+            configurations = {
+              monitors = {
+                DP-3 = {
+                  enabled = true;
+                  primary = true;
+                  x = 0; y = 0;
+                  width = 1920; height = 1080;
+                  refreshRate = 143.981;
+                };
+
+                HDMI-A-2 = rec {
+                  enabled = true;
+                  primary = false;
+                  x = -width; y = 0;
+                  width = 2560; height = 1440;
+                  refreshRate = 74.932;
+                };
+              };
+            };
+          };
         };
 
         features = {

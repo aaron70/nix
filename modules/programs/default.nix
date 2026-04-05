@@ -61,5 +61,18 @@ with lib;
         preferences.programs.${name} = moduleEvaluated.config;
       };
     });
+
+    flake.lib.mkConfigurationsOption = configurations: ({ pkgs, ... }@inputs: {
+      options = {
+        configurations = mkOption {
+          type = types.submodule { 
+            imports = configurations; 
+            _module.args = inputs;
+          };
+          description = "The configurations of the program.";
+          default = {};
+        };
+      };
+    });
   };
 }

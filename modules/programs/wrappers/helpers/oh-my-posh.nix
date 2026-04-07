@@ -267,7 +267,7 @@
                 "leading_powerline_symbol": "",
                 "foreground": "transparent",
                 "background": "${colors.base07}",
-                "template": "{{ .HEAD }}<cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>",
+                "template": "{{ .HEAD }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}",
                 "properties": {
                   "branch_icon": "",
                   "fetch_status": true,

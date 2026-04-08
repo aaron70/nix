@@ -2,6 +2,7 @@
 # Source: https://github.com/vimjoyer/nixconf/blob/main/nixos/features/powersave.nix
 {
   flake.nixosModules.configurations = { pkgs, lib, ... }: {
+    boot.kernelParams = [ "usbcore.autosuspend=500" "amd_pstate=active" ];
     services.power-profiles-daemon.enable = true;
     services.thermald.enable = true;
     powerManagement.powertop.enable = true;

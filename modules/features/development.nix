@@ -6,14 +6,17 @@ let
 in {
 
   flake.nixosModules.features = self.lib.mkNixosFeature name ({ cfg, config, ... }: {
-    # NOTE: Be aware of: https://github.com/moby/moby/issues/9976
-    # users.users.${config.profile.user.username}.extraGroups = [ "docker" ];
-    virtualisation.docker = mkIf cfg.docker.enable {
-      enable = true;
-      rootless = {
+    config = {
+      # NOTE: Be aware of: https://github.com/moby/moby/issues/9976
+      # users.users.${config.profile.user.username}.extraGroups = [ "docker" ];
+      virtualisation.docker = mkIf cfg.configurations.docker.enable {
         enable = true;
-        setSocketVariable = true;
-        daemon.settings = { };
+        autoPrune.enable = true;
+        rootless = {
+          enable = true;
+          setSocketVariable = true;
+          daemon.settings = { };
+        };
       };
     };
   });

@@ -38,7 +38,7 @@ with lib;
         virtualisation.qemu.options = [
           "-device virtio-vga-gl"
           "-display gtk,gl=on"
-        ];     
+        ];
       };
 
       services.printing.enable = true;

@@ -16,6 +16,10 @@ with lib;
       imports = [ self.hosts.module ];
     };
 
+    flake.darwinModules.configurations = { ... }: {
+      imports = [ self.hosts.module ];
+    };
+
     flake.hosts.module = { config, ... }: {
       options.preferences = {
         stateVersion = mkOption {

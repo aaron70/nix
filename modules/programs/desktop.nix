@@ -5,6 +5,8 @@ let
   name = "desktop";
   desktop = "niri";
 in {
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+
   flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
 
   flake.nixosModules.programs = self.lib.mkNixosProgram name ({ pkgs, cfg, ... }: {

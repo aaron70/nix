@@ -10,7 +10,7 @@ with lib;
     };
   };
 
-  config = {
+  config = rec {
 
     flake.lib.mkHomeFeature = name: module: ({ pkgs, config, ... }@inputs: 
     let
@@ -29,6 +29,7 @@ with lib;
       } // (moduleEvaluated.config or {}));
     });
 
+    flake.lib.mkDarwinFeature = flake.lib.mkNixosFeature;
     flake.lib.mkNixosFeature = name: module: ({ pkgs, config, ... }@inputs: 
     let
       cfg = config.preferences.features.${name};

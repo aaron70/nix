@@ -15,6 +15,7 @@ with lib;
   };
 
   config = {
+    flake.lib.mkDarwinProgram = flake.lib.mkNixosProgram;
     flake.lib.mkNixosProgram = name: module: ({ pkgs, config, ... }@inputs: 
     let
       cfg = config.preferences.programs.${name};

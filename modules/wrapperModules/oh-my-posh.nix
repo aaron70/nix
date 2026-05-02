@@ -1,9 +1,12 @@
-{ lib, ... }: 
-
-with lib;
-{
-  flake.wrappers._oh-my-posh = { config, wlib, pkgs, ... }: {
-    imports = [ wlib.modules.default ];
+{lib, ...}:
+with lib; {
+  flake.wrappers._oh-my-posh = {
+    config,
+    wlib,
+    pkgs,
+    ...
+  }: {
+    imports = [wlib.modules.default];
 
     options = {
       configuration = mkOption {

@@ -1,13 +1,15 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
 {
-
-  flake.nixosModules.configurations = { config, ... }: {
-    imports = [ inputs.home-manager.nixosModules.default ];
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; {
+  flake.nixosModules.configurations = {config, ...}: {
+    imports = [inputs.home-manager.nixosModules.default];
 
     config = {
-      home-manager.users.${config.profile.user.username} = { ... }: {
+      home-manager.users.${config.profile.user.username} = {...}: {
         imports = [
           self.homeModules.configurations
           self.homeModules.profile
@@ -28,11 +30,15 @@ with lib;
     };
   };
 
-  flake.darwinModules.configurations = { config, pkgs, ... }: {
-    imports = [ inputs.home-manager.darwinModules.home-manager ];
+  flake.darwinModules.configurations = {
+    config,
+    pkgs,
+    ...
+  }: {
+    imports = [inputs.home-manager.darwinModules.home-manager];
 
     config = {
-      home-manager.users.${config.profile.user.username} = { ... }: {
+      home-manager.users.${config.profile.user.username} = {...}: {
         imports = [
           inputs.mac-app-util.homeManagerModules.default
           self.homeModules.configurations
@@ -53,5 +59,4 @@ with lib;
       };
     };
   };
-
 }

@@ -1,21 +1,21 @@
-{ self, ... }: 
-
-let 
+{self, ...}: let
   name = "noctalia";
-in
-{ 
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+in {
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({...}: {});
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({...}: {});
 
-  flake.nixosModules.programs = self.lib.mkNixosProgram name ({ ... }: {});
+  flake.nixosModules.programs = self.lib.mkNixosProgram name ({...}: {});
 
-  flake.programs.${name} = self.lib.mkProgram name ({ ... }: {});
+  flake.programs.${name} = self.lib.mkProgram name ({...}: {});
 
-  flake.wrappers.${name} = { wlib, pkgs, ... }:
-  {
-    imports = [ wlib.wrapperModules.noctalia-shell ];
-    
+  flake.wrappers.${name} = {
+    wlib,
+    pkgs,
+    ...
+  }: {
+    imports = [wlib.wrapperModules.noctalia-shell];
+
     config = let
       noctalia-plugins = pkgs.fetchgit {
         url = "https://github.com/noctalia-dev/noctalia-plugins";
@@ -28,15 +28,15 @@ in
         ];
       };
     in {
-      extraPackages = with pkgs; [ 
+      extraPackages = with pkgs; [
         # Dependencies for Screen Recorder plugin: https://noctalia.dev/plugins/screen-recorder/
         gpu-screen-recorder
 
         # Dependencies for Screen Toolkit plugin: https://noctalia.dev/plugins/screen-toolkit/
-        grim 
+        grim
         slurp
         wl-clipboard
-        (tesseract.override { enableLanguages = [ "eng" "spa" ]; })
+        (tesseract.override {enableLanguages = ["eng" "spa"];})
         imagemagick
         zbar
         curl
@@ -113,8 +113,8 @@ in
           customFrameRate = "60";
         };
         screen-toolkit = {
-          colorHistory = [ ];
-          paletteColors = [ ];
+          colorHistory = [];
+          paletteColors = [];
           installedLangs = [
             "eng"
             "spa"
@@ -148,7 +148,7 @@ in
           iconMode = "tabler";
           ignoreMouseInput = false;
           overviewLayer = true;
-          pinnedApps = [ ];
+          pinnedApps = [];
           position = "top_center";
           screenshotAnnotationTool = "";
           showCategories = true;
@@ -159,7 +159,7 @@ in
           viewMode = "list";
         };
         audio = {
-          mprisBlacklist = [ ];
+          mprisBlacklist = [];
           preferredPlayer = "spotify";
           spectrumFrameRate = 30;
           visualizerType = "linear";
@@ -189,7 +189,7 @@ in
           middleClickAction = "none";
           middleClickCommand = "";
           middleClickFollowMouse = false;
-          monitors = [ ];
+          monitors = [];
           mouseWheelAction = "none";
           mouseWheelWrap = true;
           outerCorners = true;
@@ -198,7 +198,7 @@ in
           rightClickAction = "controlCenter";
           rightClickCommand = "";
           rightClickFollowMouse = true;
-          screenOverrides = [ ];
+          screenOverrides = [];
           showCapsule = false;
           showOnWorkspaceSwitch = true;
           showOutline = false;
@@ -341,7 +341,7 @@ in
           };
         };
         brightness = {
-          backlightDeviceMappings = [ ];
+          backlightDeviceMappings = [];
           brightnessStep = 5;
           enableDdcSupport = true;
           enforceMinimum = true;
@@ -399,13 +399,13 @@ in
           position = "close_to_bar_button";
           shortcuts = {
             left = [
-              { id = "WallpaperSelector"; }
-              { id = "NoctaliaPerformance"; }
-              { id = "KeepAwake"; }
-              { id = "PowerProfile"; }
+              {id = "WallpaperSelector";}
+              {id = "NoctaliaPerformance";}
+              {id = "KeepAwake";}
+              {id = "PowerProfile";}
             ];
             right = [
-              { id = "NightLight"; }
+              {id = "NightLight";}
               {
                 defaultSettings = {
                   audioCodec = "opus";
@@ -432,12 +432,12 @@ in
               }
               {
                 defaultSettings = {
-                  colorHistory = [ ];
+                  colorHistory = [];
                   installedLangs = [
                     "eng"
                     "spa"
                   ];
-                  paletteColors = [ ];
+                  paletteColors = [];
                   selectedOcrLang = "eng";
                   transAvailable = false;
                 };
@@ -450,7 +450,7 @@ in
           enabled = false;
           gridSnap = false;
           gridSnapScale = false;
-          monitorWidgets = [ ];
+          monitorWidgets = [];
           overviewEnabled = true;
         };
         dock = {
@@ -472,9 +472,9 @@ in
           indicatorThickness = 3;
           launcherIconColor = "none";
           launcherPosition = "end";
-          monitors = [ ];
+          monitors = [];
           onlySameOutput = true;
-          pinnedApps = [ ];
+          pinnedApps = [];
           pinnedStatic = false;
           position = "bottom";
           showDockIndicator = false;
@@ -501,23 +501,23 @@ in
           forceBlackScreenCorners = true;
           iRadiusRatio = 1;
           keybinds = {
-            keyDown = [ "Down" ];
+            keyDown = ["Down"];
             keyEnter = [
               "Return"
               "Enter"
             ];
-            keyEscape = [ "Esc" ];
-            keyLeft = [ "Left" ];
-            keyRemove = [ "Del" ];
-            keyRight = [ "Right" ];
-            keyUp = [ "Up" ];
+            keyEscape = ["Esc"];
+            keyLeft = ["Left"];
+            keyRemove = ["Del"];
+            keyRight = ["Right"];
+            keyUp = ["Up"];
           };
           language = "";
           lockOnSuspend = true;
           lockScreenAnimations = false;
           lockScreenBlur = 0;
           lockScreenCountdownDuration = 10000;
-          lockScreenMonitors = [ ];
+          lockScreenMonitors = [];
           lockScreenTint = 0;
           passwordChars = false;
           radiusRatio = 0.61;
@@ -642,7 +642,7 @@ in
             3
           ];
           location = "top_right";
-          monitors = [ ];
+          monitors = [];
           overlayLayer = true;
         };
         plugins = {
@@ -740,7 +740,7 @@ in
           warningColor = "#9ece6a";
         };
         templates = {
-          activeTemplates = [ ];
+          activeTemplates = [];
           enableUserTheming = false;
         };
         ui = {
@@ -762,11 +762,11 @@ in
           directory = "${self.lib.resourcesPath}/wallpapers";
           enableMultiMonitorDirectories = false;
           enabled = true;
-          favorites = [ ];
+          favorites = [];
           fillColor = "#000000";
           fillMode = "fill";
           hideWallpaperFilenames = false;
-          monitorDirectories = [ ];
+          monitorDirectories = [];
           overviewBlur = 0.4;
           overviewEnabled = true;
           overviewTint = 0.6;
@@ -801,7 +801,7 @@ in
             lastSeenVersion = "v4.6.7";
           };
           colorSchemesList = {
-            schemes = [ ];
+            schemes = [];
             timestamp = 0;
           };
           desktopWidgetsEditMode = false;

@@ -1,49 +1,58 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
-let
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; let
   name = "desktop";
   desktop = "niri";
 in {
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({...}: {});
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({...}: {});
 
-  flake.nixosModules.programs = self.lib.mkNixosProgram name ({ pkgs, cfg, ... }: {
+  flake.nixosModules.programs = self.lib.mkNixosProgram name ({
+    pkgs,
+    cfg,
+    ...
+  }: {
     config = {
       preferences.programs.terminal.enable = mkDefault true;
       services.displayManager.gdm.enable = true;
       programs.${desktop} = {
         enable = true;
-        package = self.wrappers.${name}.wrap { 
+        package = self.wrappers.${name}.wrap {
           inherit pkgs;
           configurations = cfg.configurations;
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        # Applications
-        spotify
+      environment.systemPackages = with pkgs;
+        [
+          # Applications
+          spotify
 
-        # Essentials
-        vlc # Videos
-        shotwell # Images
-        mission-center
-      ] ++ cfg.configurations.packages;
+          # Essentials
+          vlc # Videos
+          shotwell # Images
+          mission-center
+        ]
+        ++ cfg.configurations.packages;
     };
   });
 
-  flake.programs.${name} = self.lib.mkProgram name ({ ... }: {
-    configurations = [ self.definitions.programs.${name} ];
+  flake.programs.${name} = self.lib.mkProgram name ({...}: {
+    configurations = [self.definitions.programs.${name}];
   });
 
-  flake.wrappers.${name} = { ... }: {
+  flake.wrappers.${name} = {...}: {
     imports = [
       self.wrapperModules.${desktop}
     ];
   };
 
-  flake.definitions.programs.${name} = { pkgs, ... }: {
+  flake.definitions.programs.${name} = {pkgs, ...}: {
     options = {
       modKey = mkOption {
         type = types.str;
@@ -134,26 +143,27 @@ in {
     };
 
     config = let
-      noctalia-shell = (self.wrappers.noctalia.wrap { inherit pkgs; });
+      noctalia-shell = self.wrappers.noctalia.wrap {inherit pkgs;};
     in rec {
-      terminal = mkDefault (self.wrappers.terminal.wrap { inherit pkgs; });
+      terminal = mkDefault (self.wrappers.terminal.wrap {inherit pkgs;});
       browser = mkDefault inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
       desktopShell = mkDefault noctalia-shell;
       appLauncher = mkDefault (pkgs.writeShellScriptBin "launcher" "${getExe noctalia-shell} ipc call launcher toggle");
-      packages = with pkgs; mkDefault  [
-        # Wrappers
-        terminal
-        browser
-        desktopShell
-        appLauncher
+      packages = with pkgs;
+        mkDefault [
+          # Wrappers
+          terminal
+          browser
+          desktopShell
+          appLauncher
 
-        alacritty
+          alacritty
 
-        # Dependencies
-        pavucontrol
-        playerctl
-        brightnessctl
-      ];
+          # Dependencies
+          pavucontrol
+          playerctl
+          brightnessctl
+        ];
     };
   };
 }

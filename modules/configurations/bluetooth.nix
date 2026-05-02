@@ -1,9 +1,6 @@
-{ lib, ... }: 
-
-with lib;
-{
-
-  flake.nixosModules.configurations = { config, ... }: {
+{lib, ...}:
+with lib; {
+  flake.nixosModules.configurations = {config, ...}: {
     config = mkIf config.information.hasBluetooth {
       services.blueman.enable = true;
 
@@ -20,5 +17,4 @@ with lib;
       };
     };
   };
-
 }

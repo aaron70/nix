@@ -1,9 +1,10 @@
-{ lib, ... }: 
-
-with lib;
-{
-
-  flake.nixosModules.configurations = { pkgs, config, ... }: {
+{lib, ...}:
+with lib; {
+  flake.nixosModules.configurations = {
+    pkgs,
+    config,
+    ...
+  }: {
     config = {
       boot = {
         # Quiet boot
@@ -30,5 +31,4 @@ with lib;
       };
     };
   };
-  
 }

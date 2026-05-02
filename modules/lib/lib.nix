@@ -1,7 +1,9 @@
-{ inputs, lib, ... }: 
-
-with lib;
 {
+  inputs,
+  lib,
+  ...
+}:
+with lib; {
   options = {
     flake = inputs.flake-parts.lib.mkSubmoduleOptions {
       lib = inputs.nixpkgs.lib.mkOption {

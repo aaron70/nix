@@ -1,52 +1,67 @@
-{ self, lib, ... }: 
-
-with lib;
-let
+{
+  self,
+  lib,
+  ...
+}:
+with lib; let
   name = "niri";
-in
-{ 
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+in {
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({...}: {});
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({...}: {});
 
-  flake.nixosModules.programs = self.lib.mkNixosProgram name ({ ... }: {});
+  flake.nixosModules.programs = self.lib.mkNixosProgram name ({...}: {});
 
-  flake.programs.${name} = self.lib.mkProgram name ({ ... }: {
-    configurations = [ self.definitions.programs.desktop ];
+  flake.programs.${name} = self.lib.mkProgram name ({...}: {
+    configurations = [self.definitions.programs.desktop];
   });
 
-  flake.wrappers.niri = { wlib, pkgs, config, ... }:
-  {
-    imports = [ 
-      (self.lib.mkConfigurationsOption [ self.definitions.programs.desktop ])
+  flake.wrappers.niri = {
+    wlib,
+    pkgs,
+    config,
+    ...
+  }: {
+    imports = [
+      (self.lib.mkConfigurationsOption [self.definitions.programs.desktop])
       wlib.wrapperModules.niri
     ];
 
     config = {
-      passthru.providedSessions = [ "niri" ];
-      extraPackages = with pkgs; [
-        xwayland-satellite
-      ] ++ config.configurations.packages;
+      passthru.providedSessions = ["niri"];
+      extraPackages = with pkgs;
+        [
+          xwayland-satellite
+        ]
+        ++ config.configurations.packages;
 
-      env.FONTCONFIG_FILE="${config.configurations.fontsConfig}";
+      env.FONTCONFIG_FILE = "${config.configurations.fontsConfig}";
 
       "config.kdl".content = let
         terminal = getExe config.configurations.terminal;
         appLauncher = getExe config.configurations.appLauncher;
         browser = getExe config.configurations.browser;
         host = "aaronv";
-        monitorConfigurations = concatStringsSep "\n\n" (mapAttrsToList 
+        monitorConfigurations = concatStringsSep "\n\n" (mapAttrsToList
           (
             name: monitor: let
               mode = "${toString monitor.width}x${toString monitor.height}@${toString monitor.refreshRate}";
             in ''
               output "${name}" {
-                ${if monitor.enabled then "" else "off"}
+                ${
+                if monitor.enabled
+                then ""
+                else "off"
+              }
                 mode "${mode}"
                 position x=${toString monitor.x} y=${toString monitor.y}
                 scale ${toString monitor.scale}
                 variable-refresh-rate on-demand=true
-                ${if monitor.primary then "focus-at-startup" else ""}
+                ${
+                if monitor.primary
+                then "focus-at-startup"
+                else ""
+              }
 
                 hot-corners {
                   bottom-right
@@ -55,8 +70,7 @@ in
             ''
           )
           config.configurations.monitors);
-      in
-      ''
+      in ''
         spawn-at-startup "xwayland-satellite"
         spawn-at-startup "${getExe config.configurations.desktopShell}"
 
@@ -73,44 +87,44 @@ in
 
         cursor {
           // xcursor-theme ""
-          // xcursor-size 
+          // xcursor-size
 
           hide-when-typing
           hide-after-inactive-ms 1000
         }
-        
+
         input {
           mod-key "${config.configurations.modKey}"
           mod-key-nested "${config.configurations.modKeyAlt}"
           warp-mouse-to-focus
           focus-follows-mouse max-scroll-amount="5%"
-        
-          keyboard { 
+
+          keyboard {
             xkb {
               layout "us"
               variant "altgr-intl"
-            } 
+            }
             numlock
           }
-        
+
           touchpad {
             tap
             natural-scroll
             accel-speed 0.2
             scroll-factor 0.9
           }
-        
+
           mouse {
             accel-speed -0.7
           }
         }
-        
+
         layout {
-          gaps 5 
+          gaps 5
           center-focused-column "on-overflow"
           always-center-single-column
           default-column-width { proportion 0.5; }
-        
+
           preset-column-widths {
             proportion 0.33333
             proportion 0.5
@@ -121,7 +135,7 @@ in
             proportion 0.33333
             proportion 0.5
             proportion 0.66667
-          } 
+          }
 
           focus-ring {
             off
@@ -129,7 +143,7 @@ in
             active-color "#7fc8ff"
             inactive-color "#505050"
           }
-        
+
           border {
             // off
             width 4
@@ -137,7 +151,7 @@ in
             inactive-color "#505050"
             urgent-color "#9b0000"
           }
-        
+
           struts {
             left 13
             right 13
@@ -157,14 +171,14 @@ in
           match namespace="^noctalia-overview*"
           place-within-backdrop true
         }
-        
+
         animations {
           // off
           workspace-switch {
             off
           }
         }
-        
+
         spawn-at-startup "${terminal}"
         workspace "terminal"
         window-rule {
@@ -172,7 +186,7 @@ in
             open-on-workspace "terminal"
             open-maximized true
         }
-        
+
         workspace "browser"
         window-rule {
             match at-startup=true app-id=r#"^${browser}$"#
@@ -193,7 +207,7 @@ in
             open-on-workspace "gaming"
             open-maximized true
         }
-        
+
         workspace "chat"
         window-rule {
             match at-startup=true app-id=r#"^discord$"#
@@ -204,12 +218,12 @@ in
         workspace "temporal"
 
         window-rule {
-          // By default maximized 
+          // By default maximized
           // open-maximized true
-          
+
           // Rounded corners for a modern look.
           geometry-corner-radius 3
-        
+
           // Clips window contents to the rounded corner boundaries.
           clip-to-geometry true
 
@@ -224,12 +238,12 @@ in
           // Allows notification actions and window activation from Noctalia.
           honor-xdg-activation-with-invalid-serial
         }
-        
+
         binds {
           // Powers off the monitors. To turn them back on, do any input like
           // moving the mouse or pressing any other key.
           Ctrl+Shift+P { power-off-monitors; }
-        
+
           Mod+Shift+E { quit; }
           Mod+Shift+Slash { show-hotkey-overlay; }
           Mod+Space repeat=false hotkey-overlay-title="Open a Terminal" { spawn "${terminal}"; }
@@ -258,7 +272,7 @@ in
           Mod+J     { focus-window-down; }
           Mod+K     { focus-window-up; }
           Mod+L     { focus-column-right; }
-        
+
           Mod+Shift+Left  { move-column-left; }
           Mod+Shift+Down  { move-window-down; }
           Mod+Shift+Up    { move-window-up; }
@@ -270,7 +284,7 @@ in
 
           Mod+Ctrl+H { consume-or-expel-window-left; }
           Mod+Ctrl+L { consume-or-expel-window-right; }
-        
+
           Mod+1 { focus-workspace 1; }
           Mod+2 { focus-workspace 2; }
           Mod+3 { focus-workspace 3; }
@@ -280,7 +294,7 @@ in
           Mod+7 { focus-workspace 7; }
           Mod+8 { focus-workspace 8; }
           Mod+9 { focus-workspace 9; }
-        
+
           Mod+Shift+1 { move-column-to-workspace 1; }
           Mod+Shift+2 { move-column-to-workspace 2; }
           Mod+Shift+3 { move-column-to-workspace 3; }
@@ -295,14 +309,14 @@ in
           Mod+Equal { set-window-width "+10%"; }
           Mod+Shift+Minus { set-window-height "-10%"; }
           Mod+Shift+Equal { set-window-height "+10%"; }
-        
+
           Mod+U { focus-workspace "terminal"; }
           Mod+I { focus-workspace "browser"; }
           Mod+O { focus-workspace "chat"; }
           Mod+P { focus-workspace "multimedia"; }
           Mod+G { focus-workspace "gaming"; }
           Mod+T { focus-workspace "temporal"; }
-        
+
           Mod+Shift+U { move-column-to-workspace "terminal"; }
           Mod+Shift+I { move-column-to-workspace "browser"; }
           Mod+Shift+O { move-column-to-workspace "chat"; }
@@ -314,15 +328,15 @@ in
           Mod+Period { move-workspace-to-monitor-next; }
 
           Mod+Tab { toggle-column-tabbed-display; }
-        
+
           Mod+F { maximize-column; }
           Mod+Shift+F { fullscreen-window; }
           Mod+Ctrl+F { toggle-window-floating; }
           Mod+S { switch-preset-column-width; }
           Mod+C { center-visible-columns; }
-        
+
           Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-        
+
           Ctrl+Shift+3 { screenshot-screen; }
           Ctrl+Shift+5 { screenshot-window; }
           Ctrl+Shift+4 { screenshot; }

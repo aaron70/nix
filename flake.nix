@@ -25,14 +25,15 @@
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } { 
-    systems = inputs.nixpkgs.lib.platforms.all;
-    imports = [ 
-      (inputs.import-tree ./modules) 
-      inputs.wrappers.flakeModules.wrappers
-      inputs.flake-parts.flakeModules.modules
-      inputs.home-manager.flakeModules.home-manager
-      inputs.nix-darwin.flakeModules.default
-    ];
-  };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+      imports = [
+        (inputs.import-tree ./modules)
+        inputs.wrappers.flakeModules.wrappers
+        inputs.flake-parts.flakeModules.modules
+        inputs.home-manager.flakeModules.home-manager
+        inputs.nix-darwin.flakeModules.default
+      ];
+    };
 }

@@ -1,8 +1,6 @@
-{ ... }: 
-
-{
+{...}: {
   flake.wrapperHelpers.oh-my-posh = {
-    prompts.default = {  colors, ... }: ''
+    prompts.default = {colors, ...}: ''
       {
         "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
         "final_space": true,
@@ -104,7 +102,7 @@
       }
     '';
 
-    prompts.robots = { colors, ... }: ''
+    prompts.robots = {colors, ...}: ''
       {
         "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
         "final_space": true,
@@ -224,7 +222,7 @@
       }
     '';
 
-    prompts.custom = { colors, ... }: ''
+    prompts.custom = {colors, ...}: ''
       {
         "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
         "final_space": true,
@@ -236,7 +234,7 @@
             "alignment": "left",
             "overflow": "hide",
             "segments": [
-              
+
               {
                 "type": "path",
                 "style": "plain",

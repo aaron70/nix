@@ -1,18 +1,21 @@
-{ self, inputs, lib, ... }: 
-
-with lib;
 {
+  self,
+  inputs,
+  lib,
+  ...
+}:
+with lib; {
   options = {
     flake = inputs.flake-parts.lib.mkSubmoduleOptions {
       darwinModules = mkOption {
         type = types.lazyAttrsOf types.deferredModule;
-        default = { };
+        default = {};
       };
     };
   };
 
-  config.flake.darwinModules.configurations = { config, ... }: {
-    imports = [ 
+  config.flake.darwinModules.configurations = {config, ...}: {
+    imports = [
       inputs.mac-app-util.darwinModules.default
       self.darwinModules.profile
       self.darwinModules.programs
@@ -34,7 +37,6 @@ with lib;
       launchd.user.envVariables = {
         PATH = config.environment.systemPath;
       };
-
 
       # TODO: Remove this one
       # virtualisation.vmVariant = {

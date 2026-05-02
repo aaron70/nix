@@ -1,17 +1,23 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
-let
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; let
   name = "shell";
   shell = "zsh";
 in {
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ config, cfg, ... }: let
-    shellPackage = cfg.package; 
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({
+    config,
+    cfg,
+    ...
+  }: let
+    shellPackage = cfg.package;
   in {
     config = {
-
       programs.${shell}.enable = true;
-      environment.pathsToLink = [ "/share/${shell}" ];
+      environment.pathsToLink = ["/share/${shell}"];
 
       # users.defaultUserShell = shellPackage;
       users.users.${config.profile.user.username}.shell = shellPackage;
@@ -35,21 +41,28 @@ in {
     };
   });
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({...}: {});
 
-  flake.nixosModules.programs = self.lib.mkNixosProgram name ({ config, cfg, pkgs, ... }: let
-    shellPackage = cfg.package; 
+  flake.nixosModules.programs = self.lib.mkNixosProgram name ({
+    config,
+    cfg,
+    pkgs,
+    ...
+  }: let
+    shellPackage = cfg.package;
   in {
     config = {
       programs.${shell}.enable = true;
-      environment.pathsToLink = [ "/share/${shell}" ];
+      environment.pathsToLink = ["/share/${shell}"];
 
       users.defaultUserShell = shellPackage;
       users.users.${config.profile.user.username}.shell = shellPackage;
 
-      environment.systemPackages = with pkgs; [
-        wl-clipboard
-      ] ++ cfg.configurations.packages;
+      environment.systemPackages = with pkgs;
+        [
+          wl-clipboard
+        ]
+        ++ cfg.configurations.packages;
 
       environment.variables = rec {
         GIT_AUTHOR_NAME = config.profile.user.username;
@@ -71,37 +84,53 @@ in {
     };
   });
 
-  flake.programs.${name} = self.lib.mkProgram name ({ pkgs, cfg, ... }: {
-    configurations = [ self.definitions.programs.${name} ];
+  flake.programs.${name} = self.lib.mkProgram name ({
+    pkgs,
+    cfg,
+    ...
+  }: {
+    configurations = [self.definitions.programs.${name}];
     config = {
       package = self.wrappers.${name}.wrap {
         inherit pkgs;
-        configurations = ({
-          multiplexer = let shellPath = getExe cfg.package; in mkDefault (self.wrappers.tmux.wrap {
-            inherit pkgs; 
-            shell = shellPath;
-          });
-          packages = [ multiplexer ];
-        } // cfg.configurations);
+        configurations =
+          {
+            multiplexer = let
+              shellPath = getExe cfg.package;
+            in
+              mkDefault (self.wrappers.tmux.wrap {
+                inherit pkgs;
+                shell = shellPath;
+              });
+            packages = [multiplexer];
+          }
+          // cfg.configurations;
       };
     };
   });
 
-  flake.wrappers.${name} = { pkgs, config, ... }: {
+  flake.wrappers.${name} = {
+    pkgs,
+    config,
+    ...
+  }: {
     imports = [
       self.wrapperModules.${shell}
     ];
 
     config.configurations = rec {
-      multiplexer = let shellPath = getExe config.package; in mkDefault (self.wrappers.tmux.wrap {
-        inherit pkgs; 
-        shell = shellPath;
-      });
-      packages = [ multiplexer ];
+      multiplexer = let
+        shellPath = getExe config.package;
+      in
+        mkDefault (self.wrappers.tmux.wrap {
+          inherit pkgs;
+          shell = shellPath;
+        });
+      packages = [multiplexer];
     };
   };
 
-  flake.definitions.programs.${name} = { pkgs, ... }: {
+  flake.definitions.programs.${name} = {pkgs, ...}: {
     options = {
       shellAliases = mkOption {
         type = types.attrsOf (types.nullOr types.str);
@@ -135,13 +164,13 @@ in {
       shellPrompt = mkOption {
         type = types.package;
         description = "The shell prompt package.";
-        default = self.wrappers.oh-my-posh.wrap { inherit pkgs; };
+        default = self.wrappers.oh-my-posh.wrap {inherit pkgs;};
       };
 
       multiplexer = mkOption {
         type = types.package;
         description = "The wrapped and configured terminal multiplexer.";
-      }; 
+      };
     };
 
     config = {

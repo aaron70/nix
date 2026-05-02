@@ -1,8 +1,10 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
 {
-
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; {
   options = {
     flake = inputs.flake-parts.lib.mkSubmoduleOptions {
       profile = inputs.nixpkgs.lib.mkOption {
@@ -28,42 +30,56 @@ with lib;
   };
 
   config = rec {
-
-    flake.lib.mkHomeProfile = flake.lib.mkNixosProfile; 
+    flake.lib.mkHomeProfile = flake.lib.mkNixosProfile;
     flake.lib.mkDarwinProfile = flake.lib.mkNixosProfile;
 
-    flake.lib.mkNixosProfile = profile: preferences: ({ config, pkgs, ... }@inputs: {
-      config = mkIf (config.preferences.profile == profile) ({
-        preferences = {
-          programs = config.profile.programs;
-          features = config.profile.features;
-        };
-      } // preferences inputs);
+    flake.lib.mkNixosProfile = profile: preferences: ({
+        config,
+        pkgs,
+        ...
+      } @ inputs: {
+        config = mkIf (config.preferences.profile == profile) ({
+            preferences = {
+              programs = config.profile.programs;
+              features = config.profile.features;
+            };
+          }
+          // preferences inputs);
+      });
+
+    flake.lib.mkProfile = profile: preferences: ({
+      config,
+      pkgs,
+      ...
+    }: {
+      config = mkIf (config.preferences.profile == profile) (preferences {inherit config pkgs;});
     });
 
-    flake.lib.mkProfile = profile: preferences: ({ config, pkgs, ... }: {
-      config = mkIf (config.preferences.profile == profile) (preferences { inherit config pkgs; });
-    });
-
-    flake.nixosModules.profile = { ... }: {
-      imports = [ 
-        self.profile.module
-      ] ++ builtins.attrValues self.profiles.nixos;
+    flake.nixosModules.profile = {...}: {
+      imports =
+        [
+          self.profile.module
+        ]
+        ++ builtins.attrValues self.profiles.nixos;
     };
 
-    flake.homeModules.profile = { ... }: {
-      imports = [ 
-        self.profile.module
-      ] ++ builtins.attrValues self.profiles.home;
+    flake.homeModules.profile = {...}: {
+      imports =
+        [
+          self.profile.module
+        ]
+        ++ builtins.attrValues self.profiles.home;
     };
 
-    flake.darwinModules.profile = { ... }: {
-      imports = [ 
-        self.profile.module
-      ] ++ builtins.attrValues self.profiles.darwin;
+    flake.darwinModules.profile = {...}: {
+      imports =
+        [
+          self.profile.module
+        ]
+        ++ builtins.attrValues self.profiles.darwin;
     };
 
-    flake.profile.module = { ... }: {
+    flake.profile.module = {...}: {
       imports = builtins.attrValues self.profiles.generic;
 
       options.preferences = {
@@ -101,6 +117,6 @@ with lib;
           default = {};
         };
       };
-    };  
+    };
   };
 }

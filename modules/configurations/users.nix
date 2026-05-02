@@ -1,14 +1,11 @@
-{ lib, ... }: 
-
-with lib;
-{
-
-  flake.nixosModules.configurations = { config, ... }: {
+{lib, ...}:
+with lib; {
+  flake.nixosModules.configurations = {config, ...}: {
     config = {
       users.users.${config.profile.user.username} = {
         isNormalUser = true;
         description = config.profile.user.fullname;
-        extraGroups = [ "networkmanager" "wheel" "audio" ];
+        extraGroups = ["networkmanager" "wheel" "audio"];
         group = config.profile.user.username;
       };
       users.groups.${config.profile.user.username} = {};
@@ -17,7 +14,7 @@ with lib;
         users.users.${config.profile.user.username} = {
           isNormalUser = true;
           description = config.profile.user.fullname;
-          extraGroups = [ "networkmanager" "wheel" "audio" ];
+          extraGroups = ["networkmanager" "wheel" "audio"];
           group = config.profile.user.username;
           initialPassword = "test";
         };
@@ -26,7 +23,7 @@ with lib;
     };
   };
 
-  flake.darwinModules.configurations = { config, ... }: {
+  flake.darwinModules.configurations = {config, ...}: {
     config = {
       users.users.${config.profile.user.username} = {
         description = config.profile.user.fullname;
@@ -50,5 +47,4 @@ with lib;
       # };
     };
   };
-
 }

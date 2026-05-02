@@ -1,9 +1,12 @@
-{ lib, ... }: 
-
-with lib;
-{
-  flake.wrappers._ghostty = { config, wlib, pkgs, ... }: {
-    imports = [ wlib.modules.default ];
+{lib, ...}:
+with lib; {
+  flake.wrappers._ghostty = {
+    config,
+    wlib,
+    pkgs,
+    ...
+  }: {
+    imports = [wlib.modules.default];
 
     options = {
       configuration = mkOption {
@@ -14,8 +17,11 @@ with lib;
     };
 
     config = {
-      package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
-      flagSeparator="=";
+      package =
+        if pkgs.stdenv.isDarwin
+        then pkgs.ghostty-bin
+        else pkgs.ghostty;
+      flagSeparator = "=";
       flags."--config-file" = pkgs.writeText "config.ghostty" config.configuration;
     };
   };

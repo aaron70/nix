@@ -1,15 +1,22 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
-let
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; let
   name = "gaming";
 in {
-  flake.darwinModules.features = self.lib.mkDarwinFeature name ({ ... }: {});
+  flake.darwinModules.features = self.lib.mkDarwinFeature name ({...}: {});
 
-  flake.homeModules.features = self.lib.mkHomeFeature name ({ ... }: {});
+  flake.homeModules.features = self.lib.mkHomeFeature name ({...}: {});
 
-  flake.nixosModules.features = self.lib.mkNixosFeature name ({ config, cfg, ... }: {
-    imports = [ inputs.jovian.nixosModules.jovian ];
+  flake.nixosModules.features = self.lib.mkNixosFeature name ({
+    config,
+    cfg,
+    ...
+  }: {
+    imports = [inputs.jovian.nixosModules.jovian];
 
     config = {
       jovian = {
@@ -17,7 +24,7 @@ in {
         # devices.gpd-win-max-2.enable = true;
         steam = {
           enable = true;
-          autoStart = false;  # Start Steam in Big Picture mode at boot
+          autoStart = false; # Start Steam in Big Picture mode at boot
           user = config.profile.user.username;
           # desktopSession = "gamescope-wayland";
         };
@@ -25,7 +32,7 @@ in {
     };
   });
 
-  flake.features.${name} = self.lib.mkFeature name ({ pkgs, ... }: {
+  flake.features.${name} = self.lib.mkFeature name ({pkgs, ...}: {
     configurations = {
       gpu.isAMD = mkOption {
         type = types.bool;
@@ -45,7 +52,7 @@ in {
         # Games
         ryubing # Nintendo Switch simulator
         pokemmo-installer # PokeMMO
-        (heroic.override { extraPkgs = pkgs: [ pkgs.gamescope ]; }) # Epic Games Launcher
+        (heroic.override {extraPkgs = pkgs: [pkgs.gamescope];}) # Epic Games Launcher
 
         # Tools/Dependencies/Compatibility
         mangohud
@@ -53,4 +60,4 @@ in {
       ];
     };
   });
- }
+}

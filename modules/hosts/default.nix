@@ -1,8 +1,10 @@
-{ inputs, self, lib, ... }: 
-
-with lib;
 {
-
+  inputs,
+  self,
+  lib,
+  ...
+}:
+with lib; {
   options = {
     flake = inputs.flake-parts.lib.mkSubmoduleOptions {
       hosts = inputs.nixpkgs.lib.mkOption {
@@ -12,15 +14,15 @@ with lib;
   };
 
   config = {
-    flake.nixosModules.configurations = { ... }: {
-      imports = [ self.hosts.module ];
+    flake.nixosModules.configurations = {...}: {
+      imports = [self.hosts.module];
     };
 
-    flake.darwinModules.configurations = { ... }: {
-      imports = [ self.hosts.module ];
+    flake.darwinModules.configurations = {...}: {
+      imports = [self.hosts.module];
     };
 
-    flake.hosts.module = { config, ... }: {
+    flake.hosts.module = {config, ...}: {
       options.preferences = {
         stateVersion = mkOption {
           type = types.str;

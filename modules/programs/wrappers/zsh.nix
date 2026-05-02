@@ -1,42 +1,50 @@
-{ self, lib, ... }: 
-
-with lib;
-let
+{
+  self,
+  lib,
+  ...
+}:
+with lib; let
   name = "zsh";
 in {
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({...}: {});
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({...}: {});
 
-  flake.nixosModules.programs = self.lib.mkNixosProgram name ({ ... }: {});
+  flake.nixosModules.programs = self.lib.mkNixosProgram name ({...}: {});
 
-  flake.programs.${name} = self.lib.mkProgram name ({ ... }: {
-    configurations = [ self.definitions.programs.shell ];
+  flake.programs.${name} = self.lib.mkProgram name ({...}: {
+    configurations = [self.definitions.programs.shell];
   });
 
-  flake.wrappers.${name} = { wlib, pkgs, config, ... }:
-  {
-    imports = [ 
+  flake.wrappers.${name} = {
+    wlib,
+    pkgs,
+    config,
+    ...
+  }: {
+    imports = [
       wlib.wrapperModules.zsh
-      (self.lib.mkConfigurationsOption [ self.definitions.programs.shell ])
+      (self.lib.mkConfigurationsOption [self.definitions.programs.shell])
     ];
 
     config = with pkgs; {
       env = config.configurations.envVariables;
       zshAliases = config.configurations.shellAliases;
 
-      extraPackages = [
-        #wrapped
-        config.configurations.shellPrompt
-      ] ++ config.configurations.packages;
+      extraPackages =
+        [
+          #wrapped
+          config.configurations.shellPrompt
+        ]
+        ++ config.configurations.packages;
 
       zshrc.content = ''
         autoload -Uz compinit
         if [[ -x $(command -v fzf) ]]; then eval "$(fzf --zsh)"; fi
-         
+
         typeset -i updated_at=$(date +'%j' -r $HOME/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $HOME/.zcompdump 2>/dev/null)
         typeset -i today=$(date +'%j')
-         
+
         if [[ $updated_at -eq $today ]]; then
           compinit -C -i
         else
@@ -113,7 +121,7 @@ in {
           fi
         }
         zle -N zle-keymap-select
-        
+
         function zle-line-init {
           echo -ne '\e[5 q'     # beam cursor on new prompt
         }
@@ -143,18 +151,18 @@ in {
         # Hooks
         # ==============================
         autoload -Uz add-zsh-hook
-        
+
         # Reference: https://gist.github.com/elliottminns/09a598082d77f795c88e93f7f73dba61
-        
+
         function auto_venv() {
           # If already in a virtualenv, do nothing
           if [[ -n "$VIRTUAL_ENV" && "$PWD" != *"''${VIRTUAL_ENV:h}"* ]]; then
             deactivate
-            return  
+            return
           fi
-        
+
           [[ -n "$VIRTUAL_ENV" ]] && return
-        
+
           local dir="$PWD"
           while [[ "$dir" != "/" ]]; do
             if [[ -f "$dir/.venv/bin/activate" ]]; then
@@ -164,11 +172,11 @@ in {
             dir="''${dir:h}"
           done
         }
-        
+
         function auto_nix() {
           # If we're already in a nix develop shell, do nothing
           [[ -n "$IN_NIX_SHELL" ]] && return
-        
+
           # Walk up to find a flake
           local dir="$PWD"
           while [[ "$dir" != "/" ]]; do
@@ -182,14 +190,14 @@ in {
         EOF
                 command direnv allow "$dir" >/dev/null 2>&1
               fi
-        
+
               command direnv reload >/dev/null 2>&1
               return
             fi
             dir="''${dir:h}"
           done
         }
-        
+
         function auto_nvm() {
           [[ -f .nvmrc ]] && nvm use
         }
@@ -205,7 +213,7 @@ in {
             echo " ''${BLUE}  ''${NOCOLOR}there are more than 25 files at ''${BLUE}$(pwd)''${NOCOLOR}"
           fi
         }
-        
+
         add-zsh-hook chpwd auto_venv
         add-zsh-hook chpwd auto_nix
         add-zsh-hook chpwd auto_nvm
@@ -232,7 +240,7 @@ in {
           if [[ "$(tmux ls 2>/dev/null)" == "" ]]; then
             tmux new -s kyoten
           fi
-          sesh connect kyoten 
+          sesh connect kyoten
         fi
       '';
     };

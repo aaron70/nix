@@ -1,9 +1,6 @@
-{ self, ... }: 
-
-with self.lib;
-{
-
-  flake.profiles.generic.vmtest = mkProfile "vmtest" ({ ... }: {
+{self, ...}:
+with self.lib; {
+  flake.profiles.generic.vmtest = mkProfile "vmtest" ({...}: {
     profile = {
       user = {
         username = "vmtest";
@@ -11,9 +8,13 @@ with self.lib;
         email = "vmtest@gmail.com";
       };
     };
-  }); 
+  });
 
-  flake.profiles.nixos.vmtest = mkProfile "vmtest" ({ pkgs, config, ... }: {
+  flake.profiles.nixos.vmtest = mkProfile "vmtest" ({
+    pkgs,
+    config,
+    ...
+  }: {
     environment.variables = {
       PROFILE = config.profile.user.username;
     };
@@ -21,5 +22,4 @@ with self.lib;
       hello
     ];
   });
-
 }

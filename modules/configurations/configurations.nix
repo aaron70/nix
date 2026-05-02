@@ -1,21 +1,27 @@
-{ self, lib, ... }: 
-
-with lib;
 {
-  flake.nixosModules.configurations = { pkgs, config, ... }: {
-    imports = [ 
+  self,
+  lib,
+  ...
+}:
+with lib; {
+  flake.nixosModules.configurations = {
+    pkgs,
+    config,
+    ...
+  }: {
+    imports = [
       self.nixosModules.profile
       self.nixosModules.programs
       self.nixosModules.features
     ];
 
     config = {
-      nix.settings.experimental-features = [ "nix-command" "flakes" ];
+      nix.settings.experimental-features = ["nix-command" "flakes"];
       nixpkgs.config.allowUnfree = true;
       nixpkgs.config.allowBroken = true;
       programs.nix-ld.enable = true;
 
-      services.xserver.videoDrivers = [ "nvidia" ];
+      services.xserver.videoDrivers = ["nvidia"];
       hardware = {
         graphics = {
           enable = true;

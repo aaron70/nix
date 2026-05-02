@@ -141,7 +141,9 @@ in {
           customLaunchPrefixEnabled = false;
           density = "compact";
           enableClipPreview = true;
+          enableClipboardChips = true;
           enableClipboardHistory = true;
+          enableClipboardSmartIcons = true;
           enableSessionSearch = true;
           enableSettingsSearch = true;
           enableWindowsSearch = true;
@@ -155,13 +157,13 @@ in {
           showIconBackground = false;
           sortByMostUsed = true;
           terminalCommand = "kitty -e";
-          useApp2Unit = false;
           viewMode = "list";
         };
         audio = {
           mprisBlacklist = [];
           preferredPlayer = "spotify";
           spectrumFrameRate = 30;
+          spectrumMirrored = true;
           visualizerType = "linear";
           volumeFeedback = false;
           volumeFeedbackSoundFile = "";
@@ -179,7 +181,6 @@ in {
           density = "compact";
           displayMode = "always_visible";
           enableExclusionZoneInset = true;
-          floating = false;
           fontScale = 1;
           frameRadius = 12;
           frameThickness = 8;
@@ -239,6 +240,7 @@ in {
               {
                 colorizeDistroLogo = false;
                 colorizeSystemIcon = "none";
+                colorizeSystemText = "none";
                 customIconPath = "";
                 enableColorization = false;
                 icon = "noctalia";
@@ -370,6 +372,7 @@ in {
           monitorForColors = "";
           predefinedScheme = "Tokyo Night";
           schedulingMode = "off";
+          syncGsettings = true;
           useWallpaperColors = false;
         };
         controlCenter = {
@@ -470,8 +473,10 @@ in {
           indicatorColor = "primary";
           indicatorOpacity = 0.6;
           indicatorThickness = 3;
+          launcherIcon = "";
           launcherIconColor = "none";
           launcherPosition = "end";
+          launcherUseDistroLogo = false;
           monitors = [];
           onlySameOutput = true;
           pinnedApps = [];
@@ -494,7 +499,7 @@ in {
           clockStyle = "custom";
           compactLockScreen = true;
           dimmerOpacity = 0;
-          enableBlurBehind = true;
+          enableBlurBehind = false;
           enableLockScreenCountdown = true;
           enableLockScreenMediaControls = false;
           enableShadows = false;
@@ -531,9 +536,11 @@ in {
           showHibernateOnLockScreen = true;
           showScreenCorners = true;
           showSessionButtonsOnLockScreen = true;
+          smoothScrollEnabled = true;
           telemetryEnabled = false;
         };
         hooks = {
+          colorGeneration = "";
           darkModeChange = "";
           enabled = false;
           performanceModeDisabled = "";
@@ -560,6 +567,7 @@ in {
         };
         location = {
           analogClockInCalendar = false;
+          autoLocate = false;
           firstDayOfWeek = -1;
           hideWeatherCityName = false;
           hideWeatherTimezone = false;
@@ -571,9 +579,9 @@ in {
           useFahrenheit = false;
           weatherEnabled = false;
           weatherShowEffects = true;
+          weatherTaliaMascotAlways = false;
         };
         network = {
-          airplaneModeEnabled = false;
           bluetoothAutoConnect = true;
           bluetoothDetailsViewMode = "grid";
           bluetoothHideUnnamedDevices = true;
@@ -582,7 +590,6 @@ in {
           disableDiscoverability = true;
           networkPanelView = "wifi";
           wifiDetailsViewMode = "grid";
-          wifiEnabled = true;
         };
         nightLight = {
           autoSchedule = false;
@@ -647,6 +654,7 @@ in {
         };
         plugins = {
           autoUpdate = false;
+          notifyUpdates = true;
         };
         sessionMenu = {
           countdownDuration = 5000;
@@ -715,7 +723,7 @@ in {
           showHeader = true;
           showKeybinds = true;
         };
-        settingsVersion = 57;
+        settingsVersion = 59;
         systemMonitor = {
           batteryCriticalThreshold = 5;
           batteryWarningThreshold = 20;
@@ -766,6 +774,7 @@ in {
           fillColor = "#000000";
           fillMode = "fill";
           hideWallpaperFilenames = false;
+          linkLightAndDarkWallpapers = true;
           monitorDirectories = [];
           overviewBlur = 0.4;
           overviewEnabled = true;
@@ -779,7 +788,15 @@ in {
           sortOrder = "name";
           transitionDuration = 1500;
           transitionEdgeSmoothness = 0.05;
-          transitionType = "random";
+          transitionType = [
+            "fade"
+            "disc"
+            "stripes"
+            "wipe"
+            "pixelate"
+            "honeycomb"
+          ];
+          useOriginalImages = false;
           useSolidColor = false;
           useWallhaven = false;
           viewMode = "single";
@@ -798,7 +815,7 @@ in {
         state = {
           barVisible = true;
           changelogState = {
-            lastSeenVersion = "v4.6.7";
+            lastSeenVersion = "v4.7.6";
           };
           colorSchemesList = {
             schemes = [];
@@ -848,8 +865,8 @@ in {
             settingsSidebarExpanded = true;
           };
           wallpapers = {
-            DP-3 = "/nix/store/mlycm49bx2qh96q4df1sm4gswj5fsj2h-wallpapers/wallhaven.jpg";
-            HDMI-A-2 = "/nix/store/mlycm49bx2qh96q4df1sm4gswj5fsj2h-wallpapers/wallhaven.jpg";
+            DP-3 = "/nix/store/m54phly3d0xjsi29wvjf6sg3fh45307z-resources/wallpapers/wallhaven.jpg";
+            HDMI-A-2 = "/nix/store/m54phly3d0xjsi29wvjf6sg3fh45307z-resources/wallpapers/wallhaven.jpg";
           };
         };
       };

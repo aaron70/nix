@@ -4,8 +4,10 @@ with lib;
 let
   name = "development";
 in {
+  flake.darwinModules.features = self.lib.mkDarwinFeature name ({ ... }: {});
 
   flake.homeModules.features = self.lib.mkHomeFeature name ({ ... }: {});
+
 
   flake.nixosModules.features = self.lib.mkNixosFeature name ({ cfg, config, ... }: {
     config = {

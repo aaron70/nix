@@ -6,7 +6,21 @@ let
 in {
   flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
 
-  flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
+  flake.homeModules.programs = self.lib.mkHomeProgram name ({ cfg, pkgs, ... }: {
+    config = {
+      xdg.configFile."kitty/kitty.conf".text = ''
+        include ${cfg.configurations.theme.path}
+        confirm_os_window_close 0 
+        enable_audio_bell false
+        font_family      JetBrainsMono Nerd Font
+        bold_font        auto
+        italic_font      auto
+        bold_italic_font auto
+
+        shell ${getExe cfg.configurations.shell}
+      '';
+    };
+  });
 
   flake.nixosModules.programs = self.lib.mkNixosProgram name ({ ... }: {});
 

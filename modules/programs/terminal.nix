@@ -5,7 +5,11 @@ let
   name = "terminal";
   terminal = "kitty";
 in {
-  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {});
+  flake.darwinModules.programs = self.lib.mkDarwinProgram name ({ ... }: {
+    config = {
+      preferences.programs.shell.enable = mkDefault true;
+    };
+  });
 
   flake.homeModules.programs = self.lib.mkHomeProgram name ({ ... }: {});
 

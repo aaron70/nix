@@ -1,11 +1,12 @@
-{ ... }:
+{ lib, ... }:
 
+with lib;
 {
 
   flake.homeModules.configurations = { pkgs, ... }: let
     cursor_theme_name = "BreezeX-RosePine-Linux";
   in {
-    config.home = {
+    config.home = mkIf pkgs.stdenv.isLinux {
       packages = with pkgs; [ rose-pine-cursor ];
       sessionVariables = {
         XCURSOR_THEME = cursor_theme_name;

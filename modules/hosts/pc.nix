@@ -46,7 +46,7 @@ in {
                   refreshRate = 143.981;
                 };
 
-                HDMI-A-2 = rec {
+                HDMI-A-1 = rec {
                   enabled = true;
                   primary = false;
                   x = -width;

@@ -195,7 +195,7 @@ in {
         zoxide
 
         # Wrapped
-        inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.nvim
+        inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim
 
         # Scripts
         (writeShellScriptBin "hydrate-paths" (readFile ./scripts/hydrate-paths.sh))

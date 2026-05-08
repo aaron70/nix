@@ -35,13 +35,13 @@ automatically-unhide-macos-hidden-apps = false
 [key-mapping]
     preset = 'qwerty'
 
-[[on-window-detected]]
-if.app-id = 'com.microsoft.teams2'
-run = ['layout floating', 'move-node-to-workspace O']
-
-[[on-window-detected]]
-if.app-id = 'com.microsoft.Outlook'
-run = ['layout floating', 'move-node-to-workspace O']
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.teams2'
+# run = ['layout floating', 'move-node-to-workspace O']
+#
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.Outlook'
+# run = ['layout floating', 'move-node-to-workspace O']
 
 
 

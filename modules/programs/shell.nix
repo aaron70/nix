@@ -193,6 +193,7 @@ in {
         sesh
         television
         zoxide
+        unixtools.watch
 
         # Wrapped
         inputs.nvim.packages.${pkgs.stdenv.hostPlatform.system}.neovim

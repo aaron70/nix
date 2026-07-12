@@ -85,6 +85,9 @@ with lib; {
         variant = "altgr-intl";
       };
 
+      security.polkit.enable = true;
+      services.fprintd.enable = true;
+
       services.logind.settings.Login = {
         HandleLidSwitch = "poweroff"; # Lid Closed
         HandleLidSwitchExternalPower = "lock"; # Lid Closed while connected to power

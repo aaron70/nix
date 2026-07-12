@@ -29,7 +29,7 @@ in {
 
     config = {
       passthru.providedSessions = ["niri"];
-      extraPackages = with pkgs;
+      runtimePkgs = with pkgs;
         [
           xwayland-satellite
         ]

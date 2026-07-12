@@ -48,7 +48,7 @@ in {
       };
     in {
       package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      extraPackages = with pkgs; [
+      runtimePkgs = with pkgs; [
         # Dependencies for Screen Recorder plugin: https://noctalia.dev/plugins/screen-recorder/
         gpu-screen-recorder
 

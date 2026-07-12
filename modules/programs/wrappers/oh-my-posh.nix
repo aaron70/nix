@@ -26,7 +26,7 @@ in {
     config = let
       colors = config.configurations.colors;
     in {
-      extraPackages = with pkgs; [
+      runtimePkgs = with pkgs; [
         nerd-fonts.jetbrains-mono
       ];
       configuration = self.wrapperHelpers.oh-my-posh.prompts.custom {inherit colors;};

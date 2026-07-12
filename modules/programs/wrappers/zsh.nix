@@ -31,7 +31,7 @@ in {
       env = config.configurations.envVariables;
       zshAliases = config.configurations.shellAliases;
 
-      extraPackages =
+      runtimePkgs =
         [
           #wrapped
           config.configurations.shellPrompt

@@ -1,5 +1,9 @@
 # Nixos Configurations
 
+## Preview
+
+![Preview Image](./resources/images/preview.png)
+
 ## Security
 
 ### Git Crypt

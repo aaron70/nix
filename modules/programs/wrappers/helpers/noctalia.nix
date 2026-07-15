@@ -3,6 +3,7 @@
     config.default = {...}: 
     let 
       wallpapersPath = "${self.lib.resourcesPath}/wallpapers";
+      imagessPath = "${self.lib.resourcesPath}/images";
     in
     ''
 [audio]
@@ -419,6 +420,7 @@ resolution = "original"
 enabled = [ "noctalia/screen_recorder" ]
 
 [shell]
+avatar_path = "${imagessPath}/avatar.jpg"
 font_family = "JetBrainsMono Nerd Font Mono"
 launch_apps_as_systemd_services = true
 niri_overview_type_to_launch_enabled = true
@@ -489,6 +491,7 @@ source = "builtin"
 wallpaper_scheme = "m3-tonal-spot"
 
     [theme.templates]
+    builtin_ids = [ "btop" ]
     community_ids = [ "zen-browser" ]
 
 [wallpaper]

@@ -15,7 +15,7 @@ with lib; {
         users.users.${config.profile.user.username} = {
           isNormalUser = true;
           description = config.profile.user.fullname;
-          extraGroups = ["networkmanager" "wheel" "audio"];
+          extraGroups = ["networkmanager" "wheel" "audio" "i2c"];
           group = config.profile.user.username;
           initialPassword = "test";
         };

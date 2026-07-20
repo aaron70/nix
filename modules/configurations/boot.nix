@@ -18,7 +18,9 @@ with lib; {
           "rd.udev.log_level=3"
           "udev.log_priority=3"
         ];
+        kernelModules = ["ddcci-backlight"];
         kernelPackages = pkgs.linuxPackages_latest;
+        extraModulePackages = with config.boot.kernelPackages; [ddcci-driver];
 
         loader.systemd-boot = {
           enable = mkDefault true;

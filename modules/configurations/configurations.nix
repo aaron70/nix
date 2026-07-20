@@ -23,6 +23,7 @@ with lib; {
 
       services.xserver.videoDrivers = ["nvidia"];
       hardware = {
+        i2c.enable = true;
         graphics = {
           enable = true;
           enable32Bit = true;
@@ -98,6 +99,8 @@ with lib; {
 
       services.gnome.gnome-keyring.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
+
+
 
       services.logind.settings.Login = {
         HandleLidSwitch = "suspend"; # Lid Closed

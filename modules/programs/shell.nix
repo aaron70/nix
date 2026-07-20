@@ -57,6 +57,7 @@ in {
 
       users.defaultUserShell = shellPackage;
       users.users.${config.profile.user.username}.shell = shellPackage;
+      environment.shells = [shellPackage];
 
       environment.systemPackages = with pkgs;
         [
@@ -118,14 +119,16 @@ in {
       self.wrapperModules.${shell}
     ];
 
-    config.configurations = rec {
-      multiplexer = let
-        shellPath = getExe config.package;
-      in
-        mkDefault (self.wrappers.tmux.wrap {
-          inherit pkgs;
-          shell = shellPath;
-        });
+    config.configurations = let
+      shellPath = getExe config.package;
+    in rec {
+      envVariables = {
+        SHELL = "${shellPath}";
+      };
+      multiplexer = mkDefault (self.wrappers.tmux.wrap {
+        inherit pkgs;
+        shell = shellPath;
+      });
       packages = [multiplexer];
     };
   };
@@ -151,7 +154,7 @@ in {
         description = "An attrSet with environment variables.";
         default = {
           EDITOR = "nvim";
-          SHELL = shell;
+          # SHELL = "${getExe shell}";
           TERM = "tmux-256color";
         };
       };

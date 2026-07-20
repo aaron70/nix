@@ -92,7 +92,8 @@ with lib; {
       };
 
       security.polkit.enable = true;
-      environment.systemPackages = [pkgs.polkit_gnome];
+      security.polkit.enablePkexecWrapper = true;
+      # environment.systemPackages = [pkgs.polkit_gnome]; NOTE: Using the built-in noctalia polkit-agent
       services.fprintd.enable = true;
 
       services.logind.settings.Login = {

@@ -6,6 +6,8 @@
       imagessPath = "${self.lib.resourcesPath}/images";
     in
     ''
+config_version = 2
+
 [audio]
 enable_sounds = true
 
@@ -424,6 +426,7 @@ avatar_path = "${imagessPath}/avatar.jpg"
 font_family = "JetBrainsMono Nerd Font Mono"
 launch_apps_as_systemd_services = true
 niri_overview_type_to_launch_enabled = true
+polkit_agent = true
 screen_time_enabled = true
 settings_show_advanced = true
 show_location = false
@@ -434,12 +437,12 @@ telemetry_enabled = true
     compact = true
     session_search = true
 
-    [shell.launcher.dmenu.entry.nixpkgs]
-    command = "echo Nixpkgs"                                                              # no candidates, so typed text falls through
-    exec    = "nixpkgs-search"
-    prefix  = "nix"                                                               # trigger word -> "/nix"
-    glyph   = "package"                                                           # optional Tabler glyph, adjust to whatever exists
-    global  = false
+        [shell.launcher.dmenu.entry.nixpkgs]
+        command = "echo Nixpkgs"
+        exec = "nixpkgs-search"
+        global = false
+        glyph = "package"
+        prefix = "nix"
 
     [shell.panel]
     control_center_placement = "floating"
@@ -519,6 +522,9 @@ transition_on_startup = true
     path = "${wallpapersPath}/wallhaven.jpg"
 
     [wallpaper.monitors.HDMI-A-1]
+    path = "${wallpapersPath}/wallhaven.jpg"
+
+    [wallpaper.monitors.HDMI-A-2]
     path = "${wallpapersPath}/wallhaven.jpg"
 
     [wallpaper.monitors.eDP-1]

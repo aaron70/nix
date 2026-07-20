@@ -73,7 +73,8 @@ in {
           config.configurations.monitors);
       in ''
         // ==================== | Launch apps | ====================
-        spawn-at-startup "polkit-gnome-authentication-agent-1"
+        spawn-at-startup "noctalia"
+        // spawn-at-startup "polkit-gnome-authentication-agent-1" // NOTE: Using the built-in noctalia polkit-agent
         spawn-at-startup "xwayland-satellite"
         spawn-at-startup "${getExe config.configurations.desktopShell}"
 

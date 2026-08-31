@@ -18,6 +18,8 @@ in {
       else program
     else throw "Anvil: ${parentType} '${parentName}' declares a not found program '${name}'. Did you forget to set anvil.programs.${name}?";
 
+  flake.lib.getProgramsList = entity: ctx: if isFunction entity.programs then entity.programs ctx else entity.programs;
+
   flake.lib.getProgramsModules = accumulator: platform: parentType: parent: ctx: programs: let
     acc = accumulator // {programs = accumulator.programs or {};};
   in
@@ -32,17 +34,20 @@ in {
         key = "${name}${if variant == null then "" else "@${variant}"}";
         visited = acc.programs ? "${key}";
         program = self.lib.resolveRefKey refkey (self.lib.getProgram parentType parent.name);
+        localCtx = ctx // {inherit program;};
+        childrenPrograms =  self.lib.getProgramsList program localCtx;
+        childrenFeatures =  self.lib.getFeaturesList program localCtx;
         newAcc =
           if visited
           then acc
-          else recursiveUpdate acc {programs = {"${key}" = (self.lib.withContext (ctx // {inherit program;}) (self.lib.getPropertyOrDefault program platform {}));};};
+          else recursiveUpdate acc {programs = {"${key}" = (self.lib.withContext localCtx (self.lib.getPropertyOrDefault program platform {}));};};
       in
         if visited
         then newAcc
         else
           self.lib.getFeaturesModules
-          (self.lib.getProgramsModules newAcc platform parentType parent ctx program.programs)
-          platform parentType parent ctx program.features
+          (self.lib.getProgramsModules newAcc platform parentType parent ctx childrenPrograms)
+          platform parentType parent ctx childrenFeatures
     )
     acc
     programs;

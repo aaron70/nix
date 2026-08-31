@@ -94,10 +94,12 @@ in {
   flake.lib.getHostModules = platform: host: let
     ctx = {inherit host;};
     entityCtx = {inherit host; user = null;};
+    childrenPrograms =  self.lib.getProgramsList host entityCtx;
+    childrenFeatures =  self.lib.getFeaturesList host entityCtx;
     acc =
       self.lib.getProgramsModules
-      (self.lib.getFeaturesModules {} platform "Host" host entityCtx host.features)
-      platform "Host" host entityCtx host.programs;
+      (self.lib.getFeaturesModules {} platform "Host" host entityCtx childrenFeatures)
+      platform "Host" host entityCtx childrenPrograms;
   in
     [
       (self.lib.withContext ctx (self.lib.getPropertyOrDefault host platform {}))

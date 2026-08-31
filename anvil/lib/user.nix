@@ -20,10 +20,12 @@ in {
 
   flake.lib.getUserModules = platform: host: user: let
     ctx = {inherit host user;};
+    childrenPrograms =  self.lib.getProgramsList user ctx;
+    childrenFeatures =  self.lib.getFeaturesList user ctx;
     acc =
       self.lib.getProgramsModules
-      (self.lib.getFeaturesModules {} platform "User" user ctx user.features)
-      platform "User" user ctx user.programs;
+      (self.lib.getFeaturesModules {} platform "User" user ctx childrenFeatures)
+      platform "User" user ctx childrenPrograms;
   in
     (optional (user.${platform} != null) (self.lib.withContext ctx user.${platform}))
     ++ attrValues acc.features

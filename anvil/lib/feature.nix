@@ -18,6 +18,8 @@ in {
       else feature
     else throw "Anvil: ${parentType} '${parentName}' declares a not found feature '${name}'. Did you forget to set anvil.features.${name}?";
 
+  flake.lib.getFeaturesList = entity: ctx: if isFunction entity.features then entity.features ctx else entity.features;
+
   flake.lib.getFeaturesModules = accumulator: platform: parentType: parent: ctx: features: let
     acc = accumulator // {features = accumulator.features or {};};
   in
@@ -32,17 +34,20 @@ in {
         key = "${name}${if variant == null then "" else "@${variant}"}";
         visited = acc.features ? "${key}";
         feature = self.lib.resolveRefKey refkey (self.lib.getFeature parentType parent.name);
+        localCtx =ctx//{inherit feature;};
+        childrenPrograms = self.lib.getProgramsList feature localCtx;
+        childrenFeatures = self.lib.getFeaturesList feature localCtx;
         newAcc =
           if visited
           then acc
-          else recursiveUpdate acc {features = {"${key}" = (self.lib.withContext (ctx//{inherit feature;}) (self.lib.getPropertyOrDefault feature platform {}));};};
+          else recursiveUpdate acc {features = {"${key}" = (self.lib.withContext localCtx (self.lib.getPropertyOrDefault feature platform {}));};};
       in
         if visited
         then newAcc
         else
           self.lib.getProgramsModules
-          (self.lib.getFeaturesModules newAcc platform parentType parent ctx feature.features)
-          platform parentType parent ctx feature.programs
+          (self.lib.getFeaturesModules newAcc platform parentType parent ctx childrenFeatures)
+          platform parentType parent ctx childrenPrograms
     )
     acc
     features;

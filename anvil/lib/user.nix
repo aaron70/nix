@@ -18,6 +18,8 @@ in {
         else user
     else throw "Anvil: Host '${self.lib.getPropertyOrDefault host "name" "<unknown-host>"}' declares a not found user '${name}'. Did you forget to set anvil.users.${name}?";
 
+  flake.lib.getUsersList = entity: ctx: if isFunction entity.users then entity.users ctx else entity.users;
+
   flake.lib.getUserModules = platform: host: user: let
     ctx = {inherit host user;};
     childrenPrograms =  self.lib.getProgramsList user ctx;

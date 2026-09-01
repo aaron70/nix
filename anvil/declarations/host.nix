@@ -3,12 +3,14 @@
   lib,
   ...
 }:
-with lib; {
+with lib; let 
+  refKeyListType = self.lib.refkeyListType;
+in {
   flake.modules.generic.host = {
     imports = [self.modules.generic.entity];
     options = {
       users = mkOption {
-        type = types.listOf (types.either types.str (types.submodule {imports = [self.modules.generic.refkey];}));
+        type = refKeyListType;
         default = [];
         description = ''
           Users attached to this host. Each attached user's fragments

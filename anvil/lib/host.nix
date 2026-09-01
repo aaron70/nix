@@ -96,6 +96,7 @@ in {
     entityCtx = {inherit host; user = null;};
     childrenPrograms =  self.lib.getProgramsList host entityCtx;
     childrenFeatures =  self.lib.getFeaturesList host entityCtx;
+    childrenUsers = self.lib.getUsersList host entityCtx;
     acc =
       self.lib.getProgramsModules
       (self.lib.getFeaturesModules {} platform "Host" host entityCtx childrenFeatures)
@@ -104,7 +105,7 @@ in {
     [
       (self.lib.withContext ctx (self.lib.getPropertyOrDefault host platform {}))
     ]
-    ++ (self.lib.getUsersModules platform host host.users)
+    ++ (self.lib.getUsersModules platform host childrenUsers)
     ++ attrValues acc.features
     ++ attrValues acc.programs;
 

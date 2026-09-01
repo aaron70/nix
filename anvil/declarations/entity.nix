@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  refKeyListType = types.listOf (types.either types.str (types.submodule {imports = [self.modules.generic.refkey];}));
+  refKeyListType = self.lib.refkeyListType;
 in {
   flake.modules.generic.entity = {
     imports = [self.modules.generic.fragments];

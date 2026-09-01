@@ -1,6 +1,13 @@
-{ lib, ... }:
-with lib;
 {
+  self,
+  lib,
+  ...
+}:
+with lib; let
+  refkeyListType = types.listOf (types.either types.str (types.submodule {imports = [self.modules.generic.refkey];}));
+in {
+  flake.lib.refkeyListType = types.either (types.functionTo refkeyListType) refkeyListType;
+
   flake.modules.generic.refkey = {
     options = {
       ref = mkOption {

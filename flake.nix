@@ -26,6 +26,9 @@
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs:

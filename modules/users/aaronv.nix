@@ -1,16 +1,18 @@
 {...}: {
-  anvil.users.aaronv = rec {
+  anvil.users.aaronv = {
     name = "aaronv";
     description = "Aaron Vargas";
-    programs = [ ];
+    programs = [
+      "editor"
+    ];
     features = [
       "homeManager"
     ];
-    homeDir.nixos = "/home/${name}";
-    homeDir.darwin = "/Users/${name}";
+    homeDir.nixos = "/home/aaronv";
+    homeDir.darwin = "/Users/aaronv";
     nixos = {user, ...}: {
       users.users.${user.name} = {
-        inherit description;
+        description = user.description;
         uid = 1000;
         isNormalUser = true;
         extraGroups = ["networkmanager" "wheel" "audio"];
@@ -27,7 +29,7 @@
     };
     darwin = {user, ...}: {
       users.users.${user.name} = {
-        inherit description;
+        description = user.description;
         # nix-darwin requires a uid; 501 is the macOS first-user uid.
         uid = 501;
         home = user.homeDir.darwin;

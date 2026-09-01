@@ -1,15 +1,15 @@
 {self, ...}: {
-  anvil.hosts.pc = rec {
+  anvil.hosts.pc = {
     systems.nixos = "x86_64-linux";
-    users = [metadata.mainUser];
+    users = { host, ... }: [host.metadata.mainUser];
     features = [
       "configurations"
     ];
     programs = [];
-    metadata = {
+    metadata = rec {
       mainUser = "aaronv";
       configurationLimit = 3;
-      nixPath = "/home/${metadata.mainUser}/nix";
+      nixPath = "/home/${mainUser}/nix";
     };
     nixos = {...}: {
       imports = [ self.nixosModules."pc-hardware" ];

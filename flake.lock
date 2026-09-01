@@ -408,11 +408,11 @@
         "wrappers": "wrappers"
       },
       "locked": {
-        "lastModified": 1783809924,
-        "narHash": "sha256-uNbFHQ3Ce9zPBWCMnRZfDedbWEXHdKXE4tLTH9qXHLw=",
+        "lastModified": 1788222738,
+        "narHash": "sha256-lp0gbNAfKSU1da7YCAYFA/jN8gnUgf536Aijkzo3Slg=",
         "owner": "aaron70",
         "repo": "nvim",
-        "rev": "4d92dbb328cbfe94091cff36e57ba0ed0c4e45d0",
+        "rev": "b34108524c41693870ea1c05e987f6dce8ed4173",
         "type": "github"
       },
       "original": {

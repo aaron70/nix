@@ -4,9 +4,11 @@
     description = "Aaron Vargas";
     programs = [
       "editor"
+      "shell"
     ];
     features = [
       "homeManager"
+      "personal-secrets"
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";

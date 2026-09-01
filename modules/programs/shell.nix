@@ -16,7 +16,7 @@ with lib; let
           inherit pkgs;
           metadata = shell.editor.config;
         };
-        tmux = programs.tmux.getPackage {inherit pkgs;};
+        # tmux = programs.tmux.getPackage {inherit pkgs;};
       in rec {
         prompt.name = "oh-my-posh";
         prompt.getPackage = programs.${prompt.name}.getPackage;
@@ -52,7 +52,7 @@ with lib; let
           nh
           ripgrep
           sesh
-          tmux
+          # tmux
           unixtools.watch
           zoxide
           (

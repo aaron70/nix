@@ -5,6 +5,7 @@
     programs = [
       "editor"
       "shell"
+      "desktop"
     ];
     features = [
       "homeManager"

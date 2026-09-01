@@ -105,8 +105,8 @@ with lib; {
           options = "compose:ralt";
         };
         environment.variables = {
-          GTK_IM_MODULE = "xim";
-          QT_IM_MODULE = "xim";
+          # GTK_IM_MODULE = "xim";
+          # QT_IM_MODULE = "xim";
         };
 
         security.polkit.enable = true;

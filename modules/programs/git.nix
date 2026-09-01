@@ -25,7 +25,11 @@ with lib; {
     }: let
       package = program.getPackage {inherit pkgs config;};
     in {
-      environment.systemPackages = [package];
+      environment.systemPackages = with pkgs; [
+        package
+        lazygit
+        gh
+      ];
 
       sops.templates."gitconfig-personal" = {
         content = ''

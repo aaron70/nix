@@ -6,6 +6,12 @@
 with lib; {
   anvil.programs.tmux = {
     getPackage = self.wrappers.tmux.wrap;
+    metadata = {
+      scriptsPkgs = [
+        (writeShellScriptBin "sessions" (self.dotfiles.tmux.scripts.sessions {}))
+        (writeShellScriptBin "toogle-tmux-popup" (self.dotfiles.tmux.scripts.toogle-tmux-popup {}))
+      ];
+    };
   };
   flake.wrappers.tmux = {
     wlib,

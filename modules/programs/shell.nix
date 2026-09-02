@@ -85,6 +85,22 @@ with lib; let
         };
       };
   };
+
+  commonModule = {
+    host,
+    program,
+    user,
+    pkgs,
+    config,
+    ...
+  }: {
+    fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
+    users.users = mkIfUser user {
+      ${user.name} = {
+        shell = with program; getPackage {inherit pkgs metadata config host;};
+      };
+    };
+  };
 in {
   anvil.programs.shell = {
     metadata = defaultConfiguration;
@@ -92,11 +108,29 @@ in {
       pkgs,
       config,
       metadata,
+      host,
       ...
     }:
       global.config.anvil.programs.${metadata.shell.name}.getPackage {
         inherit pkgs;
-        configuration = metadata.shell.config {inherit pkgs config;};
+        configuration =
+          (metadata.shell.config {inherit pkgs config;})
+          // {
+            envVariables = {
+              NH_FLAKE = host.metadata.nixPath;
+            };
+
+            shellAliases = let
+              nixFlakePath = host.metadata.nixPath;
+            in {
+              ntest = "nh os test ${nixFlakePath} -H ${host.name}";
+              nboot = "nh os boot ${nixFlakePath} -H ${host.name}";
+              nswitch = "nh os switch ${nixFlakePath} -H ${host.name}";
+              nbuild-vm = "nh os build-vm ${nixFlakePath} -H ${host.name}";
+              nclean = "nh clean all --optimise -k ${toString host.metadata.configurationLimit}";
+              nshell = "nix-shell --command ${metadata.shell.name} -p";
+            };
+          };
       };
     programs = {program, ...}: ([
         "git"
@@ -113,50 +147,8 @@ in {
         ]
         else []
       ));
-    nixos = {
-      host,
-      program,
-      user,
-      pkgs,
-      config,
-      ...
-    }: {
-      environment.variables = {
-        NH_FLAKE = host.metadata.nixPath;
-      };
-
-      fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
-      environment.shellAliases = let
-        nixFlakePath = host.metadata.nixPath;
-      in {
-        ntest = "nh os test ${nixFlakePath} -H ${host.name}";
-        nswitch = "nh os switch ${nixFlakePath} -H ${host.name}";
-        nbuild-vm = "nh os build-vm ${nixFlakePath} -H ${host.name}";
-        nclean = "nh clean all --optimise -k ${toString host.metadata.configurationLimit}";
-      };
-
-      users.users = mkIfUser user {
-        ${user.name} = {
-          shell = with program; getPackage {inherit pkgs metadata config;};
-        };
-      };
-    };
-    darwin = {
-      user,
-      pkgs,
-      config,
-      ...
-    }: {
-      environment.variables = {
-        NH_FLAKE = host.metadata.nixPath;
-      };
-      fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
-      users.users = mkIfUser user {
-        ${user.name} = {
-          shell = with program; getPackage {inherit pkgs metadata config;};
-        };
-      };
-    };
+    nixos = commonModule;
+    darwin = commonModule;
   };
 
   flake.wrappers.shell = {...}:

@@ -1,29 +1,7 @@
-- [x] Gargabe Collection service
-    - [x] Run nh clean periodically
-    - [x] Works for Nixos, Darwin and HomeManager
-- [x] Cursor Theme (Seems like it needs HomeManager, I don't know if its worth it)
-- [x] Darwing Configurations
-- [x] HomeManager Configurations
-- [x] HomeManager Modules
-- [x] Development Feature
-    - [x] Programming languages: Go, Java, Javascript, Rust and Python
-    - [x] Docker
-- [x] Feature Gaming
-    - [x] Games and launchers
-    - [x] Discord
-    - [x] Jovian for GPD
-- [x] Fix the color on oh-my-posh prompt when there is a pending pull or push on a repository
-- [x] Remove the notification about Noctalia plugins
-- [x] Fix the nswitch, ntest, nbuid-vm, nclean and nshell
-- [x] Rewrite Neovim configurations with wrapper?
-- [/] Install atuin
-- [x] Apply the quality of life improvements from [here](https://nixos.wiki/wiki/Jovian_NixOS)
-- [x] Avoid mouse hanging out after a few seconds 
-- [/] Fix nix packages, can't be executed with `nix run` because of the crypted profiles 
-- [x] gx doesn't work for file references, only https links (Neovim)
-- [x] Add an emoji picker (Noctalia already has a emoji picker, open the launcher and write /emo)
-- [x] Add another keyboard lang ES
-- [x] Nixos search packages
-- [/] Maybe create a MS Teams desktop entry for the web app? ()
-- [x] Open clipboard history with mod+v
-- [/] Try [Noctalia-greeter](https://github.com/noctalia-dev/noctalia-greeter)
+ - [ ] Make nvim able to search hidden files like .sops.yaml   
+ - [x] Add the theme to the Kitty
+ - [ ] Design a way to add themes to the configurations and share the same theme
+ - [ ] Implement a new field `extraModules.nixos`, `extraModules.darwin`, `extraModules.home` to the anvil entities. Those modules would be imported.
+ - [ ] Create a module `installPackages user pkgs` that recives a user and a list of packages and install the packages as user packages or globally if the user is null.
+ - [x] Create the shell alias `nshell`, `nswitch`, `ntest`, `nboot`, `nclean`
+ - [ ] Add `lg` alias for lazygit

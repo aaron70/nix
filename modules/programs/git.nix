@@ -31,17 +31,18 @@ with lib; {
         gh
       ];
 
-      sops.templates."gitconfig-personal" = {
+      sops.templates."gitconfig-personal" = mkIf (user != null) {
         content = ''
           [user]
-              email = ${config.sops.placeholder."email"}
+              name = ${user.name}
+              email = ${user.metadata.email}
         '';
-        owner = mkIf (user != null) user.name; # so your user can actually read the rendered file
+        owner = user.name; # so your user can actually read the rendered file
       };
     };
   };
 
-  flake.wrappers.git = {wlib, ...}: {
+  flake.wrappers.git = {wlib, pkgs, ...}: {
     imports = [
       wlib.wrapperModules.git
     ];
@@ -52,6 +53,9 @@ with lib; {
       core = {
         autocrlf = false;
       };
+
+      credential."https://github.com".helper = [ "" "!${pkgs.gh}/bin/gh auth git-credential" ];
+      credential."https://gist.github.com".helper = [ "" "!${pkgs.gh}/bin/gh auth git-credential" ];
 
       pull.rebase = true;
       push.autoSetupRemote = true;

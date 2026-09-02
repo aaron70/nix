@@ -3,26 +3,33 @@
   lib,
   config,
   ...
-}:
+} @ global:
 with lib; let
   mkIfUser = user: mkIf (user != null);
   defaultConfiguration = with config.anvil; rec {
     shell.name = "zsh";
     shell.editor.config = programs.editor.metadata;
-    shell.config = {pkgs, ...}:
+    shell.prompt.name = "oh-my-posh";
+    shell.multiplexer.name = "tmux";
+    shell.config = {
+      pkgs,
+      config,
+      ...
+    }:
       with pkgs; let
         atuin = programs.atuin.getPackage {inherit pkgs;};
         editor = programs.editor.getPackage {
           inherit pkgs;
           metadata = shell.editor.config;
         };
+        git = programs.git.getPackage {inherit pkgs config;};
         # tmux = programs.tmux.getPackage {inherit pkgs;};
       in rec {
-        prompt.name = "oh-my-posh";
+        prompt.name = shell.prompt.name;
         prompt.getPackage = programs.${prompt.name}.getPackage;
         prompt.activationScript = self.dotfiles.oh-my-posh.activationScript.zsh {inherit prompt pkgs;};
 
-        multiplexer.name = "tmux";
+        multiplexer.name = shell.multiplexer.name;
         multiplexer.getPackage = programs.${multiplexer.name}.getPackage;
         multiplexer.activationScript = self.dotfiles.tmux.activationScript.default {inherit multiplexer pkgs;};
 
@@ -30,10 +37,13 @@ with lib; let
           "command -v fzf &>/dev/null && _anvil_cache_source fzf ${fzf}/bin/fzf --zsh"
           "command -v zoxide &>/dev/null && _anvil_cache_source zoxide ${zoxide}/bin/zoxide init zsh --cmd cd"
           "command -v direnv &>/dev/null && _anvil_cache_source direnv ${direnv}/bin/direnv hook zsh"
+          # "eval \"$(${atuin}/bin/atuin init zsh --disable-up-arrow)\""
           "command -v atuin &>/dev/null && _anvil_cache_source atuin ${atuin}/bin/atuin init zsh"
         ];
 
         packages = [
+          (multiplexer.getPackage {inherit pkgs;})
+          (prompt.getPackage {inherit pkgs;})
           # Dependencies
           atuin
           bat
@@ -60,6 +70,11 @@ with lib; let
             then editor
             else null
           )
+          (
+            if pkgs.stdenv.hostPlatform.isLinux
+            then wl-clipboard
+            else null
+          )
         ];
 
         envVariables = {
@@ -75,15 +90,18 @@ in {
     metadata = defaultConfiguration;
     getPackage = {
       pkgs,
+      config,
       metadata,
       ...
     }:
-      config.anvil.programs.${metadata.shell.name}.getPackage {
+      global.config.anvil.programs.${metadata.shell.name}.getPackage {
         inherit pkgs;
-        configuration = metadata.shell.config {inherit pkgs;};
+        configuration = metadata.shell.config {inherit pkgs config;};
       };
     programs = {program, ...}: ([
         "git"
+        program.metadata.shell.multiplexer.name
+        program.metadata.shell.prompt.name
       ]
       ++ (
         if program.metadata.shell.editor.config.isTerminalBased
@@ -100,6 +118,7 @@ in {
       program,
       user,
       pkgs,
+      config,
       ...
     }: {
       environment.variables = {
@@ -118,13 +137,14 @@ in {
 
       users.users = mkIfUser user {
         ${user.name} = {
-          shell = with program; getPackage {inherit pkgs metadata;};
+          shell = with program; getPackage {inherit pkgs metadata config;};
         };
       };
     };
     darwin = {
       user,
       pkgs,
+      config,
       ...
     }: {
       environment.variables = {
@@ -133,7 +153,7 @@ in {
       fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
       users.users = mkIfUser user {
         ${user.name} = {
-          shell = with program; getPackage {inherit pkgs metadata;};
+          shell = with program; getPackage {inherit pkgs metadata config;};
         };
       };
     };

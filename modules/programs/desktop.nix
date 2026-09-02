@@ -10,10 +10,10 @@ with lib; let
     desktop.name = "gnome";
   };
 in {
-  anvil.programs.desktop = with defaultConfiguration; {
+  anvil.programs.desktop = {
     metadata = defaultConfiguration;
-    programs = [
-      desktop.name
+    programs = { program, ... }: [
+      program.metadata.desktop.name
     ];
     getPackage = {
       pkgs,

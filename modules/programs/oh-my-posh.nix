@@ -13,6 +13,19 @@ with lib; {
       if tty
       then self.wrappers.oh-my-posh-tty.wrap {inherit pkgs;}
       else self.wrappers.oh-my-posh.wrap {inherit pkgs;};
+    nixos = {
+      user,
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
+    in {
+      environment.systemPackages = mkIf (user == null) [package];
+      users.users = mkIf (user != null) {
+        "${user.name}".packages = [package];
+      };
+    };
   };
 
   flake.wrappers.oh-my-posh = {

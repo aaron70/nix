@@ -6,11 +6,22 @@
 with lib; {
   anvil.programs.tmux = {
     getPackage = self.wrappers.tmux.wrap;
-    metadata = {
+    nixos = {
+      user,
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
       scriptsPkgs = [
-        (writeShellScriptBin "sessions" (self.dotfiles.tmux.scripts.sessions {}))
-        (writeShellScriptBin "toogle-tmux-popup" (self.dotfiles.tmux.scripts.toogle-tmux-popup {}))
+        (pkgs.writeShellScriptBin "sessions" (self.dotfiles.tmux.scripts.sessions {}))
+        (pkgs.writeShellScriptBin "toggle-tmux-popup" (self.dotfiles.tmux.scripts.toggle-tmux-popup {}))
       ];
+    in {
+      environment.systemPackages = mkIf (user == null) ([package] ++ scriptsPkgs);
+      users.users = mkIf (user != null) {
+        "${user.name}".packages = [package] ++ scriptsPkgs;
+      };
     };
   };
   flake.wrappers.tmux = {

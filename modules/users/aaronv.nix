@@ -2,9 +2,12 @@
   anvil.users.aaronv = {
     name = "aaronv";
     description = "Aaron Vargas";
+    metadata = {
+      email = "41397746+aaron70@users.noreply.github.com";
+    };
     programs = [
       "editor"
-      "shell"
+      "terminal"
       "desktop"
     ];
     features = [

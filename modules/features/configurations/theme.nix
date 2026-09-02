@@ -4,7 +4,7 @@ with lib; {
     home = {pkgs, ...}: let
       cursor_theme_name = "BreezeX-RosePine-Linux";
     in {
-      config.home = mkIf pkgs.stdenv.isLinux {
+      config.home = mkIf pkgs.stdenv.hostPlatform.isLinux {
         packages = with pkgs; [rose-pine-cursor];
         sessionVariables = {
           XCURSOR_THEME = cursor_theme_name;

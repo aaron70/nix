@@ -16,7 +16,7 @@
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";
-    nixos = {user, ...}: {
+    nixos = {user, config, ...}: {
       users.users.${user.name} = {
         description = user.description;
         uid = 1000;
@@ -24,6 +24,7 @@
         extraGroups = ["networkmanager" "wheel" "audio"];
         group = user.name;
         home = user.homeDir.nixos;
+        hashedPasswordFile = config.sops.secrets."password".path;
       };
       users.groups.${user.name} = {};
 

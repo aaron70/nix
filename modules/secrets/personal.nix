@@ -10,7 +10,7 @@ with lib;
         defaultSopsFile = ./personal.yaml;
         secrets = {
           "email" = { owner = mkIfUser user user.name; };
-          # "borg_repo_passphrase" = {owner = "aaron";};
+          "password" = { owner = mkIfUser user user.name; };
         };
       };
     };

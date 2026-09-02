@@ -1,18 +1,10 @@
 keys:
-  - &personal_admin  age1svvwaztter6gcj9zc88n4ce5mme4a4e25h473y7ajexeke6yhqkqxfwa9l
-  - &work_admin      age1xghl5r8vcet9tnme6a9nk7366mtn0jmcqwuh04yzhdnucd7df4wqehjegr
-  - &laptop          age1sjlg4s9jq2qlevlkhylguul7ztxr6cassnj7xle7patzlgmy5syqan5vpz
-  - &vm              age17zklkhc0ug9y9qutu30s3t8d93eeqx2vjuug0tnfgcc0ka3dz5kq2m3w6g
+  - &personal_admin  age13vyme78jmvjv499t7dzl2ju4epy90792nje0mvyh6ar93zae75kqyzsr2j
+  - &pc age146xlkyvdxgjqjt3fnawtvqgzuk0fwgjsj9gf3c0z3q5n02r49vgsz3nk4s
 
 creation_rules:
   - path_regex: secrets/personal\.yaml$
     key_groups:
       - age:
           - *personal_admin
-          - *laptop
-          - *vm
-
-  - path_regex: secrets/work\.yaml$
-    key_groups:
-      - age:
-          - *work_admin
+          - *pc

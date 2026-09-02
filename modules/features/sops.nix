@@ -1,8 +1,11 @@
 {inputs, ...}: {
   anvil.features.sops = let
-    commonModule = {pkgs, ...}: {
+    commonModule = {pkgs, ...}: let
+      ageKeyPath = "/var/lib/sops-nix/key.txt";
+    in {
+      environment.variables.SOPS_AGE_KEY_FILE = ageKeyPath;
       environment.systemPackages = with pkgs; [age sops];
-      sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+      sops.age.keyFile = ageKeyPath;
       sops.age.generateKey = true;
     };
   in {

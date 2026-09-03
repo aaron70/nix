@@ -1,4 +1,8 @@
-{config, lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   defaultConfiguration = {
     editor = "nvim";
     isTerminalBased = true;
@@ -8,7 +12,8 @@
     pkgs,
     ...
   }:
-    with program; with lib; let
+    with program;
+    with lib; let
       package = getPackage {inherit pkgs metadata;};
     in {
       environment.variables = {

@@ -1,4 +1,5 @@
-{...}: {
+{lib, ...}:
+with lib; {
   anvil.users.aaronv = {
     name = "aaronv";
     description = "Aaron Vargas";
@@ -16,7 +17,11 @@
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";
-    nixos = {user, config, ...}: {
+    nixos = {
+      user,
+      config,
+      ...
+    }: {
       users.users.${user.name} = {
         description = user.description;
         uid = 1000;
@@ -30,6 +35,7 @@
 
       virtualisation.vmVariant = {
         users.users.${user.name} = {
+          hashedPasswordFile = mkForce null;
           initialPassword = "anvil";
         };
       };

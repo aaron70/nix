@@ -1,8 +1,6 @@
 {lib, ...}:
 with lib; {
-  flake.dotfiles.tmux.activationScript.zsh = {
-    ...
-  }: ''
+  flake.dotfiles.tmux.activationScript.zsh = {...}: ''
     if [[ "$TMUX" == "" ]]; then
       if [[ "$(tmux ls 2>/dev/null)" == "" ]]; then
         tmux new -s kyoten

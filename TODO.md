@@ -4,4 +4,4 @@
  - [ ] Implement a new field `extraModules.nixos`, `extraModules.darwin`, `extraModules.home` to the anvil entities. Those modules would be imported.
  - [ ] Create a module `installPackages user pkgs` that recives a user and a list of packages and install the packages as user packages or globally if the user is null.
  - [x] Create the shell alias `nshell`, `nswitch`, `ntest`, `nboot`, `nclean`
- - [ ] Add `lg` alias for lazygit
+ - [x] Add `lg` alias for lazygit

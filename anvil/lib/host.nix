@@ -93,14 +93,20 @@ in {
 
   flake.lib.getHostModules = platform: host: let
     ctx = {inherit host;};
-    entityCtx = {inherit host; user = null;};
-    childrenPrograms =  self.lib.getProgramsList host entityCtx;
-    childrenFeatures =  self.lib.getFeaturesList host entityCtx;
+    entityCtx = {
+      inherit host;
+      user = null;
+    };
+    childrenPrograms = self.lib.getProgramsList host entityCtx;
+    childrenFeatures = self.lib.getFeaturesList host entityCtx;
     childrenUsers = self.lib.getUsersList host entityCtx;
     acc =
       self.lib.getProgramsModules
       (self.lib.getFeaturesModules {} platform "Host" host entityCtx childrenFeatures)
-      platform "Host" host entityCtx childrenPrograms;
+      platform "Host"
+      host
+      entityCtx
+      childrenPrograms;
   in
     [
       (self.lib.withContext ctx (self.lib.getPropertyOrDefault host platform {}))
@@ -128,12 +134,11 @@ in {
       modules =
         [
           ({config, ...}: {
-            system.stateVersion =
-              mkDefault (
-                if host.darwinStateVersion == null
-                then config.system.maxStateVersion
-                else host.darwinStateVersion
-              );
+            system.stateVersion = mkDefault (
+              if host.darwinStateVersion == null
+              then config.system.maxStateVersion
+              else host.darwinStateVersion
+            );
           })
         ]
         ++ self.lib.getHostModules "darwin" host;

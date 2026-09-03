@@ -5,10 +5,7 @@
 }:
 with lib; {
   anvil.programs.gnome = {
-    getPackage = {
-      pkgs,
-      ...
-    }:
+    getPackage = {pkgs, ...}:
       pkgs.gnome-shell;
 
     nixos = {
@@ -26,8 +23,12 @@ with lib; {
     };
   };
 
-  flake.wrappers.gnome = { wlib, pkgs, ... }: {
-    imports = [ wlib.modules.default ];
+  flake.wrappers.gnome = {
+    wlib,
+    pkgs,
+    ...
+  }: {
+    imports = [wlib.modules.default];
     config.package = pkgs.gnome-shell;
   };
 }

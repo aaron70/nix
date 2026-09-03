@@ -18,7 +18,7 @@ with lib; let
     pkgs,
     config,
     ...
-  }@args: {
+  } @ args: {
     fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
     users.users = mkIf (user != null) {
       ${user.name} = {

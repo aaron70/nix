@@ -1,13 +1,12 @@
-{ lib, ... }:
+{lib, ...}:
 with lib; {
-  flake.dotfiles.zsh.default =
-    {
-      pkgs,
-      activationScripts ? [],
-      prompt,
-      multiplexer,
-      ...
-    }:
+  flake.dotfiles.zsh.default = {
+    pkgs,
+    activationScripts ? [],
+    prompt,
+    multiplexer,
+    ...
+  }:
     with pkgs; ''
       # Profiling: ZSH_PROFILE_STARTUP=1 zsh -i -c exit
       [[ -n ''${ZSH_PROFILE_STARTUP:-} ]] && zmodload zsh/zprof

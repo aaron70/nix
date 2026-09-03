@@ -1,8 +1,7 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   options.flake.declarations = lib.mkOption {
     type = lib.types.lazyAttrsOf lib.types.raw;
-    default = { };
+    default = {};
     description = "Anvil's declarations";
   };
 }

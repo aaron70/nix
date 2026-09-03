@@ -42,7 +42,11 @@ with lib; {
     };
   };
 
-  flake.wrappers.git = {wlib, pkgs, ...}: {
+  flake.wrappers.git = {
+    wlib,
+    pkgs,
+    ...
+  }: {
     imports = [
       wlib.wrapperModules.git
     ];
@@ -54,8 +58,8 @@ with lib; {
         autocrlf = false;
       };
 
-      credential."https://github.com".helper = [ "" "!${pkgs.gh}/bin/gh auth git-credential" ];
-      credential."https://gist.github.com".helper = [ "" "!${pkgs.gh}/bin/gh auth git-credential" ];
+      credential."https://github.com".helper = ["" "!${pkgs.gh}/bin/gh auth git-credential"];
+      credential."https://gist.github.com".helper = ["" "!${pkgs.gh}/bin/gh auth git-credential"];
 
       pull.rebase = true;
       push.autoSetupRemote = true;

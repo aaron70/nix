@@ -1,7 +1,11 @@
-{ self, config, lib, ... }@global: 
-with lib;
 {
-  flake.dotfiles.shell.getConfiguration = { defaultConfiguration }: ({
+  self,
+  config,
+  lib,
+  ...
+} @ global:
+with lib; {
+  flake.dotfiles.shell.getConfiguration = {defaultConfiguration}: ({
     pkgs,
     config,
     ...
@@ -11,7 +15,10 @@ with lib;
         metadata = {
           wrappers = {
             atuin = self.wrappers.atuin.wrap {inherit pkgs;};
-            editor = self.wrappers.editor.wrap {inherit pkgs; metadata.editor = global.config.anvil.programs.editor.metadata.editor;};
+            editor = self.wrappers.editor.wrap {
+              inherit pkgs;
+              metadata.editor = global.config.anvil.programs.editor.metadata.editor;
+            };
             git = self.wrappers.git.wrap {inherit pkgs;};
           };
         };

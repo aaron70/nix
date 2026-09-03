@@ -13,7 +13,10 @@ with lib; {
           "${pkgs.sudo}/bin/sudo -u ${user} "
           + "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(${pkgs.coreutils}/bin/id -u ${user})/bus "
           + "${pkgs.libnotify}/bin/notify-send ${lib.escapeShellArg msg}";
-        username = if user == null then host.metadata.mainUser else user.name;
+        username =
+          if user == null
+          then host.metadata.mainUser
+          else user.name;
       in {
         systemd.services.gc-periodic = {
           enable = true;

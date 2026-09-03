@@ -1,6 +1,5 @@
-{ lib, ... }:
-with lib;
-{
+{lib, ...}:
+with lib; {
   flake.declarations.shell = {...}: {
     options = {
       metadata = mkOption {

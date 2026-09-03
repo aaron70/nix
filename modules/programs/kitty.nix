@@ -24,7 +24,11 @@ in {
     darwin = commonModule;
   };
 
-  flake.wrappers.kitty = {wlib, pkgs, ...}: {
+  flake.wrappers.kitty = {
+    wlib,
+    pkgs,
+    ...
+  }: {
     imports = [
       wlib.wrapperModules.kitty
     ];

@@ -14,7 +14,11 @@ with lib; {
       osIcon = true;
     };
 
-  flake.dotfiles.oh-my-posh.activationScript.zsh = { pkgs, prompt, ...}: ''
+  flake.dotfiles.oh-my-posh.activationScript.zsh = {
+    pkgs,
+    prompt,
+    ...
+  }: ''
     function detect_terminal() {
       if [ -n "$TMUX" ]; then
         tty_path=$(tmux display-message -p '#{client_tty}' 2>/dev/null)

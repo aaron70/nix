@@ -3,7 +3,7 @@
   lib,
   ...
 }:
-with lib; let 
+with lib; let
   refKeyListType = self.lib.refkeyListType;
 in {
   flake.modules.generic.host = {

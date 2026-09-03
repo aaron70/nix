@@ -12,7 +12,7 @@ with lib; let
 in {
   anvil.programs.desktop = {
     metadata = defaultConfiguration;
-    programs = { program, ... }: [
+    programs = {program, ...}: [
       program.metadata.desktop.name
     ];
     getPackage = {
@@ -24,12 +24,12 @@ in {
         inherit pkgs;
         configuration = metadata.desktop.config {inherit pkgs;};
       };
-    nixos = {pkgs,...}: {
+    nixos = {pkgs, ...}: {
       environment.systemPackages = [
         (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
       ];
     };
-    darwin = {pkgs,...}: {
+    darwin = {pkgs, ...}: {
       environment.systemPackages = [
         (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
       ];

@@ -1,4 +1,8 @@
-{self, lib, ...}:
+{
+  self,
+  lib,
+  ...
+}:
 with lib; {
   flake.lib.withContext = ctx: mod: let
     unwrapPath = m:
@@ -40,40 +44,42 @@ with lib; {
   in
     if entity ? variants && entity.variants ? "${variant}"
     then let
-        v = entity.variants.${variant};
-      in
-        if (v.name or null) == null
-        then v // {name = variant;}
-        else v
+      v = entity.variants.${variant};
+    in
+      if (v.name or null) == null
+      then v // {name = variant;}
+      else v
     else throw "Anvil: Entity '${unnamed}' doesn't have variant '${variant}'.";
 
   flake.lib.resolveRefKey = refkey: resolver: let
-    name = if isString refkey 
-      then refkey 
+    name =
+      if isString refkey
+      then refkey
       else (self.lib.getPropertyOrDefault refkey "ref" null);
     entity = resolver name;
     fragments = ["nixos" "darwin" "home"];
-  in if isString refkey
+  in
+    if isString refkey
     then entity
     else let
-        variant = self.lib.getPropertyOrDefault refkey "variant" null;
-        merge = self.lib.getPropertyOrDefault refkey "merge" {};
-        override = self.lib.getPropertyOrDefault refkey "override" {};
-        base = entity // override;
-        mergeFragments = filterAttrs (k: _: elem k fragments) merge;
-        mergeScalars = removeAttrs merge fragments;
-        composeFragment = key: fragment: let
-            baseFragment = base.${key} or null;
-          in
-            if baseFragment == null
-            then fragment
-            else if fragment == null
-            then baseFragment
-            else [baseFragment fragment];
-        mergedFragments = mapAttrs composeFragment mergeFragments;
-        mergedEntity = (recursiveUpdate base mergeScalars) // mergedFragments;
-      in if variant != null  && mergedEntity ? variants
-        then self.lib.getVariant mergedEntity variant
-        else mergedEntity;
-
+      variant = self.lib.getPropertyOrDefault refkey "variant" null;
+      merge = self.lib.getPropertyOrDefault refkey "merge" {};
+      override = self.lib.getPropertyOrDefault refkey "override" {};
+      base = entity // override;
+      mergeFragments = filterAttrs (k: _: elem k fragments) merge;
+      mergeScalars = removeAttrs merge fragments;
+      composeFragment = key: fragment: let
+        baseFragment = base.${key} or null;
+      in
+        if baseFragment == null
+        then fragment
+        else if fragment == null
+        then baseFragment
+        else [baseFragment fragment];
+      mergedFragments = mapAttrs composeFragment mergeFragments;
+      mergedEntity = (recursiveUpdate base mergeScalars) // mergedFragments;
+    in
+      if variant != null && mergedEntity ? variants
+      then self.lib.getVariant mergedEntity variant
+      else mergedEntity;
 }

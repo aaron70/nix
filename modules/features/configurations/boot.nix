@@ -28,13 +28,15 @@ with lib; {
           #   kernelPackages = pkgs.linuxPackages_latest;
           kernelPackages = pkgs.linuxPackages_latest.extend (final: prev: {
             ddcci-driver = prev.ddcci-driver.overrideAttrs (oldAttrs: {
-              patches = [
-                (pkgs.fetchpatch {
-                  name = "ddcci-sysfs-emit-kernel-7.2.patch";
-                  url = "https://gitlab.com/liquidnya/ddcci-driver-linux/-/commit/9510aa4aebf32678884f55ae251e54012a354ed1.patch";
-                  hash = "sha256-s12ers7nPFaHOB+8/S8t3dtdoR6slukkfNPdghgftNs=";
-                })
-              ] ++ (oldAttrs.patches or []);
+              patches =
+                [
+                  (pkgs.fetchpatch {
+                    name = "ddcci-sysfs-emit-kernel-7.2.patch";
+                    url = "https://gitlab.com/liquidnya/ddcci-driver-linux/-/commit/9510aa4aebf32678884f55ae251e54012a354ed1.patch";
+                    hash = "sha256-s12ers7nPFaHOB+8/S8t3dtdoR6slukkfNPdghgftNs=";
+                  })
+                ]
+                ++ (oldAttrs.patches or []);
             });
           });
           extraModulePackages = with config.boot.kernelPackages; [ddcci-driver];

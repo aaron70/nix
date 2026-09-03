@@ -8,8 +8,12 @@ with lib; {
       "powersave"
       "theme"
     ];
-    darwin = {host, config, ...}: {
-      imports = [ inputs.mac-app-util.darwinModules.default ];
+    darwin = {
+      host,
+      config,
+      ...
+    }: {
+      imports = [inputs.mac-app-util.darwinModules.default];
 
       config = {
         nix.settings.experimental-features = "nix-command flakes";

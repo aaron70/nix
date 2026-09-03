@@ -28,7 +28,10 @@ in {
         "style": "plain",
         "background": "transparent",
         "foreground": "${colors.base0D}",
-        "template": "${ if pathStyle == "folder" then " {{ .Path }} " else "{{ .Path }} "
+        "template": "${
+        if pathStyle == "folder"
+        then " {{ .Path }} "
+        else "{{ .Path }} "
       }",
         "options": {
           "style": "${pathStyle}"

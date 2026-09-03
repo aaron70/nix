@@ -1,7 +1,7 @@
 {self, ...}: {
   anvil.hosts.laptop = {
     systems.nixos = "x86_64-linux";
-    users = { host, ... }: [host.metadata.mainUser];
+    users = {host, ...}: [host.metadata.mainUser];
     features = [
       "configurations"
     ];
@@ -12,7 +12,7 @@
       nixPath = "/home/${mainUser}/nix";
     };
     nixos = {...}: {
-      imports = [ self.nixosModules."laptop-hardware" ];
+      imports = [self.nixosModules."laptop-hardware"];
     };
   };
 

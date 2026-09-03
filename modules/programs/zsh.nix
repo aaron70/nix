@@ -17,12 +17,13 @@ with lib; let
   };
 in {
   anvil.programs.zsh = {
-    getPackage = {
-      pkgs,
-      configuration,
-      ...
-    }:
-      self.wrappers.zsh.wrap ({inherit pkgs;} // configuration);
+    getPackage = self.wrappers.zsh.wrap;
+    # getPackage = {
+    #   pkgs,
+    #   configuration,
+    #   ...
+    # }:
+    #   self.wrappers.zsh.wrap ({inherit pkgs;} // configuration);
     nixos = commonModule;
     darwin = commonModule;
   };
@@ -39,8 +40,8 @@ in {
     ];
 
     config = with pkgs; {
-      env = {} // config.envVariables;
-      zshAliases = {} // config.shellAliases;
+      env = config.envVariables;
+      zshAliases = config.shellAliases;
       runtimePkgs =
         [
           zsh-defer

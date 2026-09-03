@@ -3,6 +3,12 @@ with lib;
 {
   flake.declarations.shell = {...}: {
     options = {
+      metadata = mkOption {
+        type = types.attrsOf types.raw;
+        description = "A free-form attrs with data for the configuration";
+        default = {};
+      };
+
       activationScripts = mkOption {
         type = types.listOf types.str;
         description = "A list of activations scripts to source on the shell configuration startup";

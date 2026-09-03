@@ -1,8 +1,6 @@
 {lib, ...}:
 with lib; {
-  flake.dotfiles.tmux.activationScript.default = {
-    pkgs,
-    multiplexer,
+  flake.dotfiles.tmux.activationScript.zsh = {
     ...
   }: ''
     if [[ "$TMUX" == "" ]]; then

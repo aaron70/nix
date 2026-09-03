@@ -16,7 +16,7 @@ with lib; {
       # (_anvil_cache_source and .zcompdump). Without it those qualifiers are read
       # as literal text and every check silently degenerates to always-true,
       # regenerating caches on every startup.
-      setopt extended_glob
+      # setopt extended_glob
 
       # XDG cache helpers — cache eval outputs to avoid forking every startup
       : ''${XDG_CACHE_HOME:=$HOME/.cache}

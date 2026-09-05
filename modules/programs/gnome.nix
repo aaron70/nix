@@ -28,7 +28,10 @@ with lib; {
     pkgs,
     ...
   }: {
-    imports = [wlib.modules.default];
+    imports = [
+      wlib.modules.default
+      self.declarations.desktop
+    ];
     config.package = pkgs.gnome-shell;
   };
 }

@@ -100,8 +100,6 @@ with lib; {
       services.gnome.gnome-keyring.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
 
-
-
       services.logind.settings.Login = {
         HandleLidSwitch = "suspend"; # Lid Closed
         HandleLidSwitchExternalPower = "suspend"; # Lid Closed while connected to power

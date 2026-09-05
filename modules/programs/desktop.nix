@@ -4,10 +4,15 @@
   config,
   lib,
   ...
-}:
+} @ global:
 with lib; let
   defaultConfiguration = {
-    desktop.name = "gnome";
+    desktop.name = "niri";
+  };
+  commonModule = {pkgs, ...}: {
+    environment.systemPackages = [
+      (global.config.anvil.programs.zen.getPackage {inherit pkgs;})
+    ];
   };
 in {
   anvil.programs.desktop = {
@@ -24,22 +29,10 @@ in {
         inherit pkgs;
         configuration = metadata.desktop.config {inherit pkgs;};
       };
-    nixos = {pkgs, ...}: {
-      environment.systemPackages = [
-        (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
-      ];
+    nixos = {...}: {
+      imports = [commonModule];
+      services.displayManager.gdm.enable = true;
     };
-    darwin = {pkgs, ...}: {
-      environment.systemPackages = [
-        (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
-      ];
-    };
+    darwin = commonModule;
   };
-
-  flake.wrappers.desktop = {...}:
-    with defaultConfiguration; {
-      imports = [
-        self.wrapperModules.${desktop.name}
-      ];
-    };
 }

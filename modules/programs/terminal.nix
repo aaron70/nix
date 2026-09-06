@@ -23,10 +23,10 @@ in {
       config.anvil.programs.${metadata.terminal.name}.getPackage {inherit pkgs;};
   };
 
-  flake.wrappers.desktop = {...}:
+  flake.wrappers.terminal = {...}:
     with defaultConfiguration; {
       imports = [
-        self.wrapperModules.${desktop.name}
+        self.wrapperModules.${terminal.name}
       ];
     };
 }

@@ -84,8 +84,7 @@ in {
           "template": "{{ .HEAD }}{{ if gt .Behind 0 }}+{{ end }}{{ if gt .Ahead 0 }}-{{ end }}",
           "properties": {
             "branch_icon": "",
-            "fetch_status": true,
-            "mapped_branches": ${mappedBranches}
+            "fetch_status": true
           }
         }
       '';

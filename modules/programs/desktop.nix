@@ -7,6 +7,7 @@
 with lib; let
   defaultConfiguration = {
     desktop.name = "niri";
+    desktop.desktopShell.name = "noctalia";
     desktop.apps = {pkgs, ...}: rec {
       terminal = global.config.anvil.programs.terminal.getPackage {
         inherit pkgs;
@@ -36,6 +37,7 @@ in {
     getPackage = {
       program,
       pkgs,
+      preferences ? {},
       ...
     }:
       with program.metadata; let
@@ -43,16 +45,16 @@ in {
       in
         self.wrappers.desktop.wrap {
           inherit pkgs;
-          terminal = mkForce apps.terminal;
-          browser = mkForce apps.browser;
-          desktopShell = mkForce apps.desktopShell;
-          appLauncher = mkForce apps.appLauncher;
+          imports = [
+            preferences
+          ];
         };
     features = [
       "usb"
     ];
     programs = {program, ...}: [
       program.metadata.desktop.name
+      program.metadata.desktop.desktopShell.name
     ];
     nixos = {
       user,
@@ -65,33 +67,51 @@ in {
       imports = [
         (self.lib.withContext {inherit user program;} commonModule)
       ];
-      services.gvfs.enable = true;
-      services.displayManager.gdm.enable = true;
-      environment.systemPackages = with pkgs;
-        [
-          # Dependencies
-          pavucontrol
-          playerctl
-          brightnessctl
 
-          # Applications
-          spotify
-          mission-center
+      options = {
+        anvil.desktop.preferences = mkOption {
+          type = types.submoduleOf {
+            imports = [
+              self.declarations.desktop
+            ];
+          };
+        };
+      };
 
-          # Essentials
-          nautilus # File browser
-          vlc # Videos
-          shotwell # Images
-          wdisplays
-          xdg-desktop-portal-gnome
-          (pkgs.writeShellScriptBin "clipboard-history" "${getExe apps.desktopShell} msg panel-toggle clipboard")
-          (pkgs.writeShellScriptBin "nixpkgs-search" ''
-            query=$(echo "" | ${getExe apps.desktopShell} dmenu -p "Search nixpkgs: ")
-            [ -n "$query" ] && ${pkgs.xdg-utils}/bin/xdg-open "https://search.nixos.org/packages?query=''${query// /+}"
-          '')
-          ddcutil
-        ]
-        ++ (attrValues apps);
+      config = {
+        anvil.desktop.preferences.terminal = mkForce apps.terminal;
+        anvil.desktop.preferences.browser = mkForce apps.browser;
+        anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
+        anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
+
+        services.gvfs.enable = true;
+        services.displayManager.gdm.enable = true;
+        environment.systemPackages = with pkgs;
+          [
+            # Dependencies
+            pavucontrol
+            playerctl
+            brightnessctl
+
+            # Applications
+            spotify
+            mission-center
+
+            # Essentials
+            nautilus # File browser
+            vlc # Videos
+            shotwell # Images
+            wdisplays
+            xdg-desktop-portal-gnome
+            (pkgs.writeShellScriptBin "clipboard-history" "${getExe apps.desktopShell} msg panel-toggle clipboard")
+            (pkgs.writeShellScriptBin "nixpkgs-search" ''
+              query=$(echo "" | ${getExe apps.desktopShell} dmenu -p "Search nixpkgs: ")
+              [ -n "$query" ] && ${pkgs.xdg-utils}/bin/xdg-open "https://search.nixos.org/packages?query=''${query// /+}"
+            '')
+            ddcutil
+          ]
+          ++ (attrValues apps);
+      };
     };
     darwin = commonModule;
   };

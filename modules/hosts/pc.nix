@@ -13,6 +13,30 @@
     };
     nixos = {...}: {
       imports = [self.nixosModules."pc-hardware"];
+      anvil.desktop.preferences.monitors = rec {
+        DP-1 = {
+          enabled = true;
+          primary = true;
+          x = 0;
+          y = 0;
+          width = 1920;
+          height = 1080;
+          refreshRate = 143.981;
+        };
+        DP-2 = DP-1;
+        DP-3 = DP-1;
+
+        HDMI-A-1 = rec {
+          enabled = true;
+          primary = false;
+          x = -width;
+          y = 0;
+          width = 2560;
+          height = 1440;
+          refreshRate = 74.932;
+        };
+        HDMI-A-2 = HDMI-A-1;
+      };
     };
   };
 

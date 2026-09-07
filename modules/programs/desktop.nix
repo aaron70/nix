@@ -53,7 +53,7 @@ in {
       };
     in {
       imports = [
-        (self.lib.installPackages user [ package ])
+        (self.lib.installPackages user [package])
       ];
 
       options = {

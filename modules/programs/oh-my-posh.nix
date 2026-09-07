@@ -21,11 +21,11 @@ with lib; {
     }: let
       package = program.getPackage {inherit pkgs;};
     in {
-      environment.systemPackages = mkIf (user == null) [package];
-      users.users = mkIf (user != null) {
-        "${user.name}".packages = [package];
-      };
+      imports = [
+        (self.lib.installPackages user [package])
+      ];
     };
+    darwin = nixos;
   };
 
   flake.wrappers.oh-my-posh = {

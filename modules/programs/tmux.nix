@@ -4,7 +4,7 @@
   ...
 }:
 with lib; {
-  anvil.programs.tmux = {
+  anvil.programs.tmux = rec {
     getPackage = self.wrappers.tmux.wrap;
     nixos = {
       user,
@@ -14,15 +14,16 @@ with lib; {
     }: let
       package = program.getPackage {inherit pkgs;};
       scriptsPkgs = [
+        package
         (pkgs.writeShellScriptBin "sessions" (self.dotfiles.tmux.scripts.sessions {}))
         (pkgs.writeShellScriptBin "toggle-tmux-popup" (self.dotfiles.tmux.scripts.toggle-tmux-popup {}))
       ];
     in {
-      environment.systemPackages = mkIf (user == null) ([package] ++ scriptsPkgs);
-      users.users = mkIf (user != null) {
-        "${user.name}".packages = [package] ++ scriptsPkgs;
-      };
+      imports = [
+        (self.lib.installPackages user scriptsPkgs)
+      ];
     };
+    darwin = nixos;
   };
   flake.wrappers.tmux = {
     wlib,

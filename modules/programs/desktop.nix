@@ -18,19 +18,6 @@ with lib; let
       appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
     };
   };
-  commonModule = {
-    user,
-    program,
-    pkgs,
-    ...
-  }: let
-    package = program.getPackage {inherit pkgs program;};
-  in {
-    environment.systemPackages = mkIf (user == null) [package];
-    users.users = mkIf (user != null) {
-      ${user.name}.packages = [package];
-    };
-  };
 in {
   anvil.programs.desktop = {
     metadata = defaultConfiguration;
@@ -66,7 +53,7 @@ in {
       };
     in {
       imports = [
-        (self.lib.withContext {inherit user program;} commonModule)
+        (self.lib.installPackages user [ package ])
       ];
 
       options = {
@@ -120,7 +107,6 @@ in {
           ++ (attrValues apps);
       };
     };
-    darwin = commonModule;
   };
 
   flake.wrappers.desktop = {...}:

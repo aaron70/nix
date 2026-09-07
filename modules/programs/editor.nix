@@ -1,4 +1,5 @@
 {
+  self,
   config,
   lib,
   ...
@@ -8,6 +9,7 @@
     isTerminalBased = true;
   };
   commonModule = {
+    user,
     program,
     pkgs,
     ...
@@ -16,6 +18,9 @@
     with lib; let
       package = getPackage {inherit pkgs metadata;};
     in {
+      imports = [
+        (self.lib.installPackages user [package])
+      ];
       environment.variables = {
         EDITOR = "${getExe' package program.metadata.editor}";
       };

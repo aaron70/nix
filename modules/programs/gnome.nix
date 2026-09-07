@@ -9,17 +9,20 @@ with lib; {
       pkgs.gnome-shell;
 
     nixos = {
+      user,
       program,
       pkgs,
       ...
     }: let
       package = program.getPackage {inherit pkgs;};
     in {
+      imports = [
+        (self.lib.installPackages user [package])
+      ];
       services.xserver.enable = true;
       services.displayManager.gdm.enable = true;
       services.desktopManager.gnome.enable = true;
       services.xserver.xkb.layout = "us";
-      environment.systemPackages = [package];
     };
   };
 

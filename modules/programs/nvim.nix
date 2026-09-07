@@ -5,7 +5,7 @@
   ...
 }:
 with lib; {
-  anvil.programs.nvim = {
+  anvil.programs.nvim = rec {
     getPackage = {pkgs, ...}: self.wrappers.nvim.wrap {inherit pkgs;};
     nixos = {
       user,
@@ -15,20 +15,11 @@ with lib; {
     }: let
       package = program.getPackage {inherit pkgs;};
     in {
-      environment.systemPackages = mkIf (user == null) [package];
-      users.users.${user.name}.packages = mkIf (user != null) [package];
+      imports = [
+        (self.lib.installPackages user [package])
+      ];
     };
-    darwin = {
-      user,
-      program,
-      pkgs,
-      ...
-    }: let
-      package = program.getPackage {inherit pkgs;};
-    in {
-      environment.systemPackages = mkIf (user == null) [package];
-      users.users.${user.name}.packages = mkIf (user != null) [package];
-    };
+    darwin = nixos;
   };
 
   flake.wrappers.nvim = {

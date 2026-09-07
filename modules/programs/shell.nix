@@ -19,12 +19,14 @@ with lib; let
     config,
     ...
   } @ args: {
+    imports = [
+      (self.lib.forUser user {
+        ${user.name} = {
+          shell = with program; getPackage args;
+        };
+      })
+    ];
     fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
-    users.users = mkIf (user != null) {
-      ${user.name} = {
-        shell = with program; getPackage args;
-      };
-    };
   };
 in {
   anvil.programs.shell = {

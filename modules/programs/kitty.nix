@@ -3,25 +3,22 @@
   lib,
   ...
 }:
-with lib; let
-  commonModule = {
-    user,
-    program,
-    pkgs,
-    ...
-  }: let
-    package = program.getPackage {inherit pkgs;};
-  in {
-    environment.systemPackages = mkIf (user == null) [package];
-    users.users = mkIf (user != null) {
-      ${user.name}.packages = [package];
-    };
-  };
-in {
-  anvil.programs.kitty = {
+with lib; {
+  anvil.programs.kitty = rec {
     getPackage = self.wrappers.kitty.wrap;
-    nixos = commonModule;
-    darwin = commonModule;
+    nixos = {
+      user,
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
+    in {
+      imports = [
+        (self.lib.installPackages user [package])
+      ];
+    };
+    darwin = nixos;
   };
 
   flake.wrappers.kitty = {

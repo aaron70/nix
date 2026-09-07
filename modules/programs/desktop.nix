@@ -35,20 +35,16 @@ in {
   anvil.programs.desktop = {
     metadata = defaultConfiguration;
     getPackage = {
-      program,
       pkgs,
       preferences ? {},
       ...
     }:
-      with program.metadata; let
-        apps = desktop.apps {inherit pkgs;};
-      in
-        self.wrappers.desktop.wrap {
-          inherit pkgs;
-          imports = [
-            preferences
-          ];
-        };
+      self.wrappers.desktop.wrap {
+        inherit pkgs;
+        imports = [
+          preferences
+        ];
+      };
     features = [
       "usb"
     ];
@@ -60,9 +56,14 @@ in {
       user,
       program,
       pkgs,
+      config,
       ...
     }: let
       apps = program.metadata.desktop.apps {inherit pkgs;};
+      package = program.getPackage {
+        inherit pkgs;
+        preferences = config.anvil.desktop.preferences;
+      };
     in {
       imports = [
         (self.lib.withContext {inherit user program;} commonModule)
@@ -70,7 +71,8 @@ in {
 
       options = {
         anvil.desktop.preferences = mkOption {
-          type = types.submoduleOf {
+          type = types.submodule {
+            _module.args.pkgs = pkgs;
             imports = [
               self.declarations.desktop
             ];
@@ -83,6 +85,11 @@ in {
         anvil.desktop.preferences.browser = mkForce apps.browser;
         anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
         anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
+
+        programs.${program.metadata.desktop.name} = {
+          enable = true;
+          package = package;
+        };
 
         services.gvfs.enable = true;
         services.displayManager.gdm.enable = true;
@@ -119,7 +126,7 @@ in {
   flake.wrappers.desktop = {...}:
     with defaultConfiguration; {
       imports = [
-        self.wrapperModules.${desktop.name}
+        self.wrapperModules.niri
       ];
     };
 }

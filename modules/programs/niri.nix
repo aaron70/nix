@@ -16,8 +16,6 @@ in {
     }: let
       package = program.getPackage {inherit pkgs;};
     in {
-      programs.niri.enable = true;
-      programs.niri.package = package;
     };
   };
 
@@ -40,10 +38,10 @@ in {
 
     env.FONTCONFIG_FILE = "${config.fontsConfig}";
 
-    terminal = self.wrappers.terminal.wrap {inherit pkgs;};
-    browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
-    desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
-    appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe config.desktopShell} msg panel-toggle launcher";
+    terminal = mkDefault (self.wrappers.terminal.wrap {inherit pkgs;});
+    browser = mkDefault (global.config.anvil.programs.zen.getPackage {inherit pkgs;});
+    desktopShell = mkDefault (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;});
+    appLauncher = mkDefault (pkgs.writeShellScriptBin "app-launcher" "${getExe config.desktopShell} msg panel-toggle launcher");
     "config.kdl".content = self.dotfiles.niri.default {inherit config;};
   };
 }

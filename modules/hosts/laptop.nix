@@ -1,4 +1,9 @@
-{self, ...}: {
+{
+  self,
+  lib,
+  ...
+}:
+with lib; {
   anvil.hosts.laptop = {
     systems.nixos = "x86_64-linux";
     users = {host, ...}: [host.metadata.mainUser];
@@ -13,6 +18,8 @@
     };
     nixos = {...}: {
       imports = [self.nixosModules."laptop-hardware"];
+      anvil.desktop.preferences.modKey = "alt";
+      anvil.desktop.preferences.modKeyAlt = "super";
     };
   };
 

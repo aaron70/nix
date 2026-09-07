@@ -5,16 +5,15 @@
 }: {
   anvil.programs.noctalia = {
     getPackage = self.wrappers.noctalia.wrap;
-    nixos = { ... }: {
+    nixos = {...}: {
       environment.variables = {
         __NV_PRIME_RENDER_OFFLOAD = 0;
         __GLX_VENDOR_LIBRARY_NAME = "mesa";
       };
     };
-    home = { pkgs, ... }: {
+    home = {...}: {
       # TODO: Look if this configuration can be applied trough the wrapper using Noctalia v5
       xdg.configFile."noctalia/config.toml".text = self.dotfiles.noctalia.default {};
-      home.packages = with pkgs; [ cowsay ];
     };
   };
 

@@ -301,7 +301,7 @@
             show_weather = true
 
         [lockscreen_widgets.widget."lockscreen-login-box@winit"]
-        box_height = 196. 0
+        box_height = 196.0
         box_width = 720.0
         cx = 682.981201171875
        cy = 1028.0

@@ -20,6 +20,7 @@ with lib; {
     nixos = {
       user,
       config,
+      pkgs,
       ...
     }: {
       users.users.${user.name} = {
@@ -30,6 +31,10 @@ with lib; {
         group = user.name;
         home = user.homeDir.nixos;
         hashedPasswordFile = config.sops.secrets."password".path;
+        packages = with pkgs; [
+          go_1_27
+          goperf
+        ];
       };
       users.groups.${user.name} = {};
 

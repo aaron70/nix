@@ -5,6 +5,9 @@
 }:
 with lib; {
   anvil.features.jovian = {
+    features = [
+      "gaming"
+    ];
     nixos = {host, ...}: {
       imports = [inputs.jovian.nixosModules.jovian];
 

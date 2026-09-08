@@ -4,6 +4,7 @@
     users = {host, ...}: [host.metadata.mainUser];
     features = [
       "configurations"
+      "gaming"
     ];
     programs = [];
     metadata = rec {

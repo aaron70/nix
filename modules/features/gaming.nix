@@ -4,7 +4,7 @@
       "steam"
     ];
     nixos = {pkgs, ...}: {
-      environment.systemPakcage = with pkgs; [
+      environment.systemPackages = with pkgs; [
         # Communication
         discord
 

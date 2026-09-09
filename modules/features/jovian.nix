@@ -8,7 +8,7 @@ with lib; {
     features = [
       "gaming"
     ];
-    nixos = {host, ...}: {
+    nixos = {host, user, ...}: {
       imports = [inputs.jovian.nixosModules.jovian];
 
       jovian = {

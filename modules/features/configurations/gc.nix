@@ -52,6 +52,7 @@ with lib; {
     };
 
     darwin = {
+      host,
       config,
       pkgs,
       ...

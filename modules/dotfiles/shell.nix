@@ -60,6 +60,11 @@ with lib; {
             else null
           )
 
+          # Scripts
+          (writeShellScriptBin "hydrate-paths" self.dotfiles.scripts.hydrate-paths)
+          (writeShellScriptBin "custom-fzf-preview" self.dotfiles.scripts.custom-fzf-preview)
+          (writeShellScriptBin "cdfzf" self.dotfiles.scripts.cdfzf)
+
           # Dependencies
           bat
           chafa
@@ -91,6 +96,11 @@ with lib; {
           lg = "lazygit";
           nclean = "nh clean all --optimise -k 3";
           nshell = "nix-shell --command ${shell.name} -p";
+          cat = "bat";
+          eza = "eza --icons auto --git --group-directories-last";
+          ls = "eza";
+          find = "fd";
+          cd = ". cdfzf";
         };
       };
     });

@@ -2,6 +2,7 @@ keys:
   - &personal_admin  age13vyme78jmvjv499t7dzl2ju4epy90792nje0mvyh6ar93zae75kqyzsr2j
   - &pc age146xlkyvdxgjqjt3fnawtvqgzuk0fwgjsj9gf3c0z3q5n02r49vgsz3nk4s
   - &laptop age1sjlg4s9jq2qlevlkhylguul7ztxr6cassnj7xle7patzlgmy5syqan5vpz
+  - &gpd age1mjqu5xzvtgcpvy5tg9cnv7hk8vd9vmmgxmk8xtj3wudj2qf7ugcq53weqr
 
 creation_rules:
   - path_regex: secrets/personal\.yaml$
@@ -10,3 +11,4 @@ creation_rules:
           - *personal_admin
           - *pc
           - *laptop
+          - *gpd

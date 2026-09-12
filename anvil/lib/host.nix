@@ -8,18 +8,44 @@
 with lib; let
   anvilHosts = config.anvil.hosts;
 in {
+  flake.lib.getInput = name:
+    if inputs ? ${name}
+    then inputs.${name}
+    else throw "anvil: no flake input named '${name}'. Referenced from a host's target `pkgs`; is it declared in flake.nix?";
+
+  flake.lib.getDefaultTarget = name: {
+    outName = name;
+    pkgs = "nixpkgs";
+  };
+
+  flake.lib.getTarget = system: entry: name: let
+    defaultPkgs = "nixpkgs";
+  in
+    if isString entry
+    then {
+      outName = entry;
+      pkgs = defaultPkgs;
+    }
+    else {
+      outName = self.lib.getPropertyOrDefault entry "name" name;
+      pkgs = self.lib.getPropertyOrDefault entry "pkgs" defaultPkgs;
+    };
+
   flake.lib.getHost = name:
     if anvilHosts ? ${name}
     then anvilHosts.${name}
     else throw "Anvil: Host '${name}' not found. Did you forget to set anvil.hosts.${name}?";
 
-  flake.lib.checkSystem = platform: system: name:
-    if ! (inputs.nixpkgs.legacyPackages ? ${system})
-    then throw "anvil: host '${name}' declares unsupported system '${system}' for its ${platform} target"
+  flake.lib.checkSystem = platform: hostName: host: system: pkgs: let
+    input = self.lib.getInput pkgs;
+    inputName = pkgs;
+  in
+    if ! (input.legacyPackages ? ${system})
+    then throw "anvil: host '${hostName}' declares unsupported system '${system}' for its ${platform} target under the nixpkgs input '${inputName}'"
     else if platform == "nixos" && builtins.match ".*-darwin" system != null
-    then throw "anvil: host '${name}' declares a NixOS target on the non-Linux system '${system}'"
+    then throw "anvil: host '${hostName}' declares a NixOS target on the non-Linux system '${system}'"
     else if platform == "darwin" && builtins.match ".*-linux" system != null
-    then throw "anvil: host '${name}' declares a darwin target on the non-darwin system '${system}'"
+    then throw "anvil: host '${hostName}' declares a darwin target on the non-darwin system '${system}'"
     else system;
 
   flake.lib.getHostSystemTargets = platform: hostName: host: let
@@ -27,8 +53,8 @@ in {
     name = self.lib.getPropertyOrDefault host "name" hostName;
     targets =
       if isString systems
-      then {${systems} = name;}
-      else systems;
+      then {${systems} = self.lib.getDefaultTarget name;}
+      else mapAttrs (system: entry: self.lib.getTarget system entry name) systems;
   in
     if host.${platform} == null
     then
@@ -39,9 +65,9 @@ in {
     then throw "anvil: host '${name}' has a ${platform} fragment but anvil.hosts.${hostName}.systems.${platform} is unset"
     else if targets == {}
     then throw "anvil: host '${name}' has a ${platform} fragment but anvil.hosts.${hostName}.systems.${platform} declares no target"
-    else if length (unique (attrValues targets)) != length (attrValues targets)
+    else if length (unique (map (t: t.outName) (attrValues targets))) != length (attrValues targets)
     then throw "anvil: host '${name}' declares multiple ${platform} targets with the same output name"
-    else mapAttrs' (system: outName: nameValuePair (self.lib.checkSystem platform system name) outName) targets;
+    else mapAttrs' (system: target: nameValuePair (self.lib.checkSystem platform name host system target.pkgs) target) targets;
 
   flake.lib.mkHosts = platform: builder: let
     hostTargets =
@@ -60,7 +86,7 @@ in {
         hostName,
         targets,
       }:
-        mapAttrs' (_: outName: nameValuePair outName hostName) targets)
+        mapAttrs' (_: target: nameValuePair target.outName hostName) targets)
       hostTargets);
 
     conflicts =
@@ -87,7 +113,7 @@ in {
           then host
           else host // {name = hostName;};
       in
-        acc // mapAttrs' (system: outName: nameValuePair outName (builder system namedHost)) targets)
+        acc // mapAttrs' (system: target: nameValuePair target.outName (builder system namedHost target)) targets)
       {}
       hostTargets;
 
@@ -115,8 +141,8 @@ in {
     ++ attrValues acc.features
     ++ attrValues acc.programs;
 
-  flake.lib.mkNixosConfiguration = system: host:
-    inputs.nixpkgs.lib.nixosSystem {
+  flake.lib.mkNixosConfiguration = system: host: target:
+    (self.lib.getInput target.pkgs).lib.nixosSystem {
       inherit system;
       modules =
         [
@@ -128,11 +154,17 @@ in {
       specialArgs = {};
     };
 
-  flake.lib.mkDarwinConfiguration = system: host:
-    inputs.darwin.lib.darwinSystem {
+  flake.lib.mkDarwinConfiguration = system: host: target: let
+    nixpkgs = self.lib.getInput target.pkgs;
+  in
+    inputs.nix-darwin.lib.darwinSystem {
       inherit system;
       modules =
         [
+          {
+            nixpkgs.source = nixpkgs;
+            nixpkgs.flake.source = nixpkgs;
+          }
           ({config, ...}: {
             system.stateVersion = mkDefault (
               if host.darwinStateVersion == null
@@ -145,9 +177,9 @@ in {
       specialArgs = {};
     };
 
-  flake.lib.mkHomeConfiguration = system: host:
+  flake.lib.mkHomeConfiguration = system: host: target:
     inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = (self.lib.getInput target.pkgs).legacyPackages.${system};
       modules =
         [
           {

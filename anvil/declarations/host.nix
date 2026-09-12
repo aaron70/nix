@@ -5,6 +5,29 @@
 }:
 with lib; let
   refKeyListType = self.lib.refkeyListType;
+
+  targetType = types.either types.str (types.submodule {
+    options = {
+      name = mkOption {
+        type = types.str;
+        description = ''
+          Output name of the configuration target when the value is an
+          attribute set. When omitted, it defaults to the host's name.
+        '';
+      };
+
+      pkgs = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = ''
+          Name of the nixpkgs flake input this target is evaluated against.
+          `null` (the default) falls back to the flake's global `nixpkgs`
+          input. Point it at an alternate input (e.g. `nixpkgs-darwin`) to
+          pin a single target to a specific nixpkgs version or branch.
+        '';
+      };
+    };
+  });
 in {
   flake.modules.generic.host = {
     imports = [self.modules.generic.entity];
@@ -50,35 +73,38 @@ in {
         type = types.submodule {
           options = {
             nixos = mkOption {
-              type = types.nullOr (types.either types.str (types.attrsOf types.str));
+              type = types.nullOr (types.either types.str (types.attrsOf targetType));
               default = null;
               description = ''
                 NixOS targets: a system string, or a mapping from system to
-                output name for multiple targets. A plain string produces a
-                single `nixosConfigurations` named after the host. Required
-                (non-null) when the host declares a `nixos` fragment.
+                output name (or `{ name, pkgs }`) for multiple targets. A plain
+                string produces a single `nixosConfigurations` named after the
+                host. Required (non-null) when the host declares a `nixos`
+                fragment.
               '';
             };
 
             darwin = mkOption {
-              type = types.nullOr (types.either types.str (types.attrsOf types.str));
+              type = types.nullOr (types.either types.str (types.attrsOf targetType));
               default = null;
               description = ''
                 Darwin targets: a system string, or a mapping from system to
-                output name for multiple targets. A plain string produces a
-                single `darwinConfigurations` named after the host. Required
-                (non-null) when the host declares a `darwin` fragment.
+                output name (or `{ name, pkgs }`) for multiple targets. A plain
+                string produces a single `darwinConfigurations` named after the
+                host. Required (non-null) when the host declares a `darwin`
+                fragment.
               '';
             };
 
             home = mkOption {
-              type = types.nullOr (types.either types.str (types.attrsOf types.str));
+              type = types.nullOr (types.either types.str (types.attrsOf targetType));
               default = null;
               description = ''
                 Home targets: a system string, or a mapping from system to
-                output name for multiple targets. A plain string produces a
-                single `homeConfigurations` named after the host. Required
-                (non-null) when the host declares a `home` fragment.
+                output name (or `{ name, pkgs }`) for multiple targets. A plain
+                string produces a single `homeConfigurations` named after the
+                host. Required (non-null) when the host declares a `home`
+                fragment.
               '';
             };
           };

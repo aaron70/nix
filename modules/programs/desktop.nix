@@ -39,6 +39,13 @@ in {
       program.metadata.desktop.name
       program.metadata.desktop.desktopShell.name
     ];
+    home = {pkgs, ...}: {
+      home.packages = [pkgs.fastfetch];
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications."inode/directory" = ["org.gnome.Nautilus.desktop"];
+      };
+    };
     nixos = {
       user,
       program,
@@ -68,6 +75,12 @@ in {
       };
 
       config = {
+        xdg.portal = {
+          enable = true;
+          extraPortals = [pkgs.xdg-desktop-portal-gtk];
+          config.common.default = "*";
+        };
+
         anvil.desktop.preferences.terminal = mkForce apps.terminal;
         anvil.desktop.preferences.browser = mkForce apps.browser;
         anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;

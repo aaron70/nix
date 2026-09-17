@@ -20,8 +20,9 @@ with lib; {
       imports = [inputs.home-manager.darwinModules.home-manager];
 
       config = {
+        home-manager.backupFileExtension = "bckp";
         home-manager.users.${user.name} = {...}: {
-          imports = [inputs.mac-app-util.homeManagerModules.default] ++ self.lib.getHostModules "home" host;
+          imports = [inputs.mac-app-util.homeManagerModules.default];
           config = {
             programs.home-manager.enable = true;
             home = {
@@ -47,8 +48,8 @@ with lib; {
       imports = [inputs.home-manager.nixosModules.default];
 
       config = {
+        home-manager.backupFileExtension = "bckp";
         home-manager.users.${user.name} = {...}: {
-          imports = self.lib.getHostModules "home" host;
           config = {
             programs.home-manager.enable = true;
             home = {

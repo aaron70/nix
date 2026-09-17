@@ -52,6 +52,11 @@ with lib; {
         };
       };
 
+      virtualisation.vmVariant = {
+        anvil.desktop.preferences.modKey = mkForce "super";
+        anvil.desktop.preferences.modKeyAlt = mkForce "alt";
+      };
+
       hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [

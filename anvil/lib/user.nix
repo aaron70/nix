@@ -48,4 +48,35 @@ in {
         self.lib.getUserModules platform host user
     )
     users;
+
+  flake.lib.getUserHomeModules = host: user: let
+    ctx = {inherit host user;};
+    hostCtx = {inherit host;};
+    hostAcc =
+      self.lib.getProgramsModules
+      (self.lib.getFeaturesModules
+        {} "home" "Host"
+        host
+        hostCtx (self.lib.getFeaturesList host hostCtx))
+      "home" "Host"
+      host
+      hostCtx
+      (self.lib.getProgramsList host hostCtx);
+    acc =
+      self.lib.getProgramsModules
+      (self.lib.getFeaturesModules
+        hostAcc "home" "User"
+        user
+        ctx (self.lib.getFeaturesList user ctx))
+      "home" "User"
+      user
+      ctx
+      (self.lib.getProgramsList user ctx);
+  in
+    [
+      (self.lib.withContext hostCtx (self.lib.getPropertyOrDefault host "home" {}))
+      (self.lib.withContext ctx (self.lib.getPropertyOrDefault user "home" {}))
+    ]
+    ++ attrValues acc.features
+    ++ attrValues acc.programs;
 }

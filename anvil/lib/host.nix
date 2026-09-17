@@ -115,6 +115,63 @@ in {
     ++ attrValues acc.features
     ++ attrValues acc.programs;
 
+  flake.lib.mkHomeManagerModule = platform: host: let
+    userRefs = self.lib.getUsersList host {
+      inherit host;
+      user = null;
+    };
+    users = map (refkey: self.lib.resolveRefKey refkey (self.lib.getUser host)) userRefs;
+    usersModule = {...}: {
+      imports =
+        map (user: {
+          home-manager.users.${user.name} = {
+            imports = self.lib.getUserHomeModules host user;
+            config = {
+              programs.home-manager.enable = true;
+              home = {
+                username = user.name;
+                homeDirectory = mkDefault (
+                  if user.homeDir.${platform} == null
+                  then
+                    (
+                      if platform == "darwin"
+                      then "/Users/${user.name}"
+                      else "/home/${user.name}"
+                    )
+                  else user.homeDir.${platform}
+                );
+                stateVersion = host.stateVersion;
+              };
+            };
+          };
+        })
+        users;
+    };
+  in
+    if users == []
+    then {}
+    else if platform == "nixos"
+    then {
+      imports = [inputs.home-manager.nixosModules.default usersModule];
+      config = {
+        home-manager.useGlobalPkgs = mkDefault true;
+        home-manager.useUserPackages = mkDefault true;
+      };
+    }
+    else if platform == "darwin"
+    then {
+      imports = [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.mac-app-util.homeManagerModules.default
+        usersModule
+      ];
+      config = {
+        home-manager.useGlobalPkgs = mkDefault true;
+        home-manager.useUserPackages = mkDefault true;
+      };
+    }
+    else throw "anvil: mkHomeManagerModule only supports 'nixos' or 'darwin', got '${platform}'";
+
   flake.lib.mkNixosConfiguration = system: host:
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
@@ -124,6 +181,7 @@ in {
             system.stateVersion = lib.mkDefault host.stateVersion;
           }
         ]
+        ++ [(self.lib.mkHomeManagerModule "nixos" host)]
         ++ self.lib.getHostModules "nixos" host;
       specialArgs = {};
     };
@@ -141,6 +199,7 @@ in {
             );
           })
         ]
+        ++ [(self.lib.mkHomeManagerModule "darwin" host)]
         ++ self.lib.getHostModules "darwin" host;
       specialArgs = {};
     };

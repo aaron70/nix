@@ -30,7 +30,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-
     # TODO: Remove this when the following issue is fixed: https://github.com/ValveSoftware/steam-for-linux/issues/13566
     # TODO: remove the overlay from steam program as well
     xwayland-satellite-stable.url = "github:Supreeeme/xwayland-satellite/v0.8.1";

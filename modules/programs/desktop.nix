@@ -43,7 +43,7 @@ in {
       home.packages = [pkgs.fastfetch];
       xdg.mimeApps = {
         enable = true;
-        defaultApplications."inode/directory" = ["org.gnome.Nautilus.desktop"];
+        defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
       };
     };
     nixos = {

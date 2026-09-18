@@ -1,7 +1,6 @@
  - [ ] Make nvim able to search hidden files like .sops.yaml   
- - [x] Add the theme to the Kitty
- - [ ] Design a way to add themes to the configurations and share the same theme
- - [ ] Implement a new field `extraModules.nixos`, `extraModules.darwin`, `extraModules.home` to the anvil entities. Those modules would be imported.
- - [ ] Create a module `installPackages user pkgs` that recives a user and a list of packages and install the packages as user packages or globally if the user is null.
- - [x] Create the shell alias `nshell`, `nswitch`, `ntest`, `nboot`, `nclean`
- - [x] Add `lg` alias for lazygit
+ - [ ] Create the check to run `nix flake check`
+ - [ ] Create Github Actions
+    - [ ] Action for running `nix flake check` on every commit/PR.
+    - [ ] Action for automatically run `nix flake update` periodically.
+    - [ ] Action to generate a release periodically.

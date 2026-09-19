@@ -15,10 +15,7 @@ with lib; {
         metadata = {
           wrappers = {
             atuin = self.wrappers.atuin.wrap {inherit pkgs;};
-            editor = self.wrappers.editor.wrap {
-              inherit pkgs;
-              metadata.editor = global.config.anvil.programs.editor.metadata.editor;
-            };
+            editor = self.wrappers.editor.wrap {inherit pkgs;};
             git = self.wrappers.git.wrap {inherit pkgs;};
           };
         };

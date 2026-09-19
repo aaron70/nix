@@ -86,10 +86,11 @@ in {
     darwin = commonModule;
   };
 
-  flake.wrappers.shell = {...}: {
-    imports = [
-      self.wrapperModules.${shell.name}
-      (self.dotfiles.shell.getConfiguration {inherit defaultConfiguration;})
-    ];
-  };
+  flake.wrappers.shell = {...}:
+    with defaultConfiguration; {
+      imports = [
+        self.wrapperModules.${shell.name}
+        (self.dotfiles.shell.getConfiguration {inherit defaultConfiguration;})
+      ];
+    };
 }

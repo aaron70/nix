@@ -44,6 +44,7 @@ with lib; {
         activationScript = mkOption {
           type = types.str;
           description = "The activation script to source the prompt on the shell configuration startup";
+          default = "";
         };
       };
 
@@ -59,6 +60,7 @@ with lib; {
         activationScript = mkOption {
           type = types.str;
           description = "The activation script to source the multiplexer on the shell configuration startup";
+          default = "";
         };
       };
     };

@@ -91,6 +91,31 @@ in {
       {}
       hostTargets;
 
+  flake.lib.mkHostChecks = platform: configurations: mkCheck: suffix: let
+    hostTargets =
+      map
+      (hostName: let
+        host = self.lib.getHost hostName;
+      in {
+        inherit hostName;
+        targets = self.lib.getHostSystemTargets platform hostName host;
+      })
+      (attrNames anvilHosts);
+  in
+    foldl'
+    (acc: {
+      targets,
+      hostName,
+      ...
+    }: let
+      host = self.lib.getHost hostName;
+      outName = self.lib.getPropertyOrDefault host "name" hostName + suffix;
+      check = mkCheck configurations.${outName};
+    in
+      recursiveUpdate acc (mapAttrs (_: _: {${outName} = check;}) targets))
+    {}
+    hostTargets;
+
   flake.lib.getHostModules = platform: host: let
     ctx = {inherit host;};
     entityCtx = {

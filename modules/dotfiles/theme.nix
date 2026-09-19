@@ -43,14 +43,13 @@ in
             );
           };
           description = "A complete Base16 color scheme (base00–base0F as 6-digit hex strings with '#').";
-          default = self.lib.getColors {inherit pkgs;};
+          default = self.lib.getColors;
         };
       };
     };
 
-    flake.lib.getColors = {pkgs, ...}: let
-      yamlToAttrs = file: builtins.fromJSON (builtins.readFile (pkgs.runCommand "yaml-to-json" {buildInputs = [pkgs.yq-go];} ''yq -o=json '.' ${file} > $out''));
-      theme = yamlToAttrs "${pkgs.base16-schemes}/share/themes/tokyo-night-moon.yaml";
+    flake.lib.getColors = let
+      theme = builtins.fromJSON (builtins.readFile "${self.dotfiles.resourcesPath}/themes/tokyo-night-moon.json");
     in
       theme.palette;
   }

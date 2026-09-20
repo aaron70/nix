@@ -33,6 +33,8 @@ jobs:
           - system: aarch64-darwin
             runner: macos-14
     runs-on: ${{ matrix.runner }}
+    env:
+      NIX_CONFIG: accept-flake-config = true
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4

@@ -10,6 +10,7 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util.inputs.nixpkgs.follows = "nixpkgs";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -18,14 +19,16 @@
     import-tree.url = "github:vic/import-tree";
 
     nvim.url = "github:aaron70/nvim";
+    nvim.inputs.nixpkgs.follows = "nixpkgs";
+    nvim.inputs.nix-wrapper-modules.follows = "nix-wrapper-modules";
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
-    noctalia.url = "github:noctalia-dev/noctalia-shell";
-    noctalia.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+    jovian.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +36,12 @@
     # TODO: Remove this when the following issue is fixed: https://github.com/ValveSoftware/steam-for-linux/issues/13566
     # TODO: remove the overlay from steam program as well
     xwayland-satellite-stable.url = "github:Supreeeme/xwayland-satellite/v0.8.1";
+    xwayland-satellite-stable.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  nixConfig = {
+    extra-substituters = ["https://noctalia.cachix.org"];
+    extra-trusted-public-keys = ["noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="];
   };
 
   outputs = inputs:

@@ -84,11 +84,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777678872,
-        "narHash": "sha256-EPIFsulyon7Z1vLQq5Fk64GR8L7cQsT+IPhcsukVbgk=",
+        "lastModified": 1788450739,
+        "narHash": "sha256-glZLQlzIn1fXH6PazR2iUmTo7kzzyYSshrWhLS9TqCU=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "5250617bffd85403b14dbf43c3870e7f255d2c16",
+        "rev": "31729ca8cbdb4fa927b34e5f4353e6a83f39e993",
         "type": "github"
       },
       "original": {
@@ -155,11 +155,11 @@
     },
     "import-tree_2": {
       "locked": {
-        "lastModified": 1773693634,
-        "narHash": "sha256-BtZ2dtkBdSUnFPPFc+n0kcMbgaTxzFNPv2iaO326Ffg=",
+        "lastModified": 1788467110,
+        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
         "owner": "vic",
         "repo": "import-tree",
-        "rev": "c41e7d58045f9057880b0d85e1152d6a4430dbf1",
+        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
         "type": "github"
       },
       "original": {
@@ -375,14 +375,16 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "wrappers": "wrappers"
+        "wrappers": [
+          "wrappers"
+        ]
       },
       "locked": {
-        "lastModified": 1788222738,
-        "narHash": "sha256-lp0gbNAfKSU1da7YCAYFA/jN8gnUgf536Aijkzo3Slg=",
+        "lastModified": 1789930306,
+        "narHash": "sha256-9hQbmkK5y788ntX9fCRK05JkycEPar9OVPH+Umy1bfE=",
         "owner": "aaron70",
         "repo": "nvim",
-        "rev": "b34108524c41693870ea1c05e987f6dce8ed4173",
+        "rev": "514628624175ee2cbe09de084af635ec08befc01",
         "type": "github"
       },
       "original": {
@@ -403,7 +405,7 @@
         "noctalia": "noctalia",
         "nvim": "nvim",
         "sops-nix": "sops-nix",
-        "wrappers": "wrappers_2",
+        "wrappers": "wrappers",
         "xwayland-satellite-stable": "xwayland-satellite-stable",
         "zen-browser": "zen-browser"
       }
@@ -516,27 +518,6 @@
       }
     },
     "wrappers": {
-      "inputs": {
-        "nixpkgs": [
-          "nvim",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1777827587,
-        "narHash": "sha256-Tz3QSgl1wwWH1jf0BngEkNhoWDIIWSBDE/RI+RpVemc=",
-        "owner": "BirdeeHub",
-        "repo": "nix-wrapper-modules",
-        "rev": "b1308b562306f59c7732357655d19cedb292d5e1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "BirdeeHub",
-        "repo": "nix-wrapper-modules",
-        "type": "github"
-      }
-    },
-    "wrappers_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"

@@ -20,7 +20,7 @@
 
     nvim.url = "github:aaron70/nvim";
     nvim.inputs.nixpkgs.follows = "nixpkgs";
-    nvim.inputs.nix-wrapper-modules.follows = "nix-wrapper-modules";
+    nvim.inputs.wrappers.follows = "wrappers";
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";

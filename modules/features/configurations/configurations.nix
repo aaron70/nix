@@ -1,4 +1,8 @@
-{lib, ...}:
+{
+  inputs,
+  lib,
+  ...
+}:
 with lib; {
   anvil.features.configurations = {
     features = [
@@ -18,11 +22,10 @@ with lib; {
       config = {
         nix.settings.experimental-features = "nix-command flakes";
         system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-        system.stateVersion = host.darwinStateVersion;
         nixpkgs.config.allowUnfree = true;
         nixpkgs.config.allowBroken = true;
 
-        networking.hostName = "${host.metadata.mainUser}-${host.name}";
+        # networking.hostName = "${host.metadata.mainUser}-${host.name}";
 
         system.primaryUser = host.metadata.mainUser;
         launchd.user.envVariables = {

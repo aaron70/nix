@@ -12,3 +12,9 @@ creation_rules:
           - *pc
           - *laptop
           - *gpd
+
+  - path_regex: secrets/work\.yaml$
+    key_groups:
+      - age:
+          - *personal_admin
+          - *pc

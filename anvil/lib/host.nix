@@ -103,16 +103,12 @@ in {
       (attrNames anvilHosts);
   in
     foldl'
-    (acc: {
-      targets,
-      hostName,
-      ...
-    }: let
-      host = self.lib.getHost hostName;
-      outName = self.lib.getPropertyOrDefault host "name" hostName + suffix;
-      check = mkCheck configurations.${outName};
-    in
-      recursiveUpdate acc (mapAttrs (_: _: {${outName} = check;}) targets))
+    (acc: {targets, ...}:
+      recursiveUpdate
+      acc
+      (mapAttrs'
+        (system: outName: nameValuePair system {${outName + suffix} = mkCheck configurations.${outName};})
+        targets))
     {}
     hostTargets;
 
@@ -187,7 +183,6 @@ in {
     then {
       imports = [
         inputs.home-manager.darwinModules.home-manager
-        inputs.mac-app-util.homeManagerModules.default
         usersModule
       ];
       config = {
@@ -212,7 +207,7 @@ in {
     };
 
   flake.lib.mkDarwinConfiguration = system: host:
-    inputs.darwin.lib.darwinSystem {
+    inputs.nix-darwin.lib.darwinSystem {
       inherit system;
       modules =
         [

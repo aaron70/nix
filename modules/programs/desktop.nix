@@ -1,7 +1,6 @@
 {
   self,
   lib,
-  config,
   ...
 } @ global:
 with lib; let
@@ -26,12 +25,17 @@ in {
       preferences ? {},
       ...
     }:
-      self.wrappers.desktop.wrap {
-        inherit pkgs;
-        imports = [
-          preferences
-        ];
-      };
+      if pkgs.stdenv.hostPlatform.isLinux
+      then
+        self.wrappers.desktop.wrap {
+          inherit pkgs;
+          imports = [preferences];
+        }
+      else
+        self.wrappers.desktop-darwin.wrap {
+          inherit pkgs;
+          imports = [preferences];
+        };
     features = [
       "usb"
     ];
@@ -41,7 +45,7 @@ in {
     ];
     home = {pkgs, ...}: {
       home.packages = [pkgs.fastfetch];
-      xdg.mimeApps = {
+      xdg.mimeApps = mkIf pkgs.stdenv.hostPlatform.isLinux {
         enable = true;
         defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
       };
@@ -122,10 +126,21 @@ in {
     };
   };
 
-  flake.wrappers.desktop = {...}:
-    with defaultConfiguration; {
-      imports = [
-        self.wrapperModules.niri
-      ];
-    };
+  flake.wrappers.desktop = {...}: {
+    imports = [
+      self.wrapperModules.niri
+    ];
+  };
+
+  flake.wrappers.desktop-darwin = {...}: {
+    imports = [
+      self.wrapperModules.aerospace
+    ];
+  };
+
+  perSystem = {pkgs, ...}: {
+    wrappers.packages.desktop = pkgs.stdenv.hostPlatform.isDarwin;
+    wrappers.packages.desktop-darwin =
+      !(pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin);
+  };
 }

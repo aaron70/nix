@@ -10,6 +10,7 @@ with lib; let
     shell.multiplexer.name = "tmux";
     shell.prompt.name = "oh-my-posh";
     shell.editor.name = global.config.anvil.programs.editor.metadata.editor;
+    shell.extraActivationScripts = [];
   };
   commonModule = {
     host,
@@ -61,6 +62,7 @@ in {
               git = global.config.anvil.programs.git.getPackage {inherit pkgs config;};
             };
           };
+          activationScripts = shell.extraActivationScripts;
 
           envVariables = {
             NH_FLAKE = host.metadata.nixPath;

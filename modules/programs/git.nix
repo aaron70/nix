@@ -3,7 +3,32 @@
   lib,
   ...
 }:
-with lib; {
+with lib; let
+  commonModule = {
+    user,
+    program,
+    config,
+    pkgs,
+    ...
+  }: let
+    package = program.getPackage {inherit pkgs config;};
+  in {
+    environment.systemPackages = with pkgs; [
+      package
+      lazygit
+      gh
+    ];
+
+    sops.templates."gitconfig-personal" = mkIf (user != null) {
+      content = ''
+        [user]
+            name = ${user.name}
+            email = ${user.metadata.email}
+      '';
+      owner = user.name; # so your user can actually read the rendered file
+    };
+  };
+in {
   anvil.programs.git = {
     features = ["sops"];
     getPackage = {
@@ -16,30 +41,8 @@ with lib; {
         settings.include = {path = config.sops.templates."gitconfig-personal".path;};
       };
 
-    nixos = {
-      user,
-      program,
-      config,
-      pkgs,
-      ...
-    }: let
-      package = program.getPackage {inherit pkgs config;};
-    in {
-      environment.systemPackages = with pkgs; [
-        package
-        lazygit
-        gh
-      ];
-
-      sops.templates."gitconfig-personal" = mkIf (user != null) {
-        content = ''
-          [user]
-              name = ${user.name}
-              email = ${user.metadata.email}
-        '';
-        owner = user.name; # so your user can actually read the rendered file
-      };
-    };
+    nixos = commonModule;
+    darwin = commonModule;
   };
 
   flake.wrappers.git = {

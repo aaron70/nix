@@ -17,7 +17,7 @@
     };
     darwin = {...}: {
       imports = [
-        inputs.sops-nix.nixosModules.sops
+        inputs.sops-nix.darwinModules.sops
         commonModule
       ];
     };

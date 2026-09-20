@@ -35,4 +35,8 @@
       ];
     };
   };
+
+  perSystem = {pkgs, ...}: {
+    wrappers.packages.noctalia = pkgs.stdenv.hostPlatform.isDarwin;
+  };
 }

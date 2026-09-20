@@ -5,14 +5,13 @@
   ...
 }:
 with lib; {
-  anvil.features.personal-secrets = let
+  anvil.features.work-secrets = let
     mkIfUser = user: mkIf (user != null);
     commonModule = {user, ...}: {
       sops = {
         defaultSopsFile = ./personal.yaml;
         secrets = {
           "email" = {owner = mkIfUser user user.name;};
-          "password" = {owner = mkIfUser user user.name;};
         };
       };
     };

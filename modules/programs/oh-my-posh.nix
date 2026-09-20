@@ -4,7 +4,7 @@
   ...
 }:
 with lib; {
-  anvil.programs.oh-my-posh = {
+  anvil.programs.oh-my-posh = rec {
     getPackage = {
       pkgs,
       tty ? false,

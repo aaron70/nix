@@ -37,4 +37,8 @@ with lib; {
     ];
     config.package = pkgs.gnome-shell;
   };
+
+  perSystem = {pkgs, ...}: {
+    wrappers.packages.gnome = pkgs.stdenv.hostPlatform.isDarwin;
+  };
 }

@@ -44,4 +44,8 @@ in {
     appLauncher = mkDefault (pkgs.writeShellScriptBin "app-launcher" "${getExe config.desktopShell} msg panel-toggle launcher");
     "config.kdl".content = self.dotfiles.niri.default {inherit config;};
   };
+
+  perSystem = {pkgs, ...}: {
+    wrappers.packages.niri = pkgs.stdenv.hostPlatform.isDarwin;
+  };
 }

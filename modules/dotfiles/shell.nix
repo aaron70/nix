@@ -43,49 +43,41 @@ with lib; {
           "command -v atuin &>/dev/null && _anvil_cache_source atuin ${atuin}/bin/atuin init zsh"
         ];
 
-        packages = with pkgs;
-        with config.metadata.wrappers; [
-          (multiplexer.getPackage {inherit pkgs;})
-          (prompt.getPackage {inherit pkgs;})
+        packages = flatten (with pkgs;
+          with config.metadata.wrappers; [
+            (multiplexer.getPackage {inherit pkgs;})
+            (prompt.getPackage {inherit pkgs;})
 
-          # Wrapped
-          atuin
-          git
-          (
-            if global.config.anvil.programs.editor.metadata.isTerminalBased
-            then editor
-            else null
-          )
+            # Wrapped
+            atuin
+            git
+            (optional global.config.anvil.programs.editor.metadata.isTerminalBased editor)
 
-          # Scripts
-          (writeShellScriptBin "hydrate-paths" self.dotfiles.scripts.hydrate-paths)
-          (writeShellScriptBin "custom-fzf-preview" self.dotfiles.scripts.custom-fzf-preview)
-          (writeShellScriptBin "cdfzf" self.dotfiles.scripts.cdfzf)
+            # Scripts
+            (writeShellScriptBin "hydrate-paths" self.dotfiles.scripts.hydrate-paths)
+            (writeShellScriptBin "custom-fzf-preview" self.dotfiles.scripts.custom-fzf-preview)
+            (writeShellScriptBin "cdfzf" self.dotfiles.scripts.cdfzf)
 
-          # Dependencies
-          bat
-          chafa
-          direnv
-          eza
-          fd
-          file
-          fzf
-          gcc
-          gh
-          imgcat
-          jq
-          lazygit
-          nh
-          ripgrep
-          sesh
-          unixtools.watch
-          zoxide
-          (
-            if pkgs.stdenv.hostPlatform.isLinux
-            then wl-clipboard
-            else null
-          )
-        ];
+            # Dependencies
+            bat
+            chafa
+            direnv
+            eza
+            fd
+            file
+            fzf
+            gcc
+            gh
+            imgcat
+            jq
+            lazygit
+            nh
+            ripgrep
+            sesh
+            unixtools.watch
+            zoxide
+            (optional pkgs.stdenv.hostPlatform.isLinux wl-clipboard)
+          ]);
 
         envVariables = {};
 

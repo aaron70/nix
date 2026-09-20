@@ -1,6 +1,0 @@
- - [ ] Make nvim able to search hidden files like .sops.yaml   
- - [ ] Create the check to run `nix flake check`
- - [ ] Create Github Actions
-    - [ ] Action for running `nix flake check` on every commit/PR.
-    - [ ] Action for automatically run `nix flake update` periodically.
-    - [ ] Action to generate a release periodically.

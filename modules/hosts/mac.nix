@@ -1,37 +1,22 @@
 {
-  inputs,
-  lib,
   self,
+  lib,
   ...
-}: let
-  host = "mac";
-in
-  with lib; {
-    flake.darwinConfigurations.${host} = inputs.nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [self.darwinModules.${host}];
+}:
+with lib; {
+  anvil.hosts.mac = {
+    systems.darwin = "aarch64-darwin";
+    users = {host, ...}: [host.metadata.mainUser];
+    features = [
+      "configurations"
+    ];
+    programs = [];
+    metadata = rec {
+      mainUser = "aaronv-work";
+      configurationLimit = 3;
+      nixPath = "/Users/${mainUser}/nix";
     };
-
-    flake.darwinModules.${host} = {...}: {
-      imports = [
-        self.darwinModules.configurations
-      ];
-
-      config = {
-        information = {
-          hostname = "mac";
-          isLaptop = true;
-        };
-
-        preferences = {
-          profile = "work";
-
-          programs = {
-            terminal.enable = true;
-            kitty.enable = true;
-            aerospace.enable = true;
-          };
-        };
-      };
+    darwin = {...}: {
     };
-  }
+  };
+}

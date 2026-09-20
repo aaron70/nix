@@ -1,72 +1,47 @@
-{
-  inputs,
-  self,
-  lib,
-  ...
-}: let
-  host = "pc";
-in {
-  flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
-    modules = [self.nixosModules.${host}];
-  };
-
-  flake.nixosModules.${host} = {pkgs, ...}: {
-    imports = [
-      self.nixosModules.configurations
-      self.nixosModules."${host}-hardware"
+{self, ...}: {
+  anvil.hosts.pc = {
+    systems.nixos = "x86_64-linux";
+    users = {host, ...}: [host.metadata.mainUser];
+    features = [
+      "configurations"
+      "gaming"
     ];
-
-    config = {
-      information = {
-        hostname = "pc";
-        isLaptop = false;
-        hasBluetooth = true;
-        hasBattery = false;
-      };
-
-      preferences = {
-        profile = "personal";
-
-        features = {
-          gaming.enable = true;
+    programs = [];
+    metadata = rec {
+      mainUser = "aaronv";
+      configurationLimit = 3;
+      nixPath = "/home/${mainUser}/nix";
+    };
+    nixos = {...}: {
+      imports = [self.nixosModules."pc-hardware"];
+      anvil.desktop.preferences.monitors = rec {
+        DP-1 = {
+          enabled = true;
+          primary = true;
+          x = 0;
+          y = 0;
+          width = 1920;
+          height = 1080;
+          refreshRate = 143.981;
         };
+        DP-2 = DP-1;
+        DP-3 = DP-1;
 
-        programs = {
-          desktop = {
-            enable = true;
-            configurations = {
-              monitors = rec {
-                DP-1 = {
-                  enabled = true;
-                  primary = true;
-                  x = 0;
-                  y = 0;
-                  width = 1920;
-                  height = 1080;
-                  refreshRate = 143.981;
-                };
-                DP-2 = DP-1;
-                DP-3 = DP-1;
-
-                HDMI-A-1 = rec {
-                  enabled = true;
-                  primary = false;
-                  x = -width;
-                  y = 0;
-                  width = 2560;
-                  height = 1440;
-                  refreshRate = 74.932;
-                };
-                HDMI-A-2 = HDMI-A-1;
-              };
-            };
-          };
+        HDMI-A-1 = rec {
+          enabled = true;
+          primary = false;
+          x = -width;
+          y = 0;
+          width = 2560;
+          height = 1440;
+          refreshRate = 74.932;
         };
+        HDMI-A-2 = HDMI-A-1;
       };
     };
   };
 
-  flake.nixosModules."${host}-hardware" = {
+  flake.nixosModules."pc-hardware" = {
     config,
     lib,
     pkgs,

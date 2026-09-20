@@ -1,75 +1,60 @@
 {
-  inputs,
   self,
+  lib,
   ...
-}: let
-  host = "laptop";
-in {
-  flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
-    modules = [self.nixosModules.${host}];
-  };
-
-  flake.nixosModules.${host} = {pkgs, ...}: {
-    imports = [
-      self.nixosModules.configurations
-      self.nixosModules."${host}-hardware"
+}:
+with lib; {
+  anvil.hosts.laptop = {
+    systems.nixos = "x86_64-linux";
+    users = {host, ...}: [host.metadata.mainUser];
+    features = [
+      "configurations"
     ];
+    programs = [];
+    metadata = rec {
+      mainUser = "aaronv";
+      configurationLimit = 3;
+      nixPath = "/home/${mainUser}/nix";
+    };
+    nixos = {pkgs, ...}: {
+      imports = [self.nixosModules."laptop-hardware"];
+      anvil.desktop.preferences.modKey = "alt";
+      anvil.desktop.preferences.modKeyAlt = "super";
+      anvil.desktop.preferences.monitors = rec {
+        DP-1 = {
+          enabled = true;
+          primary = true;
+          x = 0;
+          y = 0;
+          width = 1920;
+          height = 1080;
+          refreshRate = 143.981;
+        };
 
-    config = {
-      information = {
-        hostname = "laptop";
-        isLaptop = true;
-        hasBluetooth = true;
-        hasBattery = true;
+        HDMI-A-2 = rec {
+          enabled = true;
+          primary = false;
+          x = -width;
+          y = 0;
+          width = 2560;
+          height = 1440;
+          refreshRate = 74.932;
+        };
+
+        eDP-1 = rec {
+          enabled = true;
+          primary = false;
+          x = -HDMI-A-2.x;
+          y = -height;
+          width = 1920;
+          height = 1080;
+          refreshRate = 59.977;
+        };
       };
 
-      preferences = {
-        profile = "personal";
-
-        features = {
-          gaming.enable = false;
-        };
-
-        programs = {
-          desktop = {
-            enable = true;
-            configurations = {
-              modKey = "alt";
-              modKeyAlt = "super";
-              monitors = rec {
-                DP-1 = {
-                  enabled = true;
-                  primary = true;
-                  x = 0;
-                  y = 0;
-                  width = 1920;
-                  height = 1080;
-                  refreshRate = 143.981;
-                };
-
-                HDMI-A-2 = rec {
-                  enabled = true;
-                  primary = false;
-                  x = -width;
-                  y = 0;
-                  width = 2560;
-                  height = 1440;
-                  refreshRate = 74.932;
-                };
-
-                eDP-1 = rec {
-                  enabled = true;
-                  primary = false;
-                  x = -HDMI-A-2.x;
-                  y = -height;
-                  width = 1920;
-                  height = 1080;
-                  refreshRate = 59.977;
-                };
-              };
-            };
-          };
-        };
+      virtualisation.vmVariant = {
+        anvil.desktop.preferences.modKey = mkForce "super";
+        anvil.desktop.preferences.modKeyAlt = mkForce "alt";
       };
 
       hardware.graphics = {
@@ -84,7 +69,7 @@ in {
     };
   };
 
-  flake.nixosModules."${host}-hardware" = {
+  flake.nixosModules."laptop-hardware" = {
     config,
     lib,
     pkgs,

@@ -26,13 +26,21 @@
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # TODO: Remove this when the following issue is fixed: https://github.com/ValveSoftware/steam-for-linux/issues/13566
+    # TODO: remove the overlay from steam program as well
+    xwayland-satellite-stable.url = "github:Supreeeme/xwayland-satellite/v0.8.1";
   };
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+      systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
       imports = [
         (inputs.import-tree ./modules)
+        (inputs.import-tree ./anvil)
         inputs.wrappers.flakeModules.wrappers
         inputs.flake-parts.flakeModules.modules
         inputs.home-manager.flakeModules.home-manager

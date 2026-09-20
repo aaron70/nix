@@ -1,87 +1,26 @@
 {
-  inputs,
   self,
+  lib,
   ...
-}: let
-  host = "gpd";
-in {
-  flake.nixosConfigurations.${host} = inputs.nixpkgs.lib.nixosSystem {
-    modules = [self.nixosModules.${host}];
-  };
-
-  flake.nixosModules.${host} = {...}: {
-    imports = [
-      self.nixosModules.configurations
-      self.nixosModules."${host}-hardware"
+}:
+with lib; {
+  anvil.hosts.gpd = {
+    systems.nixos = "x86_64-linux";
+    users = {host, ...}: [host.metadata.mainUser];
+    features = [
+      "configurations"
+      "jovian"
     ];
-
-    config = {
-      # Unccomment to disable fingerprint for sudo and polkit
-      # security.pam.services = {
-      #   sudo.fprintAuth = false;
-      #   polkit-1.fprintAuth = false;
-      # };
-
-      information = {
-        hostname = "gpd";
-        isLaptop = true;
-        hasBluetooth = true;
-        hasBattery = true;
-      };
-
-      preferences = {
-        profile = "personal";
-
-        features = {
-          gaming = {
-            enable = true;
-            configurations.gpu.isAMD = true;
-          };
-        };
-
-        programs = {
-          desktop = {
-            enable = true;
-            configurations = {
-              monitors = rec {
-                HDMI-A-1 = {
-                  enabled = true;
-                  primary = true;
-                  x = 2560;
-                  y = 140;
-                  width = 1920;
-                  height = 1080;
-                  refreshRate = 143.981;
-                };
-                HDMI-A-2 = HDMI-A-1;
-
-                DP-1 = {
-                  enabled = true;
-                  primary = false;
-                  x = 0;
-                  y = 0;
-                  width = 2560;
-                  height = 1440;
-                  refreshRate = 74.932;
-                };
-                DP-2 = DP-1;
-                DP-3 = DP-1;
-
-                eDP-1 = {
-                  enabled = true;
-                  primary = false;
-                  x = 629;
-                  y = 1440;
-                  width = 2560;
-                  height = 1600;
-                  refreshRate = 60.009;
-                  scale = 2.0;
-                };
-              };
-            };
-          };
-        };
-      };
+    programs = [];
+    metadata = rec {
+      mainUser = "aaronv";
+      configurationLimit = 3;
+      gpu.isAMD = true;
+      isGPD = true;
+      nixPath = "/home/${mainUser}/nix";
+    };
+    nixos = {...}: {
+      imports = [self.nixosModules."gpd-hardware"];
 
       nixpkgs.overlays = [
         (final: prev: {
@@ -104,10 +43,46 @@ in {
           });
         })
       ];
+
+      anvil.desktop.preferences.monitors = rec {
+        HDMI-A-1 = {
+          enabled = true;
+          primary = true;
+          x = 2560;
+          y = 140;
+          width = 1920;
+          height = 1080;
+          refreshRate = 143.981;
+        };
+        HDMI-A-2 = HDMI-A-1;
+
+        DP-1 = {
+          enabled = true;
+          primary = false;
+          x = 0;
+          y = 0;
+          width = 2560;
+          height = 1440;
+          refreshRate = 74.932;
+        };
+        DP-2 = DP-1;
+        DP-3 = DP-1;
+
+        eDP-1 = {
+          enabled = true;
+          primary = false;
+          x = 629;
+          y = 1440;
+          width = 2560;
+          height = 1600;
+          refreshRate = 60.009;
+          scale = 2.0;
+        };
+      };
     };
   };
 
-  flake.nixosModules."${host}-hardware" = {
+  flake.nixosModules."gpd-hardware" = {
     config,
     lib,
     pkgs,

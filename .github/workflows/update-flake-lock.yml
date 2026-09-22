@@ -27,8 +27,8 @@ jobs:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
           base: main
           branch: bot/flake-update
-          commit-msg: "chore: update flake.lock"
-          pr-title: "chore: update flake.lock"
+          commit-msg: "chore(flake): update flake.lock"
+          pr-title: "chore(flake): update flake.lock"
           pr-labels: |
             dependencies
             chore

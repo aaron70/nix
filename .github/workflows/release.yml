@@ -1,0 +1,45 @@
+name: Release
+on:
+  schedule:
+    - cron: '0 19 * 1,4,7,10 1'
+      timezone: 'America/Costa_Rica'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find the standing release PR
+        id: find_pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh pr list --label "autorelease: pending" --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            echo "number=$number" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure the PR's checks passed
+        timeout-minutes: 10
+        if: steps.find_pr.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr checks ${{ steps.find_pr.outputs.number }} --watch --required --interval 30
+
+      - name: Merge the release PR
+        if: steps.find_pr.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge ${{ steps.find_pr.outputs.number }} --merge
+
+      - name: Tag and publish the GitHub Release
+        if: steps.find_pr.outputs.found == 'true'
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

@@ -9,7 +9,7 @@
       },
       "locked": {
         "lastModified": 1782994178,
-        "narHash": "sha256-VGc3/2fe6hnOmNSLlOygEAbeS69v7A7rjKDKRzAgE2Q=",
+        "narHash": "sha256-VGc3/2fe6hnOmNSLlOygEAbeS69v7A7rjKDKRzAge2Q=",
         "owner": "hraban",
         "repo": "cl-nix-lite",
         "rev": "eb584721e5e799bafe0c6210a8a1a398f90e8ac0",

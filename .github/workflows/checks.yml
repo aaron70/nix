@@ -14,26 +14,27 @@ permissions:
   contents: read
 
 jobs:
-  format:
+  checks:
     name: Format (alejandra)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - run: nix fmt -- --check .
 
-  flake-checker:
-    name: Flake Checker
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/flake-checker-action@main
+      - name: Check formatting
+        run: nix fmt -- --check .
+
+      - name: Flake Checker
+        uses: DeterminateSystems/flake-checker-action@main
 
   build:
     name: Build (${{ matrix.system }})
-    needs: [format, flake-checker]
+    needs: [checks]
     strategy:
       fail-fast: false
       matrix:

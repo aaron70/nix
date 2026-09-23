@@ -9,7 +9,7 @@ with lib; {
     mkIfUser = user: mkIf (user != null);
     commonModule = {user, ...}: {
       sops = {
-        defaultSopsFile = ./personal.yaml;
+        defaultSopsFile = ./work.yaml;
         secrets = {
           "email" = {owner = mkIfUser user user.name;};
         };

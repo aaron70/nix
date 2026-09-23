@@ -12,7 +12,7 @@ with lib; {
 
     options = {
       getPackage = mkOption {
-        type = types.functionTo types.package;
+        type = types.functionTo (types.nullOr types.package);
         description = ''
           Function producing this program's package. Takes free-form arguments
           (e.g. `{pkgs, ...}`) and returns the package to install.

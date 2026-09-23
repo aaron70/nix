@@ -13,8 +13,46 @@ with lib; let
         metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
       };
       browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
-      desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
-      appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
+      desktopShell = if pkgs.stdenv.hostPlatform.isLinux then (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;}) else null;
+      appLauncher = if pkgs.stdenv.hostPlatform.isLinux then (pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher") else null;
+    };
+  };
+
+  commonModule = {
+    user,
+    program,
+    config,
+    pkgs,
+    ...
+  }: let
+    apps = program.metadata.desktop.apps {inherit pkgs;};
+    package = program.getPackage {
+      inherit pkgs;
+      preferences = config.anvil.desktop.preferences;
+    };
+  in {
+    imports = [
+      (self.lib.installPackages user [package])
+    ];
+
+    options = {
+      anvil.desktop.preferences = mkOption {
+        type = types.submodule {
+          _module.args.pkgs = pkgs;
+          imports = [
+            self.declarations.desktop
+          ];
+        };
+      };
+    };
+
+    config = {
+      anvil.desktop.preferences.terminal = mkForce apps.terminal;
+      anvil.desktop.preferences.browser = mkForce apps.browser;
+      anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
+      anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
+
+      environment.systemPackages = attrValues (filterAttrs (_: p: p != null) apps);
     };
   };
 in {
@@ -50,6 +88,17 @@ in {
         defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
       };
     };
+    darwin = {
+      user,
+      program,
+      ...
+    }: let
+      ctx = {inherit user program;};
+    in {
+      imports = [
+        (self.lib.withContext ctx commonModule)
+      ];
+    };
     nixos = {
       user,
       program,
@@ -62,21 +111,11 @@ in {
         inherit pkgs;
         preferences = config.anvil.desktop.preferences;
       };
+      ctx = {inherit user program;};
     in {
       imports = [
-        (self.lib.installPackages user [package])
+        (self.lib.withContext ctx commonModule)
       ];
-
-      options = {
-        anvil.desktop.preferences = mkOption {
-          type = types.submodule {
-            _module.args.pkgs = pkgs;
-            imports = [
-              self.declarations.desktop
-            ];
-          };
-        };
-      };
 
       config = {
         xdg.portal = {
@@ -84,11 +123,6 @@ in {
           extraPortals = [pkgs.xdg-desktop-portal-gtk];
           config.common.default = "*";
         };
-
-        anvil.desktop.preferences.terminal = mkForce apps.terminal;
-        anvil.desktop.preferences.browser = mkForce apps.browser;
-        anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
-        anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
 
         programs.${program.metadata.desktop.name} = {
           enable = true;

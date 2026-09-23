@@ -45,7 +45,7 @@ jobs:
 
   build:
     name: Build (${{ matrix.system }})
-    if: needs.changes.outputs.nix-files
+    if: needs.changes.outputs.nix-files == true
     needs: [checks]
     strategy:
       fail-fast: false

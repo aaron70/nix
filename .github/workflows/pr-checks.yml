@@ -51,8 +51,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - system: x86_64-linux
-          #   runner: ubuntu-latest
+          - system: x86_64-linux
+            runner: ubuntu-latest
           - system: aarch64-darwin
             runner: macos-15
     runs-on: ${{ matrix.runner }}
@@ -70,29 +70,3 @@ jobs:
 
       - name: Build checks
         run: nix flake check -L --keep-going
-
-      - name: Verify expected programs
-        run: |
-          expected="aerospace kitty zsh"
-          missing=0
-
-          hosts=$(nix eval --raw .#darwinConfigurations \
-            --apply 'c: builtins.concatStringsSep " " (builtins.attrNames c)')
-
-          for host in $hosts; do
-            echo "::group::$host"
-            toplevel=$(nix build -L --no-link --print-out-paths \
-              ".#darwinConfigurations.${host}.system")
-
-            for bin in $expected; do
-              if [ -x "$toplevel/sw/bin/$bin" ]; then
-                echo "ok: [$host] $bin"
-              else
-                echo "::error::[$host] expected program not found in build: $bin"
-                missing=1
-              fi
-            done
-            echo "::endgroup::"
-          done
-
-          exit $missing

@@ -73,21 +73,26 @@ jobs:
 
       - name: Verify expected programs
         run: |
-          toplevel=$(nix eval --raw \
-            ".#darwinConfigurations.${{ matrix.host }}.system.outPath")
-
-          if [ ! -d "$toplevel" ]; then
-            echo "::error::system closure was not built: $toplevel"
-            exit 1
-          fi
-
+          expected="aerospace kitty zsh"
           missing=0
-          for bin in aerospace kitty zsh; do
-            if [ -x "$toplevel/sw/bin/$bin" ]; then
-              echo "ok: $bin"
-            else
-              echo "::error::expected program not found in build: $bin"
-              missing=1
-            fi
+
+          hosts=$(nix eval --raw .#darwinConfigurations \
+            --apply 'c: builtins.concatStringsSep " " (builtins.attrNames c)')
+
+          for host in $hosts; do
+            echo "::group::$host"
+            toplevel=$(nix build -L --no-link --print-out-paths \
+              ".#darwinConfigurations.${host}.system")
+
+            for bin in $expected; do
+              if [ -x "$toplevel/sw/bin/$bin" ]; then
+                echo "ok: [$host] $bin"
+              else
+                echo "::error::[$host] expected program not found in build: $bin"
+                missing=1
+              fi
+            done
+            echo "::endgroup::"
           done
+
           exit $missing

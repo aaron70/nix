@@ -23,7 +23,11 @@ with lib; let
       content = ''
         [user]
             name = ${user.name}
-            email = ${if (user.metadata ? email) then user.metadata.email else config.sops.placeholder."email"}
+            email = ${
+          if (user.metadata ? email)
+          then user.metadata.email
+          else config.sops.placeholder."email"
+        }
       '';
       owner = user.name; # so your user can actually read the rendered file
     };

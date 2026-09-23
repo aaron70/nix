@@ -13,8 +13,14 @@ with lib; let
         metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
       };
       browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
-      desktopShell = if pkgs.stdenv.hostPlatform.isLinux then (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;}) else null;
-      appLauncher = if pkgs.stdenv.hostPlatform.isLinux then (pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher") else null;
+      desktopShell =
+        if pkgs.stdenv.hostPlatform.isLinux
+        then (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;})
+        else null;
+      appLauncher =
+        if pkgs.stdenv.hostPlatform.isLinux
+        then (pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher")
+        else null;
     };
   };
 

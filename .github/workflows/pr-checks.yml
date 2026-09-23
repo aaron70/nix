@@ -16,7 +16,7 @@ jobs:
     name: Format (alejandra)
     runs-on: ubuntu-latest
     outputs:
-      backend: ${{ steps.filter.outputs.nix-files }}
+      nix-flakes: ${{ steps.filter.outputs.nix-files }}
     steps:
       - name: Check PR title
         uses: amannn/action-semantic-pull-request@v6
@@ -45,7 +45,7 @@ jobs:
 
   build:
     name: Build (${{ matrix.system }})
-    if: needs.changes.outputs.nix-files == true
+    if: needs.changes.outputs.nix-files == 'true'
     needs: [checks]
     strategy:
       fail-fast: false

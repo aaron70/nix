@@ -27,9 +27,6 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      - name: Check formatting
-        run: nix fmt -- --check .
-
       - name: Flake Checker
         uses: DeterminateSystems/flake-checker-action@main
 

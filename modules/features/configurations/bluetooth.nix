@@ -1,4 +1,4 @@
-{...}: {
+_: {
   anvil.features.bluetooth = {
     nixos = {
       host,

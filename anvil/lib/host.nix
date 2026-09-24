@@ -9,9 +9,7 @@ with lib; let
   anvilHosts = config.anvil.hosts;
 in {
   flake.lib.getHost = name:
-    if anvilHosts ? ${name}
-    then anvilHosts.${name}
-    else throw "Anvil: Host '${name}' not found. Did you forget to set anvil.hosts.${name}?";
+    anvilHosts.${name} or (throw "Anvil: Host '${name}' not found. Did you forget to set anvil.hosts.${name}?");
 
   flake.lib.checkSystem = platform: system: name:
     if ! (inputs.nixpkgs.legacyPackages ? ${system})
@@ -55,7 +53,7 @@ in {
       (attrNames anvilHosts);
 
     byTarget =
-      zipAttrsWith (_: hosts: unique hosts)
+      zipAttrsWith (_: unique)
       (map ({
         hostName,
         targets,
@@ -161,7 +159,7 @@ in {
                     )
                   else user.homeDir.${platform}
                 );
-                stateVersion = host.stateVersion;
+                inherit (host) stateVersion;
               };
             };
           };

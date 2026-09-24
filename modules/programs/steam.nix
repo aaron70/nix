@@ -3,7 +3,7 @@
     nixos = {pkgs, ...}: {
       nixpkgs.overlays = [
         (final: prev: {
-          xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old: {
+          xwayland-satellite = prev.xwayland-satellite.overrideAttrs (_old: {
             version = "0.8.1";
             src = inputs.xwayland-satellite-stable;
             cargoDeps = final.rustPlatform.importCargoLock {

@@ -1,5 +1,5 @@
-{...}: {
-  flake.dotfiles.aerospace.default = {...}: ''
+_: {
+  flake.dotfiles.aerospace.default = _: ''
     after-startup-command = []
     start-at-login = true
 

@@ -1,6 +1,6 @@
 {lib, ...}:
 with lib; {
-  flake.declarations.shell = {...}: {
+  flake.declarations.shell = _: {
     options = {
       metadata = mkOption {
         type = types.attrsOf types.raw;

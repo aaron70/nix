@@ -6,7 +6,7 @@
 with lib; {
   anvil.programs.aerospace = {
     getPackage = self.wrappers.aerospace.wrap;
-    home = {...}: {
+    home = _: {
       programs.aerospace.enable = true;
       xdg.configFile."aerospace/aerospace.toml".text = self.dotfiles.aerospace.default {};
     };

@@ -1,4 +1,4 @@
-{...}: {
+_: {
   anvil.features.gaming = {
     programs = [
       "steam"

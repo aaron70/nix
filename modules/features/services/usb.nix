@@ -1,7 +1,7 @@
 {lib, ...}:
 with lib; {
   anvil.features.usb = {
-    nixos = {...}: {
+    nixos = _: {
       services.udisks2.enable = true;
     };
     home = {pkgs, ...}: {

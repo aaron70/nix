@@ -27,10 +27,11 @@ jobs:
           branch: bot/nix-linter
           commit-message: "chore(linter): Running nix fmt, deadnix, statix"
           title: "chore(linter): Cleaning and linting nix files"
+          body:
           delete-branch: true
 
       - name: Enable auto-merge
-        if: steps.update.outputs.pull-request-number != ''
+        if: steps.linter-pr.outputs.pull-request-operation == 'created'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: gh pr merge --auto --squash "${{ steps.linter-pr.outputs.pull-request-number }}"

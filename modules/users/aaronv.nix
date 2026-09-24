@@ -24,7 +24,7 @@ with lib; {
       ...
     }: {
       users.users.${user.name} = {
-        description = user.description;
+        inherit (user) description;
         uid = 1000;
         isNormalUser = true;
         extraGroups = ["networkmanager" "wheel" "audio"];
@@ -47,7 +47,7 @@ with lib; {
     };
     darwin = {user, ...}: {
       users.users.${user.name} = {
-        description = user.description;
+        inherit (user) description;
         # nix-darwin requires a uid; 501 is the macOS first-user uid.
         uid = 501;
         home = user.homeDir.darwin;

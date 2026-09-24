@@ -6,11 +6,7 @@
 with lib; {
   anvil.programs.niri = {
     getPackage = self.wrappers.niri.wrap;
-    nixos = {
-      program,
-      pkgs,
-      ...
-    }: {
+    nixos = {...}: {
     };
   };
 

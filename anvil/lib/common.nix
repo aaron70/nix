@@ -21,7 +21,7 @@ with lib; {
     wrap = fragment:
       if isFunction fragment
       then
-        {...} @ args:
+        args:
           fragment (ctx // removeAttrs args ["host" "user" "system"])
       else fragment;
   in

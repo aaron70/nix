@@ -1,7 +1,7 @@
 {lib, ...}:
 with lib; {
   anvil.features.docker = {
-    nixos = {...}: {
+    nixos = _: {
       # NOTE: Be aware of: https://github.com/moby/moby/issues/9976
       # users.users = mkIf (user != null) {
       #   ${user.name}.extraGroups = [ "docker" ];

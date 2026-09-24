@@ -1,6 +1,5 @@
 {
   self,
-  config,
   lib,
   ...
 } @ global:
@@ -13,11 +12,9 @@ with lib; let
     shell.extraActivationScripts = [];
   };
   commonModule = {
-    host,
     program,
     user,
     pkgs,
-    config,
     ...
   } @ args: {
     imports = [
@@ -88,7 +85,7 @@ in {
     darwin = commonModule;
   };
 
-  flake.wrappers.shell = {...}:
+  flake.wrappers.shell = _:
     with defaultConfiguration; {
       imports = [
         self.wrapperModules.${shell.name}

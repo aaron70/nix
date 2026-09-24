@@ -92,7 +92,7 @@ in {
 
         programs.${program.metadata.desktop.name} = {
           enable = true;
-          package = package;
+          inherit package;
         };
 
         services.gvfs.enable = true;

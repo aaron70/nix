@@ -1,4 +1,4 @@
-{...}: {
+_: {
   anvil.users.aaronv-work = {
     name = "aaronv";
     description = "Aaron Vargas";
@@ -16,7 +16,7 @@
     homeDir.darwin = "/Users/aaronv";
     darwin = {user, ...}: {
       users.users.${user.name} = {
-        description = user.description;
+        inherit (user) description;
         # nix-darwin requires a uid; 501 is the macOS first-user uid.
         uid = 501;
         home = user.homeDir.darwin;

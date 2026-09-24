@@ -85,7 +85,6 @@ with lib; {
   flake.nixosModules."gpd-hardware" = {
     config,
     lib,
-    pkgs,
     modulesPath,
     ...
   }: {

@@ -1,21 +1,16 @@
 {
   self,
   lib,
-  config,
   ...
 } @ global:
-with lib; let
-in {
+with lib; {
   anvil.programs.niri = {
     getPackage = self.wrappers.niri.wrap;
     nixos = {
-      user,
       program,
       pkgs,
       ...
-    }: let
-      package = program.getPackage {inherit pkgs;};
-    in {
+    }: {
     };
   };
 

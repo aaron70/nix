@@ -1,8 +1,4 @@
-{
-  self,
-  lib,
-  ...
-}:
+{lib, ...}:
 with lib; {
   anvil.hosts.mac = {
     systems.darwin = "aarch64-darwin";
@@ -16,7 +12,7 @@ with lib; {
       configurationLimit = 3;
       nixPath = "/Users/${mainUser}/nix";
     };
-    darwin = {...}: {
+    darwin = _: {
     };
   };
 }

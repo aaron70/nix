@@ -1,5 +1,5 @@
 {self, ...}: {
-  flake.dotfiles.noctalia.default = {...}: let
+  flake.dotfiles.noctalia.default = _: let
     wallpapersPath = "${self.dotfiles.resourcesPath}/wallpapers";
     imagessPath = "${self.dotfiles.resourcesPath}/images";
   in ''

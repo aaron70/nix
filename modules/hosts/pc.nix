@@ -44,7 +44,6 @@
   flake.nixosModules."pc-hardware" = {
     config,
     lib,
-    pkgs,
     modulesPath,
     ...
   }: {

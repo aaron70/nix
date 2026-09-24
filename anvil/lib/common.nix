@@ -21,12 +21,7 @@ with lib; {
     wrap = fragment:
       if isFunction fragment
       then
-        {
-          config,
-          lib,
-          pkgs,
-          ...
-        } @ args:
+        {...} @ args:
           fragment (ctx // removeAttrs args ["host" "user" "system"])
       else fragment;
   in

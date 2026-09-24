@@ -1,4 +1,4 @@
-{...}: {
+_: {
   # Source: https://github.com/vimjoyer/nixconf/blob/main/nixos/features/powersave.nix
   anvil.features.powersave = {
     nixos = {

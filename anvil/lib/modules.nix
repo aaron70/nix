@@ -13,7 +13,7 @@ with lib; {
     environment.systemPackages = mkIf (user == null) packages;
   });
 
-  flake.lib.forUser = user: attrSet: ({...}: {
+  flake.lib.forUser = user: attrSet: (_: {
     users.users = mkIf (user != null) attrSet;
   });
 }

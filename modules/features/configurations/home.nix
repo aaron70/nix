@@ -1,17 +1,12 @@
 {
   inputs,
-  self,
   lib,
   config,
   ...
 }:
 with lib; {
   anvil.features.homeManager = {
-    darwin = {
-      host,
-      user,
-      ...
-    } @ ctx: let
+    darwin = {host, ...} @ ctx: let
       user =
         if ctx.user == null
         then config.anvil.users.${host.metadata.mainUser}
@@ -28,18 +23,14 @@ with lib; {
             home = {
               username = user.name;
               homeDirectory = mkDefault user.homeDir.darwin;
-              stateVersion = host.stateVersion;
+              inherit (host) stateVersion;
             };
           };
         };
       };
     };
 
-    nixos = {
-      host,
-      user,
-      ...
-    } @ ctx: let
+    nixos = {host, ...} @ ctx: let
       user =
         if ctx.user == null
         then config.anvil.users.${host.metadata.mainUser}
@@ -49,13 +40,13 @@ with lib; {
 
       config = {
         home-manager.backupFileExtension = "bckp";
-        home-manager.users.${user.name} = {...}: {
+        home-manager.users.${user.name} = _: {
           config = {
             programs.home-manager.enable = true;
             home = {
               username = user.name;
               homeDirectory = mkDefault user.homeDir.nixos;
-              stateVersion = host.stateVersion;
+              inherit (host) stateVersion;
 
               file.".XCompose".text = ''
                 include "%L"

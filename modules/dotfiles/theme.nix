@@ -29,7 +29,7 @@
   ];
 in
   with lib; {
-    flake.modules.generic.colors = {pkgs, ...}: {
+    flake.modules.generic.colors = {...}: {
       options = {
         preferences.theme.colors = mkOption {
           type = types.submodule {

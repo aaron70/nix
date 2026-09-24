@@ -1,5 +1,5 @@
-{...}: {
-  flake.dotfiles.atuin.default = {...}: ''
+_: {
+  flake.dotfiles.atuin.default = _: ''
     dialect = "us"
 
     invert = false

@@ -18,7 +18,17 @@ with lib; {
         (self.lib.installPackages user [package])
       ];
     };
-    darwin = nixos;
+    darwin = {
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
+    in {
+      imports = [
+        (self.lib.installPackages null [package])
+      ];
+    };
   };
 
   flake.wrappers.kitty = {

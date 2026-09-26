@@ -6,7 +6,7 @@
     programs = [
       "editor"
       "terminal"
-      "desktop"
+      "aerospace"
     ];
     features = [
       "homeManager"

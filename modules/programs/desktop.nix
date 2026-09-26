@@ -13,14 +13,8 @@ with lib; let
         metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
       };
       browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
-      desktopShell =
-        if pkgs.stdenv.hostPlatform.isLinux
-        then (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;})
-        else null;
-      appLauncher =
-        if pkgs.stdenv.hostPlatform.isLinux
-        then (pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher")
-        else null;
+      desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
+      appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
     };
   };
 
@@ -94,17 +88,6 @@ in {
         defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
       };
     };
-    darwin = {
-      user,
-      program,
-      ...
-    }: let
-      ctx = {inherit user program;};
-    in {
-      imports = [
-        (self.lib.withContext ctx commonModule)
-      ];
-    };
     nixos = {
       user,
       program,
@@ -172,15 +155,7 @@ in {
     ];
   };
 
-  flake.wrappers.desktop-darwin = {...}: {
-    imports = [
-      self.wrapperModules.aerospace
-    ];
-  };
-
   perSystem = {pkgs, ...}: {
     wrappers.packages.desktop = pkgs.stdenv.hostPlatform.isDarwin;
-    wrappers.packages.desktop-darwin =
-      !(pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin);
   };
 }

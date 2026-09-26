@@ -26,7 +26,7 @@ with lib; {
       package = program.getPackage {inherit pkgs;};
     in {
       imports = [
-        (self.lib.installPackages null [package])
+        (self.lib.installPackages null [package]) # Darwin requires to be installed globally to create the kitty.app
       ];
     };
   };

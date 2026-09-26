@@ -10,10 +10,14 @@ with lib; {
       programs.aerospace.enable = true;
       xdg.configFile."aerospace/aerospace.toml".text = self.dotfiles.aerospace.default {};
     };
-    darwin = {program, pkgs, ...}: let
-      package = program.getPackage { inherit pkgs; };
+    darwin = {
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
     in {
-      environment.systemPackages = [ package ];
+      environment.systemPackages = [package];
     };
   };
 
@@ -24,7 +28,6 @@ with lib; {
   }: {
     imports = [
       wlib.modules.default
-      self.declarations.desktop
     ];
     package = pkgs.aerospace;
   };

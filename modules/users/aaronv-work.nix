@@ -6,11 +6,11 @@
     programs = [
       "editor"
       "terminal"
-      "desktop"
+      "aerospace"
     ];
     features = [
       "homeManager"
-      # "work-secrets"
+      "work-secrets"
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";

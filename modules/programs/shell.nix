@@ -70,11 +70,15 @@ in {
 
           shellAliases = let
             nixFlakePath = host.metadata.nixPath;
+            isLinux = pkgs.stdenv.hostPlatform.isLinux;
           in {
-            ntest = "nh os test ${nixFlakePath} -H ${host.name}";
-            nboot = "nh os boot ${nixFlakePath} -H ${host.name}";
-            nswitch = "nh os switch ${nixFlakePath} -H ${host.name}";
-            nbuild-vm = "nh os build-vm ${nixFlakePath} -H ${host.name}";
+            ntest = mkIf isLinux "nh os test ${nixFlakePath} -H ${host.name}";
+            nboot = mkIf isLinux "nh os boot ${nixFlakePath} -H ${host.name}";
+            nswitch =
+              if isLinux
+              then "nh os switch ${nixFlakePath} -H ${host.name}"
+              else "nh darwin switch ${nixFlakePath} -H ${host.name}";
+            nbuild-vm = mkIf isLinux "nh os build-vm ${nixFlakePath} -H ${host.name}";
             nclean = "nh clean all --optimise -k ${toString host.metadata.configurationLimit}";
             nshell = "nix-shell --command ${program.metadata.shell.name} -p";
           };

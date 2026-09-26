@@ -22,8 +22,9 @@
     nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.wrappers.follows = "wrappers";
 
-    zen-browser.url = "github:youwen5/zen-browser-flake";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    zen-browser.inputs.home-manager.follows = "home-manager";
 
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 

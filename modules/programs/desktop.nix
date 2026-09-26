@@ -17,6 +17,44 @@ with lib; let
       appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
     };
   };
+
+  commonModule = {
+    user,
+    program,
+    config,
+    pkgs,
+    ...
+  }: let
+    apps = program.metadata.desktop.apps {inherit pkgs;};
+    package = program.getPackage {
+      inherit pkgs;
+      preferences = config.anvil.desktop.preferences;
+    };
+  in {
+    imports = [
+      (self.lib.installPackages user [package])
+    ];
+
+    options = {
+      anvil.desktop.preferences = mkOption {
+        type = types.submodule {
+          _module.args.pkgs = pkgs;
+          imports = [
+            self.declarations.desktop
+          ];
+        };
+      };
+    };
+
+    config = {
+      anvil.desktop.preferences.terminal = mkForce apps.terminal;
+      anvil.desktop.preferences.browser = mkForce apps.browser;
+      anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
+      anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
+
+      environment.systemPackages = attrValues (filterAttrs (_: p: p != null) apps);
+    };
+  };
 in {
   anvil.programs.desktop = {
     metadata = defaultConfiguration;
@@ -62,21 +100,11 @@ in {
         inherit pkgs;
         preferences = config.anvil.desktop.preferences;
       };
+      ctx = {inherit user program;};
     in {
       imports = [
-        (self.lib.installPackages user [package])
+        (self.lib.withContext ctx commonModule)
       ];
-
-      options = {
-        anvil.desktop.preferences = mkOption {
-          type = types.submodule {
-            _module.args.pkgs = pkgs;
-            imports = [
-              self.declarations.desktop
-            ];
-          };
-        };
-      };
 
       config = {
         xdg.portal = {
@@ -84,11 +112,6 @@ in {
           extraPortals = [pkgs.xdg-desktop-portal-gtk];
           config.common.default = "*";
         };
-
-        anvil.desktop.preferences.terminal = mkForce apps.terminal;
-        anvil.desktop.preferences.browser = mkForce apps.browser;
-        anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
-        anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
 
         programs.${program.metadata.desktop.name} = {
           enable = true;
@@ -132,15 +155,7 @@ in {
     ];
   };
 
-  flake.wrappers.desktop-darwin = {...}: {
-    imports = [
-      self.wrapperModules.aerospace
-    ];
-  };
-
   perSystem = {pkgs, ...}: {
     wrappers.packages.desktop = pkgs.stdenv.hostPlatform.isDarwin;
-    wrappers.packages.desktop-darwin =
-      !(pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin);
   };
 }

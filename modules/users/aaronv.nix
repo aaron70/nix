@@ -44,11 +44,6 @@ with lib; {
           initialPassword = "anvil";
         };
       };
-
-      anvil.shell.preferences = {
-        envVariables.PREFERENCES = "worked";
-        shellAliases.preferences = "echo worked";
-      };
     };
     darwin = {user, ...}: {
       users.users.${user.name} = {

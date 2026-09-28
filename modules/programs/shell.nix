@@ -19,13 +19,16 @@ with lib; let
     pkgs,
     config,
     ...
-  } @ args: {
+  } @ args: let 
+    package = with program; getPackage args;
+  in {
     imports = [
       (self.lib.forUser user {
         ${user.name} = {
-          shell = with program; getPackage args;
+          shell = package;
         };
       })
+      (self.lib.inheritPreferences "shell" args [ self.declarations.shell ])
     ];
     fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
   };
@@ -37,12 +40,14 @@ in {
       pkgs,
       program,
       config,
+      options,
       ...
     }:
       with program.metadata;
         global.config.anvil.programs.${shell.name}.getPackage rec {
           imports = [
             (self.dotfiles.shell.getConfiguration {inherit defaultConfiguration;})
+            (self.lib.usePreferences "shell" options)
           ];
 
           inherit pkgs;

@@ -19,7 +19,7 @@ with lib; let
     pkgs,
     config,
     ...
-  } @ args: let 
+  } @ args: let
     package = with program; getPackage args;
   in {
     imports = [
@@ -28,7 +28,7 @@ with lib; let
           shell = package;
         };
       })
-      (self.lib.inheritPreferences "shell" args [ self.declarations.shell ])
+      (self.lib.inheritPreferences "shell" args [self.declarations.shell])
     ];
     fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
   };

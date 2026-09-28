@@ -61,13 +61,13 @@ in {
       config,
       options,
       ...
-    }@args: let
+    } @ args: let
       apps = program.metadata.desktop.apps {inherit pkgs;};
-      package = program.getPackage { inherit pkgs options; };
+      package = program.getPackage {inherit pkgs options;};
     in {
       imports = [
         (self.lib.installPackages user [package])
-        (self.lib.inheritPreferences "desktop" args [ self.declarations.desktop ])
+        (self.lib.inheritPreferences "desktop" args [self.declarations.desktop])
       ];
 
       config = {

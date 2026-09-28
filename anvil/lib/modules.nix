@@ -29,6 +29,6 @@ with lib; {
   };
 
   flake.lib.usePreferences = name: options: {
-    imports = options.anvil.${name}.preferences.definitions ;
+    imports = options.anvil.${name}.preferences.definitions;
   };
 }

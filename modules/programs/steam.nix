@@ -1,18 +1,6 @@
-{inputs, ...}: {
+{...}: {
   anvil.programs.steam = {
     nixos = {pkgs, ...}: {
-      nixpkgs.overlays = [
-        (final: prev: {
-          xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old: {
-            version = "0.8.1";
-            src = inputs.xwayland-satellite-stable;
-            cargoDeps = final.rustPlatform.importCargoLock {
-              lockFile = "${inputs.xwayland-satellite-stable}/Cargo.lock";
-            };
-          });
-        })
-      ];
-
       environment.sessionVariables = {
         STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
       };

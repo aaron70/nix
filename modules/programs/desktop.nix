@@ -22,19 +22,23 @@ in {
     metadata = defaultConfiguration;
     getPackage = {
       pkgs,
-      preferences ? {},
+      options,
       ...
     }:
       if pkgs.stdenv.hostPlatform.isLinux
       then
         self.wrappers.desktop.wrap {
           inherit pkgs;
-          imports = [preferences];
+          imports = [
+            (self.lib.usePreferences "desktop" options)
+          ];
         }
       else
         self.wrappers.desktop-darwin.wrap {
           inherit pkgs;
-          imports = [preferences];
+          imports = [
+            (self.lib.usePreferences "desktop" options)
+          ];
         };
     features = [
       "usb"
@@ -55,28 +59,16 @@ in {
       program,
       pkgs,
       config,
+      options,
       ...
-    }: let
+    } @ args: let
       apps = program.metadata.desktop.apps {inherit pkgs;};
-      package = program.getPackage {
-        inherit pkgs;
-        preferences = config.anvil.desktop.preferences;
-      };
+      package = program.getPackage {inherit pkgs options;};
     in {
       imports = [
         (self.lib.installPackages user [package])
+        (self.lib.inheritPreferences "desktop" args [self.declarations.desktop])
       ];
-
-      options = {
-        anvil.desktop.preferences = mkOption {
-          type = types.submodule {
-            _module.args.pkgs = pkgs;
-            imports = [
-              self.declarations.desktop
-            ];
-          };
-        };
-      };
 
       config = {
         xdg.portal = {

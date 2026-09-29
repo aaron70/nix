@@ -16,4 +16,19 @@ with lib; {
   flake.lib.forUser = user: attrSet: ({...}: {
     users.users = mkIf (user != null) attrSet;
   });
+
+  flake.lib.inheritPreferences = name: args: preferences: {
+    options = {
+      anvil.${name}.preferences = mkOption {
+        type = types.submodule {
+          _module.args = args;
+          imports = preferences;
+        };
+      };
+    };
+  };
+
+  flake.lib.usePreferences = name: options: {
+    imports = options.anvil.${name}.preferences.definitions;
+  };
 }

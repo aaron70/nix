@@ -12,6 +12,8 @@ with lib; {
         defaultSopsFile = ./work.yaml;
         secrets = {
           "email" = {owner = mkIfUser user user.name;};
+          "github/package/registry/user" = {owner = mkIfUser user user.name;};
+          "github/package/registry/api-key" = {owner = mkIfUser user user.name;};
         };
       };
     };

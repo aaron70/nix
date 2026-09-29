@@ -11,7 +11,7 @@ Personal NixOS and nix-darwin configuration by [Aaron Vargas](https://github.com
 | `pc` | x86_64 | NixOS | aaronv | NVIDIA | niri + Noctalia | Personal computer, for gaming and development. |
 | `laptop` | x86_64 | NixOS | aaronv | Intel | niri + Noctalia | Personal laptop, for development. |
 | `gpd` | x86_64 | NixOS (Jovian) | aaronv | AMD | niri + Noctalia | Handheld console, for gaming and occasionally development. |
-| `mac` | aarch64 | macOS | aaronvargas | Apple Silicon | AeroSpace | Work computer. (Not implemented yet) |
+| `mac` | aarch64 | macOS | aaronv-work | Apple Silicon | AeroSpace | Work computer. |
 
 
 ## Architecture

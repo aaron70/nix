@@ -14,7 +14,11 @@
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";
-    darwin = {user, ...}: {
+    darwin = {
+      user,
+      config,
+      ...
+    }: {
       users.users.${user.name} = {
         description = user.description;
         # nix-darwin requires a uid; 501 is the macOS first-user uid.

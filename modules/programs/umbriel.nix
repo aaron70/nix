@@ -1,12 +1,12 @@
 {
+  inputs,
   self,
   lib,
   config,
   ...
 } @ global:
-with lib; let
-in {
-  anvil.programs.niri = {
+with lib; {
+  anvil.programs.umbriel = {
     programs = [
       "desktop"
       "noctalia"
@@ -16,7 +16,7 @@ in {
       options,
       ...
     }:
-      self.wrappers.niri.wrap {
+      self.wrappers.umbriel.wrap {
         inherit pkgs;
         imports = [
           (self.lib.usePreferences "desktop" options)
@@ -31,28 +31,41 @@ in {
     }: let
       package = program.getPackage {inherit pkgs options;};
     in {
-      programs.niri = {
+      imports = [inputs.umbriel.nixosModules.default];
+      programs.umbriel = {
         enable = true;
         package = package;
       };
     };
+    home = {config, ...}: {
+      imports = [
+        inputs.umbriel.homeModules.default
+        self.declarations.desktop
+      ];
+      programs.umbriel = {
+        enable = true;
+        settings = self.dotfiles.umbriel.default {config = config.anvil.desktop.preferences;};
+      };
+    };
   };
 
-  flake.wrappers.niri = {
+  flake.wrappers.umbriel = {
     wlib,
     pkgs,
     config,
     ...
   }: {
     imports = [
-      wlib.wrapperModules.niri
+      wlib.modules.default
       self.declarations.desktop
     ];
 
-    passthru.providedSessions = ["niri"];
+    passthru.providedSessions = ["umbriel"];
+    package = pkgs.umbriel;
+    # flags."-c" = pkgs.writeText "config.toml" (self.dotfiles.umbriel.toml {inherit config;}); # TODO: Currently not working, umbriel is not reading the configuration file from the nix store
+
     runtimePkgs = with pkgs; [
       xwayland-satellite
-      jq
     ];
 
     env.FONTCONFIG_FILE = "${config.fontsConfig}";
@@ -61,10 +74,9 @@ in {
     browser = mkDefault (global.config.anvil.programs.zen.getPackage {inherit pkgs;});
     desktopShell = mkDefault (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;});
     appLauncher = mkDefault (pkgs.writeShellScriptBin "app-launcher" "${getExe config.desktopShell} msg panel-toggle launcher");
-    "config.kdl".content = self.dotfiles.niri.default {inherit config;};
   };
 
   perSystem = {pkgs, ...}: {
-    wrappers.packages.niri = pkgs.stdenv.hostPlatform.isDarwin;
+    wrappers.packages.umbriel = pkgs.stdenv.hostPlatform.isDarwin;
   };
 }

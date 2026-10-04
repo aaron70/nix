@@ -7,15 +7,34 @@
 with lib; let
 in {
   anvil.programs.niri = {
-    getPackage = self.wrappers.niri.wrap;
+    programs = [
+      "desktop"
+      "noctalia"
+    ];
+    getPackage = {
+      pkgs,
+      options,
+      ...
+    }:
+      self.wrappers.niri.wrap {
+        inherit pkgs;
+        imports = [
+          (self.lib.usePreferences "desktop" options)
+        ];
+      };
     nixos = {
       user,
       program,
       pkgs,
+      options,
       ...
     }: let
-      package = program.getPackage {inherit pkgs;};
+      package = program.getPackage {inherit pkgs options;};
     in {
+      programs.niri = {
+        enable = true;
+        package = package;
+      };
     };
   };
 

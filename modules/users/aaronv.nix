@@ -9,7 +9,7 @@ with lib; {
     programs = [
       "editor"
       "terminal"
-      "desktop"
+      "niri"
     ];
     features = [
       "homeManager"

@@ -364,6 +364,9 @@ with lib; {
       Mod+Shift+G { move-column-to-workspace "gaming"; }
       Mod+Shift+T { move-column-to-workspace "temporal"; }
 
+      Mod+Ctrl+Tab { toggle-column-tabbed-display; }
+      Mod+Ctrl+H { consume-or-expel-window-left; }
+      Mod+Ctrl+L { consume-or-expel-window-right; }
 
       XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; } // "-l 1.0" limits the volume to 100%.
       XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }

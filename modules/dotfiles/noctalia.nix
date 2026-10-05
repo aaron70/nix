@@ -122,7 +122,7 @@
     shadow = false
 
     [hooks]
-    shutting_down = "ddcutil detect --brief | awk '/^Display/ {print $2}' | xargs -P0 -I{} ddcutil --display {} setvcp D6 05"
+    shutting_down = "poweroff-monitors"
 
     [idle]
     behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]

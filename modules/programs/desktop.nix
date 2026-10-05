@@ -83,6 +83,7 @@ with lib; {
           query=$(echo "" | ${getExe noctalia} dmenu -p "Search nixpkgs: ")
           [ -n "$query" ] && ${pkgs.xdg-utils}/bin/xdg-open "https://search.nixos.org/packages?query=''${query// /+}"
         '')
+        (pkgs.writeShellScriptBin "poweroff-monitors" "${getExe ddcutil} detect --brief | awk '/^Display/ {print $2}' | xargs -P0 -I{} ${getExe ddcutil} --display {} setvcp D6 05")
         ddcutil
       ];
     };

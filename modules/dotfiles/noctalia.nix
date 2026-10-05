@@ -121,6 +121,9 @@
     reserve_space = false
     shadow = false
 
+    [hooks]
+    shutting_down = "ddcutil detect --brief | awk '/^Display/ {print $2}' | xargs -P0 -I{} ddcutil --display {} setvcp D6 05"
+
     [idle]
     behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
     pre_action_fade_seconds = 10
@@ -152,6 +155,8 @@
     enabled = true
     schema_version = 2
     widget_order = [
+        "lockscreen-login-box@WL-1",
+        "lockscreen-login-box@DP-4",
         "lockscreen-login-box@eDP-1",
         "lockscreen-login-box@HDMI-A-2",
         "lockscreen-login-box@DP-3",
@@ -176,6 +181,8 @@
         cx = 960.0
         cy = 961.0
         output = "DP-1"
+        placement_height = 0.0
+        placement_width = 0.0
         rotation = 0.0
         type = "login_box"
 
@@ -183,11 +190,17 @@
             background_color = "surface_variant"
             background_opacity = 0.88
             background_radius = 12.0
+            center_password_text = false
             input_opacity = 1.0
             input_radius = 6.0
+            layout = "regular"
             show_caps_lock = true
             show_keyboard_layout = true
             show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-2"]
         box_height = 70.0
@@ -195,6 +208,8 @@
         cx = 1280.0
         cy = 1321.0
         output = "DP-2"
+        placement_height = 1080.0
+        placement_width = 1920.0
         rotation = 0.0
         type = "login_box"
 
@@ -202,11 +217,17 @@
             background_color = "surface_variant"
             background_opacity = 0.88
             background_radius = 12.0
+            center_password_text = false
             input_opacity = 1.0
             input_radius = 6.0
+            layout = "regular"
             show_caps_lock = true
             show_keyboard_layout = true
             show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-3"]
         box_height = 70.0
@@ -214,6 +235,8 @@
         cx = 960.0
         cy = 961.0
         output = "DP-3"
+        placement_height = 0.0
+        placement_width = 0.0
         rotation = 0.0
         type = "login_box"
 
@@ -221,11 +244,44 @@
             background_color = "surface_variant"
             background_opacity = 0.88
             background_radius = 12.0
+            center_password_text = false
             input_opacity = 1.0
             input_radius = 6.0
+            layout = "regular"
             show_caps_lock = true
             show_keyboard_layout = true
             show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-4"]
+        box_height = 196.0
+        box_width = 720.0
+        cx = 960.0
+        cy = 961.0
+        output = "DP-4"
+        placement_height = 0.0
+        placement_width = 0.0
+        rotation = 0.0
+        type = "login_box"
+
+            [lockscreen_widgets.widget."lockscreen-login-box@DP-4".settings]
+            background_color = "surface_variant"
+            background_opacity = 0.88
+            background_radius = 12.0
+            center_password_text = false
+            input_opacity = 1.0
+            input_radius = 6.0
+            layout = "regular"
+            show_caps_lock = true
+            show_keyboard_layout = true
+            show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
 
         [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
         box_height = 70.0
@@ -233,6 +289,8 @@
         cx = 1280.0
         cy = 1321.0
         output = "HDMI-A-1"
+        placement_height = 1440.0
+        placement_width = 2560.0
         rotation = 0.0
         type = "login_box"
 
@@ -240,11 +298,17 @@
             background_color = "surface_variant"
             background_opacity = 0.88
             background_radius = 12.0
+            center_password_text = false
             input_opacity = 1.0
             input_radius = 6.0
+            layout = "regular"
             show_caps_lock = true
             show_keyboard_layout = true
             show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
 
         [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2"]
         box_height = 196.0
@@ -258,6 +322,33 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2".settings]
+            background_color = "surface_variant"
+            background_opacity = 0.88
+            background_radius = 12.0
+            center_password_text = false
+            input_opacity = 1.0
+            input_radius = 6.0
+            layout = "regular"
+            show_caps_lock = true
+            show_keyboard_layout = true
+            show_login_button = true
+            show_media = true
+            show_session_buttons = true
+            show_unlock_hint = true
+            show_weather = true
+
+        [lockscreen_widgets.widget."lockscreen-login-box@WL-1"]
+        box_height = 196.0
+        box_width = 810.0
+        cx = 938.0
+        cy = 850.0
+        output = "WL-1"
+        placement_height = 1032.0
+        placement_width = 1876.0
+        rotation = 0.0
+        type = "login_box"
+
+            [lockscreen_widgets.widget."lockscreen-login-box@WL-1".settings]
             background_color = "surface_variant"
             background_opacity = 0.88
             background_radius = 12.0
@@ -361,6 +452,8 @@
         cx = 960.0
         cy = 796.0
         output = "eDP-1"
+        placement_height = 0.0
+        placement_width = 0.0
         rotation = 0.0
         type = "media_player"
 
@@ -409,6 +502,8 @@
         cx = 960.0
         cy = 172.5
         output = "DP-1"
+        placement_height = 0.0
+        placement_width = 0.0
         rotation = 0.0
         type = "clock"
 
@@ -422,6 +517,8 @@
         cx = 960.0
         cy = 812.0
         output = "DP-1"
+        placement_height = 0.0
+        placement_width = 0.0
         rotation = 0.0
         type = "media_player"
 
@@ -493,6 +590,7 @@
         [shell.panel]
         control_center_placement = "floating"
         list_item_background = true
+        open_near_click_clipboard = true
         open_near_click_control_center = true
         open_near_click_session = true
         session_placement = "floating"
@@ -503,42 +601,49 @@
         enabled = true
         size = 25
 
-        [[shell.session.actions]]
-        action = "lock"
-        countdown_seconds = 0.0
-        enabled = true
-        shortcut = "1"
-        variant = "default"
+        [shell.screenshot]
+        annotate = true
 
-        [[shell.session.actions]]
-        action = "logout"
-        countdown_seconds = 0.0
-        enabled = true
-        shortcut = "2"
-        variant = "default"
+        [shell.session]
+        grid = true
+        show_shortcuts = false
 
-        [[shell.session.actions]]
-        action = "lock_and_suspend"
-        countdown_seconds = 0.0
-        enabled = true
-        glyph = "zzz"
-        label = "Suspend"
-        shortcut = "3"
-        variant = "default"
+            [[shell.session.actions]]
+            action = "lock"
+            countdown_seconds = 0.0
+            enabled = true
+            shortcut = "1"
+            variant = "default"
 
-        [[shell.session.actions]]
-        action = "reboot"
-        countdown_seconds = 0.0
-        enabled = true
-        shortcut = "4"
-        variant = "default"
+            [[shell.session.actions]]
+            action = "logout"
+            countdown_seconds = 0.0
+            enabled = true
+            shortcut = "2"
+            variant = "default"
 
-        [[shell.session.actions]]
-        action = "shutdown"
-        countdown_seconds = 0.0
-        enabled = true
-        shortcut = "5"
-        variant = "destructive"
+            [[shell.session.actions]]
+            action = "lock_and_suspend"
+            countdown_seconds = 0.0
+            enabled = true
+            glyph = "zzz"
+            label = "Suspend"
+            shortcut = "3"
+            variant = "default"
+
+            [[shell.session.actions]]
+            action = "reboot"
+            countdown_seconds = 0.0
+            enabled = true
+            shortcut = "4"
+            variant = "default"
+
+            [[shell.session.actions]]
+            action = "shutdown"
+            countdown_seconds = 0.0
+            enabled = true
+            shortcut = "5"
+            variant = "destructive"
 
     [theme]
     builtin = "Tokyo-Night"
@@ -550,7 +655,7 @@
 
         [theme.templates]
         builtin_ids = [ "btop" ]
-        community_ids = [ "zen-browser" ]
+        community_ids = [ "zen-browser", "steam" ]
 
     [wallpaper]
     directory = "${wallpapersPath}"
@@ -589,6 +694,10 @@
     [widget.media]
     hide_when_no_media = true
     title_scroll = "always"
+
+        [widget.media.actions]
+        left = "media toggle"
+        right = "panel-toggle control-center media"
 
     [widget.network]
     show_label = false

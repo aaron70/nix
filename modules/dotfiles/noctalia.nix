@@ -395,7 +395,7 @@
         box_height = 196.0
         box_width = 720.0
         cx = 682.981201171875
-       cy = 1028.0
+        cy = 1028.0
         output = "winit"
         placement_height = 1028.0
         placement_width = 1876.0
@@ -650,11 +650,11 @@
     community_palette = "Tokyo Night Storm"
     mode = "dark"
     pure_black_dark = true
-    source = "builtin"
-    wallpaper_scheme = "m3-tonal-spot"
+    source = "wallpaper"
+    wallpaper_scheme = "soft"
 
         [theme.templates]
-        builtin_ids = [ "btop" ]
+        builtin_ids = [ "btop", "niri" ]
         community_ids = [ "zen-browser", "steam" ]
 
     [wallpaper]

@@ -226,6 +226,7 @@ with lib; {
 
     window-rule {
         match at-startup=true app-id=r#"(?i)discord"#
+        match at-startup=true app-id=r#"(?i)vesktop"#
         open-on-workspace "chat"
         open-maximized true
     }
@@ -705,6 +706,7 @@ with lib; {
     workspace "chat"
     window-rule {
         match at-startup=true app-id=r#"^discord$"#
+        match at-startup=true app-id=r#"^vesktop$"#
         open-on-workspace "chat"
         open-maximized true
     }

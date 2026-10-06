@@ -6,7 +6,7 @@
     nixos = {pkgs, ...}: {
       environment.systemPackages = with pkgs; [
         # Communication
-        discord
+        vesktop
 
         # Games
         ryubing # Nintendo Switch simulator

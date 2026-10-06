@@ -22,6 +22,15 @@
             };
           };
         };
+
+        # Improves the sound while the mic is on
+        services.pipewire.wireplumber.extraConfig."52-bluez-codecs" = {
+          "monitor.bluez.properties" = {
+            "bluez5.enable-sbc-xq" = true;
+            "bluez5.enable-msbc" = true;
+            "bluez5.enable-hw-volume" = true;
+          };
+        };
       };
     };
   };

@@ -8,6 +8,7 @@
       programs = {
         gamemode.enable = true;
         gamescope.enable = true;
+        gamescope.capSysNice = true; # CAP_SYS_NICE → realtime scheduling, better frame pacing
         steam = {
           # package = pkgs.steam.override {
           #   extraProfile = ''

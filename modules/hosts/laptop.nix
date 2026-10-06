@@ -8,6 +8,7 @@ with lib; {
     systems.nixos = "x86_64-linux";
     users = {host, ...}: [host.metadata.mainUser];
     features = [
+      "nvidia"
       "configurations"
     ];
     programs = [];

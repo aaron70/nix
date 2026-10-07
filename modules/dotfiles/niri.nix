@@ -226,6 +226,7 @@ with lib; {
 
     window-rule {
         match at-startup=true app-id=r#"(?i)discord"#
+        match at-startup=true app-id=r#"(?i)vesktop"#
         open-on-workspace "chat"
         open-maximized true
     }
@@ -277,12 +278,30 @@ with lib; {
     }
 
 
-    workspace "terminal"
-    workspace "browser"
-    workspace "chat"
-    workspace "multimedia"
-    workspace "gaming"
-    workspace "temporal"
+    workspace "terminal" {
+      // open-on-output "DP-1"  TODO: Uncomment this when the next release of niri 26.04 is released
+      open-on-output "DP-2"
+    }
+    workspace "browser" {
+      open-on-output "HDMI-A-1"
+      // open-on-output "HDMI-A-2" TODO: Uncomment this when the next release of niri 26.04 is release
+    }
+    workspace "chat" {
+      open-on-output "HDMI-A-1"
+      // open-on-output "HDMI-A-2" TODO: Uncomment this when the next release of niri 26.04 is release
+    }
+    workspace "multimedia" {
+      open-on-output "HDMI-A-1"
+      // open-on-output "HDMI-A-2" TODO: Uncomment this when the next release of niri 26.04 is release
+    }
+    workspace "gaming" {
+      // open-on-output "DP-1" TODO: Uncomment this when the next release of niri 26.04 is release
+      open-on-output "DP-2"
+    }
+    workspace "temporal" {
+      open-on-output "HDMI-A-1"
+      // open-on-output "HDMI-A-2" TODO: Uncomment this when the next release of niri 26.04 is release
+    }
 
 
     binds {
@@ -687,6 +706,7 @@ with lib; {
     workspace "chat"
     window-rule {
         match at-startup=true app-id=r#"^discord$"#
+        match at-startup=true app-id=r#"^vesktop$"#
         open-on-workspace "chat"
         open-maximized true
     }

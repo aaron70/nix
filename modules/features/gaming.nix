@@ -4,6 +4,12 @@
       "steam"
     ];
     nixos = {pkgs, ...}: {
+      boot.kernel.sysctl = {
+        "kernel.split_lock_mitigate" = 0;
+        "vm.swappiness" = 100;
+        "vm.max_map_count" = 2147483642;
+      };
+
       environment.systemPackages = with pkgs; [
         # Communication
         vesktop

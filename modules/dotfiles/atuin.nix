@@ -22,12 +22,12 @@
     ## Appearance
     style = "compact"
     inline_height = 40                     # height of the search window
-    show_preview = true
+    show_preview = false
 
     ## Hygiene (important when syncing across machines)
     secrets_filter = true                  # drops AWS keys, GitHub tokens, etc.
     history_filter = [
-      "export .*(TOKEN|SECRET|KEY|PASSWORD)",
+      "export .*(TOKEN|SECRET|KEY|PASSWORD|SESSION)",
       "^(ls|cd|pwd|clear|exit)$",
     ]
     cwd_filter = []                        # e.g. ["^/tmp"] to ignore directories
@@ -44,9 +44,11 @@
     prefix = "a"
 
     [ui]
-    columns = ["time", "command", "host"]
+    columns = ["time", "host", "command"]
 
     [tmux]
     enabled = true
+    width = "80%"
+    height = "80%"
   '';
 }

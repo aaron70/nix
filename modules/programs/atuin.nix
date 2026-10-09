@@ -3,8 +3,13 @@
     getPackage = {pkgs, ...}: self.wrappers.atuin.wrap {inherit pkgs;};
   };
 
-  flake.wrappers.atuin = {wlib, ...}: {
+  flake.wrappers.atuin = {
+    wlib,
+    pkgs,
+    ...
+  }: {
     imports = [wlib.wrapperModules.atuin];
-    config.settings = fromTOML (self.dotfiles.atuin.default {});
+    settings = fromTOML (self.dotfiles.atuin.default {});
+    runtimePkgs = with pkgs; [tmux];
   };
 }

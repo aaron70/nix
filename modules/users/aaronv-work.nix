@@ -6,17 +6,18 @@
     programs = [
       "editor"
       "terminal"
-      "desktop"
+      "aerospace"
     ];
     features = [
       "homeManager"
-      # "work-secrets"
+      "work-secrets"
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";
     darwin = {
       user,
       config,
+      pkgs,
       ...
     }: {
       users.users.${user.name} = {
@@ -25,10 +26,34 @@
         uid = 501;
         home = user.homeDir.darwin;
         createHome = true;
+        packages = with pkgs; [
+          go_1_27
+          goperf
+        ];
       };
       users.groups.${user.name} = {};
       # nix-darwin only creates the account on activation when registered.
       users.knownUsers = [user.name];
+
+      anvil.shell.preferences = {
+        envVariables = {
+          DOCKER_DEFAULT_PLATFORM = "linux/amd64";
+          JAVA_HOME = "/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home";
+          GRADLE_HOME = "/opt/homebrew/Cellar/gradle@8/8.14.3/libexec";
+          GRADLE_OPTS = "\"-Dfile.encoding=utf-8\"";
+          NVM_DIR = "$HOME/.nvm";
+          CD_FZF_EXTRA_PATHS = "/Users/aaronv:3 /Users/aaronv/Documents/repositories:3";
+
+          # LDFLAGS = "-L/opt/homebrew/opt/node@18/lib";
+          # CPPFLAGS = "-I/opt/homebrew/opt/node@18/include";
+        };
+
+        activationScripts = [
+          "export PATH=/Users/aaronv/go/bin:/opt/homebrew/opt/gradle@8/bin:/opt/homebrew/opt/node@18/bin:$PATH"
+          "export GITHUB_PACKAGE_REGISTRY_USER=$(cat ${config.sops.secrets."github/package/registry/user".path})"
+          "export GITHUB_PACKAGE_REGISTRY_API_KEY=$(cat ${config.sops.secrets."github/package/registry/api-key".path})"
+        ];
+      };
     };
     home = {user, ...}: {
       home.username = user.name;

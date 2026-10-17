@@ -11,6 +11,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+
       - name: Find the standing release PR
         id: find_pr
         env:
@@ -29,13 +31,19 @@ jobs:
         if: steps.find_pr.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr checks ${{ steps.find_pr.outputs.number }} --watch --required --interval 30
+          PR_NUMBER: ${{ steps.find_pr.outputs.number }}
+        run: |
+          if gh pr checks "$PR_NUMBER" --json state | grep -q "FAILURE"; then
+            gh pr checks "$PR_NUMBER"
+            exit 1
+          fi
 
       - name: Merge the release PR
         if: steps.find_pr.outputs.found == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr merge ${{ steps.find_pr.outputs.number }} --merge
+          PR_NUMBER: ${{ steps.find_pr.outputs.number }}
+        run: gh pr merge "$PR_NUMBER" --merge
 
       - name: Tag and publish the GitHub Release
         if: steps.find_pr.outputs.found == 'true'

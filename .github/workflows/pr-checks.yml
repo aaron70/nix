@@ -70,3 +70,13 @@ jobs:
 
       - name: Build checks
         run: nix flake check -L --keep-going
+
+  ci-gate:
+    name: CI Gate
+    if: always()
+    needs: [checks, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any job failed or was cancelled
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

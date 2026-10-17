@@ -27,6 +27,7 @@
     zen-browser.inputs.home-manager.follows = "home-manager";
 
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    umbriel.url = "git+https://github.com/noctalia-dev/umbriel";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
     jovian.inputs.nixpkgs.follows = "nixpkgs";

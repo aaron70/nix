@@ -1,91 +1,21 @@
 {
   self,
   lib,
+  config,
   ...
 } @ global:
-with lib; let
-  defaultConfiguration = {
-    desktop.name = "niri";
-    desktop.desktopShell.name = "noctalia";
-    desktop.apps = {pkgs, ...}: rec {
-      terminal = global.config.anvil.programs.terminal.getPackage {
-        inherit pkgs;
-        metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
-      };
-      browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
-      desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
-      appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
-    };
-  };
-
-  commonModule = {
-    user,
-    program,
-    config,
-    pkgs,
-    ...
-  }: let
-    apps = program.metadata.desktop.apps {inherit pkgs;};
-    package = program.getPackage {
-      inherit pkgs;
-      preferences = config.anvil.desktop.preferences;
-    };
-  in {
-    imports = [
-      (self.lib.installPackages user [package])
-    ];
-
-    options = {
-      anvil.desktop.preferences = mkOption {
-        type = types.submodule {
-          _module.args.pkgs = pkgs;
-          imports = [
-            self.declarations.desktop
-          ];
-        };
-      };
-    };
-
-    config = {
-      anvil.desktop.preferences.terminal = mkForce apps.terminal;
-      anvil.desktop.preferences.browser = mkForce apps.browser;
-      anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
-      anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
-
-      environment.systemPackages = attrValues (filterAttrs (_: p: p != null) apps);
-    };
-  };
-in {
+with lib; {
   anvil.programs.desktop = {
-    metadata = defaultConfiguration;
-    getPackage = {
-      pkgs,
-      options,
-      ...
-    }:
-      if pkgs.stdenv.hostPlatform.isLinux
-      then
-        self.wrappers.desktop.wrap {
-          inherit pkgs;
-          imports = [
-            (self.lib.usePreferences "desktop" options)
-          ];
-        }
-      else
-        self.wrappers.desktop-darwin.wrap {
-          inherit pkgs;
-          imports = [
-            (self.lib.usePreferences "desktop" options)
-          ];
-        };
+    programs = [
+      "terminal"
+    ];
     features = [
       "usb"
     ];
-    programs = {program, ...}: [
-      program.metadata.desktop.name
-      program.metadata.desktop.desktopShell.name
-    ];
     home = {pkgs, ...}: {
+      imports = [
+        (self.lib.inheritPreferences "desktop" args [self.declarations.desktop])
+      ];
       home.packages = [pkgs.fastfetch];
       xdg.mimeApps = mkIf pkgs.stdenv.hostPlatform.isLinux {
         enable = true;
@@ -93,71 +23,69 @@ in {
       };
     };
     nixos = {
-      user,
-      program,
       pkgs,
       config,
-      options,
       ...
     } @ args: let
-      apps = program.metadata.desktop.apps {inherit pkgs;};
-      package = program.getPackage {inherit pkgs options;};
+      noctalia = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
+      apps = rec {
+        terminal = global.config.anvil.programs.terminal.getPackage {
+          inherit pkgs;
+          metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
+        };
+        browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
+        desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
+        appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
+      };
     in {
       imports = [
-        (self.lib.installPackages user [package])
         (self.lib.inheritPreferences "desktop" args [self.declarations.desktop])
       ];
 
-      config = {
-        xdg.portal = {
-          enable = true;
-          extraPortals = [pkgs.xdg-desktop-portal-gtk];
-          config.common.default = "*";
-        };
+      anvil.desktop.preferences.terminal = mkForce apps.terminal;
+      anvil.desktop.preferences.browser = mkForce apps.browser;
+      anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
+      anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;
 
-        programs.${program.metadata.desktop.name} = {
-          enable = true;
-          package = package;
-        };
+      home-manager.sharedModules = [
+        {
+          anvil.desktop.preferences = lib.mkDefault config.anvil.desktop.preferences;
+        }
+      ];
 
-        services.gvfs.enable = true;
-        services.displayManager.gdm.enable = true;
-        environment.systemPackages = with pkgs;
-          [
-            # Dependencies
-            pavucontrol
-            playerctl
-            brightnessctl
-
-            # Applications
-            spotify
-            mission-center
-
-            # Essentials
-            nautilus # File browser
-            vlc # Videos
-            shotwell # Images
-            wdisplays
-            xdg-desktop-portal-gnome
-            (pkgs.writeShellScriptBin "clipboard-history" "${getExe apps.desktopShell} msg panel-toggle clipboard")
-            (pkgs.writeShellScriptBin "nixpkgs-search" ''
-              query=$(echo "" | ${getExe apps.desktopShell} dmenu -p "Search nixpkgs: ")
-              [ -n "$query" ] && ${pkgs.xdg-utils}/bin/xdg-open "https://search.nixos.org/packages?query=''${query// /+}"
-            '')
-            ddcutil
-          ]
-          ++ (attrValues apps);
+      xdg.portal = {
+        enable = true;
+        # extraPortals = [pkgs.xdg-desktop-portal-umbriel];
+        config.common.default = "*";
       };
+
+      services.gvfs.enable = true;
+      services.displayManager.gdm.enable = true;
+      environment.systemPackages = with pkgs; [
+        # Dependencies
+        pavucontrol
+        playerctl
+        brightnessctl
+
+        # Applications
+        spotify
+        mission-center
+        (global.config.anvil.programs.zen.getPackage {inherit pkgs;}) # Browser
+
+        # Essentials
+        nautilus # File browser
+        vlc # Videos
+        shotwell # Images
+        wdisplays
+        xdg-desktop-portal-gnome
+        (pkgs.writeShellScriptBin "clipboard-history" "${getExe noctalia} msg panel-toggle clipboard")
+        (pkgs.writeShellScriptBin "nixpkgs-search" ''
+          query=$(echo "" | ${getExe noctalia} dmenu -p "Search nixpkgs: ")
+          [ -n "$query" ] && ${pkgs.xdg-utils}/bin/xdg-open "https://search.nixos.org/packages?query=''${query// /+}"
+        '')
+        (pkgs.writeShellScriptBin "poweroff-monitors" "${getExe ddcutil} detect --brief | awk '/^Display/ {print $2}' | xargs -P0 -I{} ${getExe ddcutil} --display {} setvcp D6 05")
+        ddcutil
+      ];
     };
-  };
-
-  flake.wrappers.desktop = {...}: {
-    imports = [
-      self.wrapperModules.niri
-    ];
-  };
-
-  perSystem = {pkgs, ...}: {
-    wrappers.packages.desktop = pkgs.stdenv.hostPlatform.isDarwin;
   };
 }

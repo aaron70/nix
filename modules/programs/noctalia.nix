@@ -5,7 +5,14 @@
 }: {
   anvil.programs.noctalia = {
     getPackage = self.wrappers.noctalia.wrap;
-    nixos = {...}: {
+    nixos = {
+      program,
+      pkgs,
+      ...
+    }: let
+      package = program.getPackage {inherit pkgs;};
+    in {
+      environment.systemPackages = [package];
       environment.variables = {
         __NV_PRIME_RENDER_OFFLOAD = 0;
         __GLX_VENDOR_LIBRARY_NAME = "mesa";

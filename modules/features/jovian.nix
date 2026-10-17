@@ -15,6 +15,10 @@ with lib; {
     }: {
       imports = [inputs.jovian.nixosModules.jovian];
 
+      # Jovian ships its own cap_sys_nice gamescope wrapper;
+      # nixpkgs' gamescope wrapper would conflict on security.wrappers.gamescope.source
+      programs.gamescope.capSysNice = lib.mkForce false;
+
       jovian = {
         hardware.has.amd.gpu = host.metadata.gpu.isAMD or false;
         steam = {

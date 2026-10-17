@@ -14,7 +14,6 @@ with lib; {
     features = [
       "homeManager"
       "personal-secrets"
-      "docker"
     ];
     homeDir.nixos = "/home/aaronv";
     homeDir.darwin = "/Users/aaronv";

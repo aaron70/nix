@@ -55,7 +55,7 @@ with lib; {
 
       xdg.portal = {
         enable = true;
-        extraPortals = [pkgs.xdg-desktop-portal-umbriel];
+        # extraPortals = [pkgs.xdg-desktop-portal-umbriel];
         config.common.default = "*";
       };
 

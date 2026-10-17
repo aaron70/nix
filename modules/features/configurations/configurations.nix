@@ -31,6 +31,33 @@ with lib; {
         launchd.user.envVariables = {
           PATH = config.environment.systemPath;
         };
+
+        security.pam.services.sudo_local = {
+          touchIdAuth = true;
+          reattach = true; # makes it work inside tmux/screen
+        };
+
+        system.defaults = {
+          dock = {
+            autohide = true;
+            show-recents = false;
+            mru-spaces = false; # don't reorder Spaces
+            tilesize = 48;
+            minimize-to-application = true;
+          };
+          finder = {
+            AppleShowAllExtensions = true;
+            FXPreferredViewStyle = "clmv"; # column view
+            ShowPathbar = true;
+            _FXShowPosixPathInTitle = true;
+            FXEnableExtensionChangeWarning = false;
+          };
+          trackpad = {
+            Clicking = true;
+            TrackpadThreeFingerDrag = true;
+          };
+          CustomUserPreferences = {}; # escape hatch for any `defaults write` key
+        };
       };
     };
 

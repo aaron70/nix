@@ -44,6 +44,10 @@ with lib; {
       ELECTRON_OZONE_PLATFORM_HINT "auto"
     }
 
+    debug {
+      honor-xdg-activation-with-invalid-serial
+    }
+
 
     screenshot-path "~/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png"
     prefer-no-csd

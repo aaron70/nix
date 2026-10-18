@@ -34,6 +34,24 @@ with lib; {
       ];
       anvil.terminal.preferences.terminalPackage = package;
     };
+
+    variants = {
+      with-background = {
+        programs = programs;
+        nixos = nixos;
+        darwin = darwin;
+        getPackage = {pkgs, ...}:
+          self.wrappers.kitty.wrap {
+            inherit pkgs;
+            settings = {
+              background_image = "${self.dotfiles.resourcesPath}/images/terminal_background.png";
+              background_image_layout = "centered";
+              background_image_linear = true;
+              background_tint = 0.98;
+            };
+          };
+      };
+    };
   };
 
   flake.wrappers.kitty = {

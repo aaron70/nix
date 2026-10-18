@@ -39,6 +39,12 @@ with lib; {
       };
       users.groups.${user.name} = {};
 
+      anvil.shell.preferences = {
+        activationScripts = [
+          "export PATH=${user.homeDir.nixos}/go/bin:$PATH"
+        ];
+      };
+
       virtualisation.vmVariant = {
         users.users.${user.name} = {
           hashedPasswordFile = mkForce null;

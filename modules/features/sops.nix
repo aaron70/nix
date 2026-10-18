@@ -3,6 +3,9 @@
     commonModule = {pkgs, ...}: let
       ageKeyPath = "/var/lib/sops-nix/key.txt";
     in {
+      security.sudo.extraConfig = ''
+        Defaults env_keep += "SOPS_AGE_KEY_FILE"
+      '';
       environment.variables.SOPS_AGE_KEY_FILE = ageKeyPath;
       environment.systemPackages = with pkgs; [age sops];
       sops.age.keyFile = ageKeyPath;

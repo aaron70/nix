@@ -50,6 +50,11 @@ with lib; {
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
+
+        background_image = "${self.dotfiles.resourcesPath}/images/terminal_background.png";
+        background_image_layout = "centered";
+        background_image_linear = true;
+        background_tint = 0.98;
       };
 
       wrapperImplementation = mkIf pkgs.stdenv.hostPlatform.isDarwin "binary";

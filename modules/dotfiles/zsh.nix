@@ -80,7 +80,7 @@ with lib; {
       # NOTE: zsh-autosuggestions reads these once at load time — they must stay
       # assigned BEFORE the deferred `zsh-defer source` of the plugin below.
       ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-      ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+      ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=100
 
       CORRECT_IGNORE_FILE=".*"
       CORRECT_IGNORE="_*"

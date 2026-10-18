@@ -6,6 +6,7 @@
     programs = [
       "editor"
       "terminal"
+        variant = "with-background";
       "aerospace"
     ];
     features = [

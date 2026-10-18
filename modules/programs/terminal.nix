@@ -1,32 +1,20 @@
 {
   self,
-  config,
   lib,
   ...
 }:
 with lib; let
-  defaultConfiguration = {
-    terminal.name = "kitty";
+  common = {...} @ args: {
+    imports = [
+      (self.lib.inheritPreferences "terminal" args [self.declarations.terminal])
+    ];
   };
 in {
   anvil.programs.terminal = {
-    metadata = defaultConfiguration;
-    programs = {program, ...}: [
-      program.metadata.terminal.name
+    programs = [
       "shell"
     ];
-    getPackage = {
-      pkgs,
-      metadata,
-      ...
-    }:
-      config.anvil.programs.${metadata.terminal.name}.getPackage {inherit pkgs;};
+    nixos = common;
+    darwin = common;
   };
-
-  flake.wrappers.terminal = {...}:
-    with defaultConfiguration; {
-      imports = [
-        self.wrapperModules.${terminal.name}
-      ];
-    };
 }

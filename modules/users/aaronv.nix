@@ -8,7 +8,7 @@ with lib; {
     };
     programs = [
       "editor"
-      "terminal"
+      "kitty"
       "niri"
     ];
     features = [

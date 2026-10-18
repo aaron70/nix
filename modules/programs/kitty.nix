@@ -5,6 +5,9 @@
 }:
 with lib; {
   anvil.programs.kitty = rec {
+    programs = [
+      "terminal"
+    ];
     getPackage = self.wrappers.kitty.wrap;
     nixos = {
       user,
@@ -17,6 +20,7 @@ with lib; {
       imports = [
         (self.lib.installPackages user [package])
       ];
+      anvil.terminal.preferences.terminalPackage = package;
     };
     darwin = {
       program,
@@ -28,6 +32,7 @@ with lib; {
       imports = [
         (self.lib.installPackages null [package]) # Darwin requires to be installed globally to create the kitty.app
       ];
+      anvil.terminal.preferences.terminalPackage = package;
     };
   };
 
@@ -50,11 +55,6 @@ with lib; {
         bold_font = "auto";
         italic_font = "auto";
         bold_italic_font = "auto";
-
-        background_image = "${self.dotfiles.resourcesPath}/images/terminal_background.png";
-        background_image_layout = "centered";
-        background_image_linear = true;
-        background_tint = 0.98;
       };
 
       wrapperImplementation = mkIf pkgs.stdenv.hostPlatform.isDarwin "binary";

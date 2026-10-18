@@ -7,7 +7,6 @@
 with lib; {
   anvil.programs.desktop = {
     programs = [
-      "terminal"
     ];
     features = [
       "usb"
@@ -29,10 +28,6 @@ with lib; {
     } @ args: let
       noctalia = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
       apps = rec {
-        terminal = global.config.anvil.programs.terminal.getPackage {
-          inherit pkgs;
-          metadata.terminal.name = global.config.anvil.programs.terminal.metadata.terminal.name;
-        };
         browser = global.config.anvil.programs.zen.getPackage {inherit pkgs;};
         desktopShell = global.config.anvil.programs.noctalia.getPackage {inherit pkgs;};
         appLauncher = pkgs.writeShellScriptBin "app-launcher" "${getExe desktopShell} msg panel-toggle launcher";
@@ -42,7 +37,7 @@ with lib; {
         (self.lib.inheritPreferences "desktop" args [self.declarations.desktop])
       ];
 
-      anvil.desktop.preferences.terminal = mkForce apps.terminal;
+      anvil.desktop.preferences.terminal = config.anvil.terminal.preferences.terminalPackage;
       anvil.desktop.preferences.browser = mkForce apps.browser;
       anvil.desktop.preferences.desktopShell = mkForce apps.desktopShell;
       anvil.desktop.preferences.appLauncher = mkForce apps.appLauncher;

@@ -57,7 +57,7 @@ in {
 
     env.FONTCONFIG_FILE = "${config.fontsConfig}";
 
-    terminal = mkDefault (self.wrappers.terminal.wrap {inherit pkgs;});
+    terminal = mkDefault (self.wrappers.kitty.wrap {inherit pkgs;});
     browser = mkDefault (global.config.anvil.programs.zen.getPackage {inherit pkgs;});
     desktopShell = mkDefault (global.config.anvil.programs.noctalia.getPackage {inherit pkgs;});
     appLauncher = mkDefault (pkgs.writeShellScriptBin "app-launcher" "${getExe config.desktopShell} msg panel-toggle launcher");

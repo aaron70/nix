@@ -5,7 +5,10 @@
     metadata = {};
     programs = [
       "editor"
-      "terminal"
+      {
+        ref = "kitty";
+        variant = "with-background";
+      }
       "aerospace"
     ];
     features = [

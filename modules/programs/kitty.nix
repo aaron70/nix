@@ -5,6 +5,9 @@
 }:
 with lib; {
   anvil.programs.kitty = rec {
+    programs = [
+      "terminal"
+    ];
     getPackage = self.wrappers.kitty.wrap;
     nixos = {
       user,
@@ -17,6 +20,7 @@ with lib; {
       imports = [
         (self.lib.installPackages user [package])
       ];
+      anvil.terminal.preferences.terminalPackage = package;
     };
     darwin = {
       program,
@@ -28,6 +32,25 @@ with lib; {
       imports = [
         (self.lib.installPackages null [package]) # Darwin requires to be installed globally to create the kitty.app
       ];
+      anvil.terminal.preferences.terminalPackage = package;
+    };
+
+    variants = {
+      with-background = {
+        programs = programs;
+        nixos = nixos;
+        darwin = darwin;
+        getPackage = {pkgs, ...}:
+          self.wrappers.kitty.wrap {
+            inherit pkgs;
+            settings = {
+              background_image = "${self.dotfiles.resourcesPath}/images/terminal_background.png";
+              background_image_layout = "centered";
+              background_image_linear = true;
+              background_tint = 0.98;
+            };
+          };
+      };
     };
   };
 

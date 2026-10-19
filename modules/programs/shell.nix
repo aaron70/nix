@@ -30,6 +30,10 @@ with lib; let
       })
       (self.lib.inheritPreferences "shell" args [self.declarations.shell])
     ];
+    users.users.root.shell = package;
+    security.sudo.extraConfig = ''
+      Defaults env_keep += "EDITOR"
+    '';
     fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
   };
 in {

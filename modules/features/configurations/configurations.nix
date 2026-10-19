@@ -11,6 +11,7 @@ with lib; {
       "gc"
       "powersave"
       "theme"
+      "network"
     ];
     darwin = {
       host,
@@ -94,10 +95,6 @@ with lib; {
           # To use JACK applications
           # jack.enable = true;
         };
-
-        networking.networkmanager.enable = true;
-        networking.hostName = "${host.metadata.mainUser}-${host.name}";
-        # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
         time.timeZone = mkDefault "America/Costa_Rica";
 

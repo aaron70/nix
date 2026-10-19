@@ -9,9 +9,9 @@ with lib; {
     commonModule = {...}: {
       sops = {
         secrets = {
-          "wifi/home/ssid" = { sopsFile = ./global.yaml; };
-          "wifi/home/ssid_5g" = { sopsFile = ./global.yaml; };
-          "wifi/home/psk" = { sopsFile = ./global.yaml; };
+          "wifi/home/ssid" = {sopsFile = ./global.yaml;};
+          "wifi/home/ssid_5g" = {sopsFile = ./global.yaml;};
+          "wifi/home/psk" = {sopsFile = ./global.yaml;};
         };
       };
     };

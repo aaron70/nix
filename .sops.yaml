@@ -6,6 +6,15 @@ keys:
   - &mac age1a7xm7yjzptszkxcjdnrx7x36s5hj5ltx5rc4hw4frnhgzqr7x33qx79c9p
 
 creation_rules:
+  - path_regex: secrets/global\.yaml$
+    key_groups:
+      - age:
+          - *personal_admin
+          - *pc
+          - *laptop
+          - *gpd
+          - *mac
+
   - path_regex: secrets/personal\.yaml$
     key_groups:
       - age:

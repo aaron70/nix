@@ -12,6 +12,8 @@ with lib; {
           "wifi/home/ssid" = {sopsFile = ./global.yaml;};
           "wifi/home/ssid_5g" = {sopsFile = ./global.yaml;};
           "wifi/home/psk" = {sopsFile = ./global.yaml;};
+          "wifi/hotspot/ssid" = {sopsFile = ./global.yaml;};
+          "wifi/hotspot/psk" = {sopsFile = ./global.yaml;};
         };
       };
     };

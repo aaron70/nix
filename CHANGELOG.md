@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.2.0](https://github.com/aaron70/nix/compare/v0.1.0...v0.2.0) (2026-10-20)
+
+
+### Features
+
+* **configurations/network:** Add wifi configuration declaratively ([#52](https://github.com/aaron70/nix/issues/52)) ([7d1d6d5](https://github.com/aaron70/nix/commit/7d1d6d5c864b6cfb6f18fd25562579ab2a4b8088))
+* **documentation/README:** Improve readme documentation ([#50](https://github.com/aaron70/nix/issues/50)) ([7fd49a8](https://github.com/aaron70/nix/commit/7fd49a89e4050e51145ded59123e9badcaac729f))
+* **features/sops:** Now exports SOPS_AGE_KEY_FILE for sudo env ([7fd49a8](https://github.com/aaron70/nix/commit/7fd49a89e4050e51145ded59123e9badcaac729f))
+* **programs/kitty:** Add a "with-background" variant ([f0447de](https://github.com/aaron70/nix/commit/f0447de2842d8b9aa45fe4f2df9bb6fd0194347f))
+* **programs/shell:** User root uses the wrapped shell and editor ([7d1d6d5](https://github.com/aaron70/nix/commit/7d1d6d5c864b6cfb6f18fd25562579ab2a4b8088))
+* **programs/terminal:** Simplify terminal program, to support terminal variants ([f0447de](https://github.com/aaron70/nix/commit/f0447de2842d8b9aa45fe4f2df9bb6fd0194347f))
+* **programs/terminal:** Simplify terminal program, to support terminal variants ([#51](https://github.com/aaron70/nix/issues/51)) ([f0447de](https://github.com/aaron70/nix/commit/f0447de2842d8b9aa45fe4f2df9bb6fd0194347f))
+* **users/aaronv:** Add go/bin to the PATH ([e3a27b5](https://github.com/aaron70/nix/commit/e3a27b5a19626f2e3db5f870ad706188d7613a64))
+
+
+### Fixes
+
+* **programs/zsh:** fix autosuggest weird behavior ([e3a27b5](https://github.com/aaron70/nix/commit/e3a27b5a19626f2e3db5f870ad706188d7613a64))
+
 ## [0.1.0](https://github.com/aaron70/nix/compare/v0.1.0...v0.1.0) (2026-10-17)
 
 

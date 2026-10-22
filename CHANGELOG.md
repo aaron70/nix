@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/aaron70/nix/compare/v0.2.0...v0.2.1) (2026-10-22)
+
+
+### Fixes
+
+* **CI/release:** Fix the cronjob expression for releases ([#54](https://github.com/aaron70/nix/issues/54)) ([43168df](https://github.com/aaron70/nix/commit/43168dfb59bc5b680cb3d58ef65cf19abab4b4c6))
+
 ## [0.2.0](https://github.com/aaron70/nix/compare/v0.1.0...v0.2.0) (2026-10-20)
 
 

@@ -30,28 +30,28 @@
         thickness = 25
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g3"
             members = [ "network", "bluetooth" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g2"
             members = [ "volume", "brightness", "battery" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g4"
             members = [ "notifications", "session" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g1"
             members = [ "clock", "date" ]
             opacity = 0.75
@@ -98,7 +98,7 @@
 
     [desktop_widgets]
     schema_version = 2
-    widget_order = []
+    widget_order = [
         "desktop-widget-0000000000000003",
         "desktop-widget-0000000000000004",
         "desktop-widget-0000000000000005",
@@ -261,7 +261,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -288,7 +288,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-2".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -315,7 +315,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -342,7 +342,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-4".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -369,7 +369,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -396,7 +396,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -423,7 +423,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@WL-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -450,7 +450,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -477,7 +477,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@winit".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false

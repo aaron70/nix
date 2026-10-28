@@ -16,7 +16,7 @@
 
         # Games
         ryubing # Nintendo Switch simulator
-        pokemmo-installer # PokeMMO
+        pokemmo # PokeMMO
         (heroic.override {extraPkgs = pkgs: [pkgs.gamescope];}) # Epic Games Launcher
 
         # Tools/Dependencies/Compatibility

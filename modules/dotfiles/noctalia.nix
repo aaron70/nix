@@ -30,28 +30,28 @@
         thickness = 25
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g3"
             members = [ "network", "bluetooth" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g2"
             members = [ "volume", "brightness", "battery" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g4"
             members = [ "notifications", "session" ]
             opacity = 0.75
             padding = 10.0
 
             [[bar.default.capsule_group]]
-            fill = "surface_variant"
+            fill = "surface_container"
             id = "g1"
             members = [ "clock", "date" ]
             opacity = 0.75
@@ -98,14 +98,87 @@
 
     [desktop_widgets]
     schema_version = 2
-    widget_order = []
+    widget_order = [
+        "desktop-widget-0000000000000003",
+        "desktop-widget-0000000000000004",
+        "desktop-widget-0000000000000005",
+        "desktop-widget-0000000000000006"
+    ]
 
         [desktop_widgets.grid]
         cell_size = 16
         major_interval = 4
         visible = true
 
-        [desktop_widgets.widget]
+        [desktop_widgets.widget.desktop-widget-0000000000000003]
+        box_height = 0.0
+        box_width = 0.0
+        cx = 1280.0
+        cy = 373.5
+        output = "HDMI-A-1"
+        placement_height = 1440.0
+        placement_width = 2560.0
+        rotation = 0.0
+        type = "clock"
+
+            [desktop_widgets.widget.desktop-widget-0000000000000003.settings]
+            background = false
+            shadow = false
+
+        [desktop_widgets.widget.desktop-widget-0000000000000004]
+        box_height = 0.0
+        box_width = 0.0
+        cx = 960.0
+        cy = 252.0
+        output = "DP-2"
+        placement_height = 1080.0
+        placement_width = 1920.0
+        rotation = 0.0
+        type = "clock"
+
+            [desktop_widgets.widget.desktop-widget-0000000000000004.settings]
+            background = false
+            shadow = false
+
+        [desktop_widgets.widget.desktop-widget-0000000000000005]
+        box_height = 0.0
+        box_width = 0.0
+        cx = 944.0
+        cy = 402.0
+        output = "DP-2"
+        placement_height = 1080.0
+        placement_width = 1920.0
+        rotation = 0.0
+        type = "media_player"
+
+            [desktop_widgets.widget.desktop-widget-0000000000000005.settings]
+            album_art_background = true
+            album_art_blur = 4
+            audio_visualizer = true
+            background = true
+            background_opacity = 0.0
+            hide_when_no_media = true
+            shadow = false
+
+        [desktop_widgets.widget.desktop-widget-0000000000000006]
+        box_height = 0.0
+        box_width = 0.0
+        cx = 1280.0
+        cy = 528.0
+        output = "HDMI-A-1"
+        placement_height = 1440.0
+        placement_width = 2560.0
+        rotation = 0.0
+        type = "media_player"
+
+            [desktop_widgets.widget.desktop-widget-0000000000000006.settings]
+            album_art_background = true
+            album_art_blur = 4
+            audio_visualizer = true
+            background = true
+            background_opacity = 0.0
+            hide_when_no_media = true
+            shadow = false
 
     [dock]
     active_monitor_only = true
@@ -155,6 +228,7 @@
     enabled = true
     schema_version = 2
     widget_order = [
+        "lockscreen-login-box@DP-2",
         "lockscreen-login-box@WL-1",
         "lockscreen-login-box@DP-4",
         "lockscreen-login-box@eDP-1",
@@ -187,7 +261,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -214,7 +288,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-2".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -241,7 +315,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -268,7 +342,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@DP-4".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -295,7 +369,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -322,7 +396,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-2".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -349,7 +423,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@WL-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -376,7 +450,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false
@@ -403,7 +477,7 @@
         type = "login_box"
 
             [lockscreen_widgets.widget."lockscreen-login-box@winit".settings]
-            background_color = "surface_variant"
+            background_color = "surface_container"
             background_opacity = 0.88
             background_radius = 12.0
             center_password_text = false

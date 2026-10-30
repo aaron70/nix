@@ -316,6 +316,7 @@ with lib; {
       Mod+Shift+Escape allow-inhibiting=false hotkey-overlay-title="Toggle keyboard shortcuts inhibit" { toggle-keyboard-shortcuts-inhibit; }
       Mod+Return repeat=false hotkey-overlay-title="Toggle overview" { toggle-overview; }
       Mod+Shift+Slash hotkey-overlay-title="Show this hotkey overlay" { show-hotkey-overlay; }
+      Mod+W hotkey-overlay-title="Set Random Wallpaper" { spawn-sh "${desktopShell} msg wallpaper-random"; }
 
       Mod+Left  { focus-column-left; }
       Mod+Down  { focus-window-down; }

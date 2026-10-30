@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/aaron70/nix/compare/v0.2.0...v0.3.0) (2026-10-30)
+
+
+### Features
+
+* **programs/noctalia:** Add desktop widgets (Clock and MediaPlayer) ([#57](https://github.com/aaron70/nix/issues/57)) ([da2b906](https://github.com/aaron70/nix/commit/da2b906728e03b3e4a9e5ddb712e654731a988e2))
+* **resources/wallpapers:** Add a new collection of wallpapers ([#58](https://github.com/aaron70/nix/issues/58)) ([db76a7f](https://github.com/aaron70/nix/commit/db76a7f299078e7239d1a7b5825a645a2d1eefe8))
+
+
+### Fixes
+
+* **CI/release:** Fix the cronjob expression for releases ([#54](https://github.com/aaron70/nix/issues/54)) ([43168df](https://github.com/aaron70/nix/commit/43168dfb59bc5b680cb3d58ef65cf19abab4b4c6))
+
 ## [0.2.0](https://github.com/aaron70/nix/compare/v0.1.0...v0.2.0) (2026-10-20)
 
 

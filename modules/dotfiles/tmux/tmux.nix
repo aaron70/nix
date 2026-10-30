@@ -26,6 +26,7 @@ with lib; {
     terminalOverrides = ",xterm-kitty:Tc,xterm-256color:Tc,linux:Tc";
     configBefore = ''
       set -g default-terminal "tmux-256color"
+      set -g theme terminal
       set -g renumber-windows on  # keep numbering sequential
       set -g focus-events on      # Enable focus events for vim autoread
 

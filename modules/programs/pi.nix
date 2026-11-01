@@ -27,6 +27,7 @@ with lib; {
 
             (add-pkg-deps [
               pkgs.findutils
+              pkgs.diffutils
               pkgs.gnugrep
               pkgs.gawk
               pkgs.which

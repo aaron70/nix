@@ -29,7 +29,7 @@ in {
   anvil.programs.editor = {
     metadata = defaultConfiguration;
     getPackage = {
-      metadata,
+      metadata ? defaultConfiguration,
       pkgs,
       ...
     }:

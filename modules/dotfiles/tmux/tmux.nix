@@ -59,6 +59,10 @@ with lib; {
       set -g window-status-current-style "#{?window_zoomed_flag,fg=yellow,fg=${colors.base0D}\#,nobold}"
       set -g window-status-bell-style "fg=red,nobold"
 
+      # Theme: floating panes (display-popup), so they match the normal panes
+      set -g popup-style "bg=${colors.base00},fg=${colors.base07}"
+      set -g popup-border-style "fg=${colors.base0D}"
+
       bind-key x kill-pane # skip "kill-pane 1? (y/n)" prompt
       # NOTE: Commented as it didn't worked well with the {name}' sessions for the floating panes
       # set -g detach-on-destroy off  # don't exit from tmux when closing a session

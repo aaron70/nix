@@ -23,10 +23,8 @@ with lib; let
     package = with program; getPackage args;
   in {
     imports = [
-      (self.lib.forUser user {
-        ${user.name} = {
-          shell = package;
-        };
+      (self.lib.withUserConfig user {
+        shell = package;
       })
       (self.lib.inheritPreferences "shell" args [self.declarations.shell])
     ];

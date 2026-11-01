@@ -6,15 +6,17 @@
 with lib; {
   flake.lib.installPackages = user: packages: ({...}: {
     imports = [
-      (self.lib.forUser user {
-        ${user.name}.packages = packages;
+      (self.lib.withUserConfig user {
+        packages = packages;
       })
     ];
     environment.systemPackages = mkIf (user == null) packages;
   });
 
-  flake.lib.forUser = user: attrSet: ({...}: {
-    users.users = mkIf (user != null) attrSet;
+  flake.lib.withUserConfig = user: attrSet: ({...}: {
+    users.users = mkIf (user != null) {
+      "${user.name}" = attrSet;
+    };
   });
 
   flake.lib.inheritPreferences = name: args: preferences: {

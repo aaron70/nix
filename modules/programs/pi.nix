@@ -2,7 +2,6 @@
   inputs,
   self,
   lib,
-  config,
   ...
 } @ global:
 with lib; {
@@ -24,20 +23,25 @@ with lib; {
           with combinators; [
             network
             mount-cwd
+            wayland
 
-            (add-pkg-deps [
-              pkgs.findutils
-              pkgs.diffutils
-              pkgs.gnugrep
-              pkgs.gawk
-              pkgs.which
-              pkgs.jq
-              pkgs.gnumake
-              pkgs.python3
-              pkgs.nix
-            ])
+            (with pkgs;
+              add-pkg-deps [
+                findutils
+                diffutils
+                gnugrep
+                gawk
+                which
+                jq
+                gnumake
+                python3
+                nix
+                wl-clipboard
+              ])
 
             (try-readonly (noescape config.sops.secrets."api-key/ai/opencode-go/pi-agent".path))
+            (try-readonly (noescape "${user.homeDir.nixos}/.config/nvim"))
+            (try-readonly (noescape "${user.homeDir.nixos}/.local/share/nvim/site"))
           ];
         environment.OPENCODE_API_KEY.file = config.sops.secrets."api-key/ai/opencode-go/pi-agent".path;
         environment.EDITOR.value = getExe (global.config.anvil.programs.editor.getPackage {inherit pkgs;});

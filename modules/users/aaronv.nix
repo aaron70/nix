@@ -10,6 +10,7 @@ with lib; {
       "editor"
       "kitty"
       "niri"
+      "rex"
     ];
     features = [
       "homeManager"

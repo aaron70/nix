@@ -440,6 +440,9 @@ async function purgeOne(name: string): Promise<string> {
   return ok(`${name}: ${notes.join(", ") || "nothing to purge"}`);
 }
 
+// Column widths for /ext list (NAME, ORIGINAL, EDITABLE, STATUS); the last column is free-form.
+const COLS = [20, 18, 18, 30];
+
 async function listText(onlyChanged: boolean): Promise<string> {
   const registered = await discoverRegistered();
   const wts = await listWorktrees();
@@ -452,16 +455,17 @@ async function listText(onlyChanged: boolean): Promise<string> {
       .join(", ");
     rows.push(
       [
-        name.padEnd(20),
-        (s.registered ? "original: yes" : "original: no ").padEnd(18),
-        (s.editable ? `${name}': yes` : `${name}': no `).padEnd(16),
-        STATUS_LABEL[s.status].padEnd(30),
+        name.padEnd(COLS[0]),
+        (s.registered ? "original: yes" : "original: no").padEnd(COLS[1]),
+        (s.editable ? "editable: yes" : "editable: no").padEnd(COLS[2]),
+        STATUS_LABEL[s.status].padEnd(COLS[3]),
         where,
       ].join(" "),
     );
   }
   if (rows.length === 0) return onlyChanged ? "No changed extensions." : "No extensions.";
-  return ["NAME                 ORIGINAL           EDITABLE         STATUS                         BRANCH / WORKTREE", ...rows].join("\n");
+  const header = ["NAME", "ORIGINAL", "EDITABLE", "STATUS", "BRANCH / WORKTREE"].map((h, i) => (i < COLS.length ? h.padEnd(COLS[i]) : h)).join(" ");
+  return [header, ...rows].join("\n");
 }
 
 // ---------- command dispatch ----------

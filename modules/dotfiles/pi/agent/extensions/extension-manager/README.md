@@ -7,6 +7,10 @@ Nix repo → cleaned up. Run `/ext help` in pi for a short summary.
 
 - **Saved extension**: lives in the Nix repo (`modules/dotfiles/pi/agent/extensions/<name>`)
   and is registered in `modules/dotfiles/pi/pi.nix`. It is loaded from the read-only Nix store.
+- **Self-management**: the manager is registered in `pi.nix` as a stub like any other extension
+  (`mkStub "extension-manager" ...`), so `/ext edit extension-manager` works. Edit it, `/ext reload`,
+  then `/ext save extension-manager`. If the editable copy has a syntax error, `/ext` disappears;
+  recover by deleting `~/.pi/agent/dev-extensions/extension-manager'` and running `/reload`.
 - **Editable copy** (`<name>'`): a writable copy in `~/.pi/agent/dev-extensions/<name>'/`.
   The trailing `'` marks it as editable. When it exists, pi loads it instead of the store copy,
   so you can change it and hot-reload with `/ext reload`.

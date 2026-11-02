@@ -31,13 +31,11 @@
         cp ${index} $out/${name}/index.ts
       '';
     in "${dir}/${name}";
-
-    extensionManager = "${./agent/extensions/extension-manager}";
   in {
     defaultProvider = "opencode-go";
     defaultModel = "claude-haiku-5-5";
     extensions = [
-      extensionManager
+      (mkStub "extension-manager" ./agent/extensions/extension-manager)
       # BEGIN ext-manager (managed by /ext save; keep these markers)
       # END ext-manager
     ];

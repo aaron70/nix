@@ -46,7 +46,7 @@ with lib; {
               (try-readonly (noescape "${user.homeDir.nixos}/.local/share/nvim/site"))
               (try-readwrite (noescape "${user.homeDir.nixos}/worktrees/nix"))
             ]
-            ++ (optional (host.metadata ? nixPath) (try-readonly (noescape host.metadata.nixPath)));
+            ++ (optional (host.metadata ? nixPath) (try-readwrite (noescape host.metadata.nixPath)));
         environment.OPENCODE_API_KEY.file = config.sops.secrets."api-key/ai/opencode-go/pi-agent".path;
         environment.EDITOR.value = getExe (global.config.anvil.programs.editor.getPackage {inherit pkgs;});
         settings = self.dotfiles.pi.default {inherit pkgs;};

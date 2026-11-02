@@ -37,6 +37,7 @@
     extensions = [
       (mkStub "extension-manager" ./agent/extensions/extension-manager)
       # BEGIN ext-manager (managed by /ext save; keep these markers)
+      (mkStub "qa" ./agent/extensions/qa)
       # END ext-manager
     ];
   };

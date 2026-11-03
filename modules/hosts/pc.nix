@@ -6,6 +6,7 @@
       "nvidia"
       "configurations"
       "gaming"
+      "tailscale"
     ];
     programs = [];
     metadata = rec {

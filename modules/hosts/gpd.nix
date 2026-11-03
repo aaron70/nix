@@ -11,6 +11,7 @@ with lib; {
       "amd"
       "configurations"
       "jovian"
+      "tailscale"
     ];
     programs = [];
     metadata = rec {

@@ -1,5 +1,9 @@
-{...}: {
-  flake.dotfiles.pi.default = {pkgs, ...}: let
+{self, ...}: {
+  flake.dotfiles.pi.default = {
+    pkgs,
+    colors ? self.lib.getColors,
+    ...
+  }: let
     # Loader stub for a saved extension. It imports the editable copy from
     # ~/.pi/agent/dev-extensions/<name>' when that exists, otherwise the
     # read-only nix store copy. Generated; do not edit.
@@ -31,6 +35,81 @@
         cp ${index} $out/${name}/index.ts
       '';
     in "${dir}/${name}";
+
+    # Pi theme built from the base16 palette, so messages and panels use the
+    # same colors as tmux/kitty. Pi's `system` theme needs the terminal to
+    # answer color queries, which tmux does not do reliably, so it drops panel
+    # backgrounds. Role names follow the built-in dark theme.
+    themeName = "anvil";
+    c = colors;
+    theme = pkgs.writeText "${themeName}.json" (builtins.toJSON {
+      "$schema" = "https://pi.dev/schemas/theme.schema.json";
+      name = themeName;
+      appearance = "dark";
+      colors = {
+        accent = c.base0E;
+        border = c.base0D;
+        borderAccent = c.base0E;
+        borderMuted = c.base03;
+        success = c.base0B;
+        error = c.base08;
+        warning = c.base0A;
+        muted = c.base05;
+        dim = c.base04;
+        text = c.base07;
+        thinkingText = c.base05;
+        selectedBg = c.base02;
+        scrollbarTrack = c.base01;
+        scrollbarThumb = c.base04;
+        searchMatchBg = "#3d3a1f";
+        searchMatchText = c.base07;
+        userMessageBg = c.base02;
+        userMessageText = c.base07;
+        customMessageBg = "#332a4a";
+        customMessageText = c.base05;
+        customMessageLabel = c.base0E;
+        toolPendingBg = "#24283b";
+        toolSuccessBg = "#1f2e33";
+        toolErrorBg = "#33202c";
+        toolTitle = c.base07;
+        toolOutput = c.base05;
+        mdHeading = c.base0A;
+        mdLink = c.base0D;
+        mdLinkUrl = c.base05;
+        mdCode = c.base0E;
+        mdCodeBlock = c.base0B;
+        mdCodeBlockBorder = c.base04;
+        mdQuote = c.base05;
+        mdQuoteBorder = c.base04;
+        mdHr = c.base04;
+        mdListBullet = c.base0E;
+        toolDiffAdded = c.base0B;
+        toolDiffRemoved = c.base08;
+        toolDiffContext = c.base05;
+        syntaxComment = c.base04;
+        syntaxKeyword = c.base0E;
+        syntaxFunction = c.base0D;
+        syntaxVariable = c.base0C;
+        syntaxString = c.base0B;
+        syntaxNumber = c.base09;
+        syntaxType = c.base0C;
+        syntaxOperator = c.base05;
+        syntaxPunctuation = c.base05;
+        thinkingOff = c.base04;
+        thinkingMinimal = c.base05;
+        thinkingLow = c.base0D;
+        thinkingMedium = c.base0C;
+        thinkingHigh = c.base0E;
+        thinkingXhigh = c.base09;
+        thinkingMax = c.base08;
+        bashMode = c.base0B;
+      };
+      export = {
+        pageBg = c.base00;
+        cardBg = c.base01;
+        infoBg = c.base02;
+      };
+    });
   in {
     defaultProvider = "opencode-go";
     defaultModel = "claude-haiku-5-5";
@@ -39,6 +118,8 @@
       "npm:@pify/usage"
       "npm:@narumitw/pi-plan-mode"
     ];
+    theme = themeName;
+    themes = ["${theme}"];
     extensions = [
       (mkStub "extension-manager" ./agent/extensions/extension-manager)
       # BEGIN ext-manager (managed by /ext save; keep these markers)

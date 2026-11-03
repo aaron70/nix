@@ -34,6 +34,11 @@
   in {
     defaultProvider = "opencode-go";
     defaultModel = "claude-haiku-5-5";
+    packages = [
+      "npm:pi-web-access"
+      "npm:@pify/usage"
+      "npm:@narumitw/pi-plan-mode"
+    ];
     extensions = [
       (mkStub "extension-manager" ./agent/extensions/extension-manager)
       # BEGIN ext-manager (managed by /ext save; keep these markers)

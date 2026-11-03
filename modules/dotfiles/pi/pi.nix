@@ -113,10 +113,12 @@
   in {
     defaultProvider = "opencode-go";
     defaultModel = "claude-haiku-5-5";
+    quietStartup = true;
     packages = [
       "npm:pi-web-access"
       "npm:@pify/usage"
       "npm:@narumitw/pi-plan-mode"
+      "npm:pi-zentui"
     ];
     theme = themeName;
     themes = ["${theme}"];

@@ -55,5 +55,13 @@ with lib; {
         '';
       };
     };
+    home = {...}: {
+      home.file.".pi/agent/zentui.json" = {
+        source = ../dotfiles/pi/agent/zentui.json;
+        # zentui rewrites this file when settings change via its UI, which
+        # replaces the symlink with a regular file; overwrite it on rebuild.
+        force = true;
+      };
+    };
   };
 }

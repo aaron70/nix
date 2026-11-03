@@ -14,6 +14,7 @@ Personal NixOS and nix-darwin configuration by [Aaron Vargas](https://github.com
 | `laptop` | x86_64 | NixOS | aaronv | NVIDIA | niri + Noctalia | Personal laptop, for development. |
 | `gpd` | x86_64 | NixOS (Jovian) | aaronv | AMD | niri + Noctalia | Handheld console, for gaming and occasionally development. |
 | `mac` | aarch64 | macOS | aaronv-work | Apple Silicon | AeroSpace | Work computer. |
+| `wsl` | x86_64 | NixOS (WSL) | aaronv | — | — | Minimal NixOS running under WSL2 on Windows. |
 
 
 ## Nix aliases

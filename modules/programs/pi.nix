@@ -16,9 +16,16 @@ with lib; {
     }: {
       imports = [inputs.pi.nixosModules.default];
 
+      assertions = [
+        {
+          assertion = user != null;
+          message = "pi: Feature 'pi' must be listed under a user, not a host: the coding agent is jailed to the user's home.";
+        }
+      ];
+
       programs.pi.coding-agent = mkIf (user != null) {
         enable = true;
-        package = inputs.pi.packages.${pkgs.system}.coding-agent-bun;
+        package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent-bun;
         jail.enable = true;
         jail.permissions = combinators:
           with combinators;

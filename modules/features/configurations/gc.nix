@@ -18,6 +18,13 @@ with lib; {
           then host.metadata.mainUser
           else user.name;
       in {
+        assertions = [
+          {
+            assertion = (host.metadata.configurationLimit or null) != null;
+            message = "gc: host '${host.name or "?"}' must set `metadata.configurationLimit`.";
+          }
+        ];
+
         systemd.services.gc-periodic = {
           enable = true;
           description = "Periodic nix store cleanup";

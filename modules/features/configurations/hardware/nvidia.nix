@@ -3,7 +3,13 @@
     features = [
       "graphics"
     ];
-    nixos = {config, ...}: {
+    nixos = {
+      config,
+      host,
+      lib,
+      ...
+    }: {
+      warnings = lib.optional (host.metadata.gpu.isAMD or false) "nvidia: host '${host.name or "?"}' is marked gpu.isAMD but the nvidia feature is enabled.";
       services.xserver.videoDrivers = ["nvidia"];
       hardware = {
         nvidia = {

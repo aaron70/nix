@@ -13,6 +13,13 @@ with lib; let
   }: let
     package = program.getPackage {inherit pkgs config;};
   in {
+    assertions = [
+      {
+        assertion = user != null;
+        message = "git: Program 'git' must be reached through a user (its gitconfig-personal template is user-owned), not a host.";
+      }
+    ];
+
     environment.systemPackages = with pkgs; [
       package
       lazygit

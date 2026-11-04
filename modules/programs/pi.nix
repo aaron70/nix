@@ -25,7 +25,7 @@ with lib; {
 
       programs.pi.coding-agent = mkIf (user != null) {
         enable = true;
-        package = inputs.pi.packages.${pkgs.system}.coding-agent-bun;
+        package = inputs.pi.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent-bun;
         jail.enable = true;
         jail.permissions = combinators:
           with combinators;

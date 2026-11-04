@@ -2,6 +2,7 @@
   anvil.features.gaming = {
     programs = [
       "steam"
+      "discord"
     ];
     nixos = {pkgs, ...}: {
       boot.kernel.sysctl = {
@@ -11,9 +12,6 @@
       };
 
       environment.systemPackages = with pkgs; [
-        # Communication
-        vesktop
-
         # Games
         # ryubing # Nintendo Switch simulator # NOTE: I've disabled it because I'm not currently playing nothing from Nintentod
         # pokemmo # PokeMMO # FIX: This is failing because of a hash (probably caused by the package maintainer)

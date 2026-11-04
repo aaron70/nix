@@ -12,7 +12,9 @@ with lib; {
       "configurations"
       "tailscale"
     ];
-    programs = [];
+    programs = [
+      "discord"
+    ];
     metadata = rec {
       mainUser = "aaronv";
       configurationLimit = 3;

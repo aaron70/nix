@@ -15,10 +15,10 @@ with lib; {
       assertions = [
         {
           assertion = user != null;
-          message = "The lock-before-suspend requires a user, but user is null";
+          message = "lock-before-suspend must be listed under a user, not a host.";
         }
       ];
-      systemd.services.lock-before-suspend = {
+      systemd.services.lock-before-suspend = mkIf (user != null) {
         enable = true;
         description = "Locks the session before sleep";
         wantedBy = ["sleep.target"];

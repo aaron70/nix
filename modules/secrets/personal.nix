@@ -8,6 +8,12 @@ with lib; {
   anvil.features.personal-secrets = let
     mkIfUser = user: mkIf (user != null);
     commonModule = {user, ...}: {
+      assertions = [
+        {
+          assertion = user != null;
+          message = "personal-secrets: Features 'personal-secrets' must be listed under a user, not a host: secret owners need a user.";
+        }
+      ];
       sops = {
         defaultSopsFile = ./personal.yaml;
         secrets = {

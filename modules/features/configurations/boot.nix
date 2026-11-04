@@ -8,6 +8,13 @@ with lib; {
       ...
     }: {
       config = {
+        assertions = [
+          {
+            assertion = (host.metadata.configurationLimit or null) != null;
+            message = "boot: host '${host.name or "?"}' must set `metadata.configurationLimit`.";
+          }
+        ];
+
         boot = {
           # Quiet boot
           consoleLogLevel = 0;

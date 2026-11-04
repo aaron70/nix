@@ -131,6 +131,22 @@ in {
   in
     [
       (self.lib.withContext ctx (self.lib.getPropertyOrDefault host platform {}))
+      {
+        # Features such as home-manager and git look up `anvil.users.${mainUser}`.
+        assertions = let
+          mainUser = host.metadata.mainUser or null;
+        in [
+          {
+            assertion = mainUser != null;
+            message = "anvil: host '${host.name}' must set metadata.mainUser to an already declared user.";
+          }
+          {
+            # Passes when mainUser is null: the check above already reports that case.
+            assertion = mainUser == null || config.anvil.users ? ${mainUser};
+            message = "anvil: host '${host.name}' declares '${mainUser}' as mainUser but the user '${mainUser}' doesn't exist. Did you forget to set anvil.users.${mainUser}?";
+          }
+        ];
+      }
     ]
     ++ (self.lib.getUsersModules platform host childrenUsers)
     ++ attrValues acc.features

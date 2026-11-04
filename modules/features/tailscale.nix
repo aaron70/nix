@@ -2,23 +2,36 @@
 with lib; {
   anvil.features.tailscale = {
     nixos = {
-      user,
-      config,
+      host,
+      user ? null,
       ...
-    }: {
+    }: let
+      mainUser = host.metadata.mainUser or null;
+    in {
+      assertions = [
+        {
+          assertion = user == null;
+          message = "tailscale: Feature 'tailscale' must be listed under a host's `features`, not evaluated per user (user '${user.name or "?"}').";
+        }
+        {
+          assertion = mainUser != null;
+          message = "tailscale: Feature 'tailscale' requires host '${host.name or "?"}' to define `metadata.mainUser`.";
+        }
+      ];
+
       services.tailscale = {
         enable = true;
-        # Opens only the WireGuard UDP port (41641) on the physical interfaces.
+        # Opens the WireGuard UDP port (41641) on all interfaces.
         openFirewall = true;
         # Client only: no subnet routing, no exit node, no IP forwarding.
         useRoutingFeatures = "none";
-        # Run `tailscale up/set/status` without sudo as this user (single-user machines only).
-        extraUpFlags = mkIf (user != null) ["--operator=${user.name}"];
+        # Run `tailscale status/set/up` without sudo as the main user.
+        extraSetFlags = optional (mainUser != null) "--operator=${mainUser}";
       };
 
-      # Traffic arriving over the tailnet is already authenticated by WireGuard,
-      # so the tailnet interface is trusted. Services stay closed on LAN/Wi-Fi.
-      networking.firewall.trustedInterfaces = [config.services.tailscale.interfaceName];
+      # The tailnet interface is intentionally NOT trusted: every tailnet peer could
+      # otherwise reach every local port. Open services explicitly, e.g.:
+      #   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [22];
     };
   };
 }

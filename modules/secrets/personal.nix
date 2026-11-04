@@ -13,6 +13,7 @@ with lib; {
         secrets = {
           "email" = {owner = mkIfUser user user.name;};
           "password" = {owner = mkIfUser user user.name;};
+          "api-key/ai/opencode-go/pi-agent" = {owner = mkIfUser user user.name;};
         };
       };
     };

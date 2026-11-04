@@ -11,6 +11,7 @@ with lib; {
       "kitty"
       "niri"
       "herdr"
+      "pi"
     ];
     features = [
       "homeManager"

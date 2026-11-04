@@ -10,6 +10,7 @@ with lib; {
     features = [
       "nvidia"
       "configurations"
+      "tailscale"
     ];
     programs = [];
     metadata = rec {

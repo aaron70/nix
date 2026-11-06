@@ -92,6 +92,7 @@ in {
         };
     programs = {program, ...}: [
       "git"
+      "atuin"
       program.metadata.shell.multiplexer.name
       program.metadata.shell.prompt.name
     ];

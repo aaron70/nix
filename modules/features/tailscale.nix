@@ -4,10 +4,16 @@ with lib; {
     nixos = {
       host,
       user ? null,
+      pkgs,
       ...
     }: let
       mainUser = host.metadata.mainUser or null;
     in {
+      # Tailscale ships its zsh completion (_tailscale) in site-functions.
+      anvil.shell.preferences.activationScripts = [
+        "fpath=(${pkgs.tailscale}/share/zsh/site-functions $fpath)"
+      ];
+
       assertions = [
         {
           assertion = user == null;

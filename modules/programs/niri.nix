@@ -31,6 +31,11 @@ in {
     }: let
       package = program.getPackage {inherit pkgs options;};
     in {
+      # niri ships its zsh completion (_niri) in site-functions.
+      anvil.shell.preferences.activationScripts = [
+        "fpath=(${package}/share/zsh/site-functions $fpath)"
+      ];
+
       programs.niri = {
         enable = true;
         package = package;

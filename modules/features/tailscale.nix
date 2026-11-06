@@ -26,7 +26,7 @@ with lib; {
         # Client only: no subnet routing, no exit node, no IP forwarding.
         useRoutingFeatures = "none";
         # Run `tailscale status/set/up` without sudo as the main user.
-        extraSetFlags = optional (mainUser != null) "--operator=${mainUser}";
+        extraSetFlags = ["--ssh"] ++ optional (mainUser != null) "--operator=${mainUser}";
       };
 
       # The tailnet interface is intentionally NOT trusted: every tailnet peer could

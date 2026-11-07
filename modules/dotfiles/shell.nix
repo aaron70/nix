@@ -85,6 +85,7 @@ with lib; {
           lg = "lazygit";
           nclean = "nh clean all --optimise -k 3";
           nshell = "nix-shell --command ${shell.name} -p";
+          ndevelop = "nix develop --command ${shell.name}";
           cat = "bat";
           eza = "eza --icons auto --git --group-directories-last";
           ls = "eza";

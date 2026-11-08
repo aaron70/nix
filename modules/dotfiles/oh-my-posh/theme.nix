@@ -138,6 +138,25 @@ in {
           "overflow": "hide",
           "segments": [
             {
+              "type": "nix-shell",
+              "style": "powerline",
+              "powerline_symbol": "",
+              "leading_powerline_symbol": "",
+              "foreground": "transparent",
+              "background": "${colors.base07}",
+              "template": "{{ if ne .Type \"unknown\" }} 󱄅 {{ end }}"
+            },
+            {
+              "type": "python",
+              "style": "powerline",
+              "powerline_symbol": "",
+              "leading_powerline_symbol": "",
+              "foreground": "transparent",
+              "background": "${colors.base07}",
+              "display_mode": "environment",
+              "template": "  {{ .Venv }} "
+            },
+            {
               "type": "executiontime",
               "style": "plain",
               "foreground_templates": [

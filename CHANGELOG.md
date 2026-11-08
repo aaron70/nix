@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.3.0](https://github.com/aaron70/nix/compare/v0.2.0...v0.3.0) (2026-11-08)
+
+
+### Features
+
+* **anvil/userModules:** Change `forUser` to `withUserConfig` userModule ([#60](https://github.com/aaron70/nix/issues/60)) ([07be7fa](https://github.com/aaron70/nix/commit/07be7fa31087c00ea804ac8acfa5e9e199d6d949))
+* **completions:** Add CLI completions to different programs ([#78](https://github.com/aaron70/nix/issues/78)) ([5acd5e7](https://github.com/aaron70/nix/commit/5acd5e7e4ab89d5fb5dfde94c7d503a302c66cb0))
+* **features/gaming:** Disable ryubing and heroic launcher for lack of use ([#63](https://github.com/aaron70/nix/issues/63)) ([d4d0660](https://github.com/aaron70/nix/commit/d4d06609be40bb8bf82414d773da6992963ebcc6))
+* **features/network:** Network audit ([#76](https://github.com/aaron70/nix/issues/76)) ([3bb73f1](https://github.com/aaron70/nix/commit/3bb73f173aa4c9721ff01c535eb6fab7eaaab223))
+* **features/ollama:** Add ollama service ([#61](https://github.com/aaron70/nix/issues/61)) ([5d255b8](https://github.com/aaron70/nix/commit/5d255b8f402f137316318a94ee3adf75cb0dc3f4))
+* **features/tailscale:** Add tailscale feature ([#73](https://github.com/aaron70/nix/issues/73)) ([a249288](https://github.com/aaron70/nix/commit/a2492882b05b05b7b88752f6153e29f86a594fbb))
+* **modules:** Add assertions and warnings to modules ([#75](https://github.com/aaron70/nix/issues/75)) ([75cc78d](https://github.com/aaron70/nix/commit/75cc78d3b7aa632f3377355e524e01dbc6b6d0c2))
+* **programs/discord:** Add Discord program ([#74](https://github.com/aaron70/nix/issues/74)) ([54d0311](https://github.com/aaron70/nix/commit/54d0311b61be70ae656f4a7e93a45e6f795771e6))
+* **programs/noctalia:** Add desktop widgets (Clock and MediaPlayer) ([#57](https://github.com/aaron70/nix/issues/57)) ([da2b906](https://github.com/aaron70/nix/commit/da2b906728e03b3e4a9e5ddb712e654731a988e2))
+* **programs/oh-my-posh:** Add nix-shell and python env indicators ([#80](https://github.com/aaron70/nix/issues/80)) ([7c193a6](https://github.com/aaron70/nix/commit/7c193a6e285f0cc5ef96126871e1eaaf43b962b2))
+* **programs/pi:** Add extension manager ([#66](https://github.com/aaron70/nix/issues/66)) ([3051234](https://github.com/aaron70/nix/commit/30512349e078ce7a4bf6c461ffc08dbdd5ce7e54))
+* **programs/pi:** Add extensions, theme and configurations to PI ([#72](https://github.com/aaron70/nix/issues/72)) ([bb10963](https://github.com/aaron70/nix/commit/bb1096300dfc11f9d60beedf2d2e5674be62020a))
+* **programs/pi:** Add PI coding agent ([#65](https://github.com/aaron70/nix/issues/65)) ([cd44ee0](https://github.com/aaron70/nix/commit/cd44ee04084ba6bea2867f6bc4b62cd4bb042e9d))
+* **programs/pi:** Add Q/A extension ([#70](https://github.com/aaron70/nix/issues/70)) ([eced4b6](https://github.com/aaron70/nix/commit/eced4b67158b8bdaab39e234c0171bf41a4fde24))
+* **programs/rex:** Add Rex terminal ([#62](https://github.com/aaron70/nix/issues/62)) ([d680793](https://github.com/aaron70/nix/commit/d68079369f5a02743ef11df0d8d041f2fdcc63c6))
+* **programs/shell:** Add an alias for nix develop command ([#79](https://github.com/aaron70/nix/issues/79)) ([3799c19](https://github.com/aaron70/nix/commit/3799c19f07aed23a925b7e90da3de69b2e0a7f24))
+* **programs/tailscale:** Enable tailscale ssh ([#77](https://github.com/aaron70/nix/issues/77)) ([b0b6f15](https://github.com/aaron70/nix/commit/b0b6f152d4ac8b7c93822a7dba847ad64d98bb6a))
+* **resources/wallpapers:** Add a new collection of wallpapers ([#58](https://github.com/aaron70/nix/issues/58)) ([db76a7f](https://github.com/aaron70/nix/commit/db76a7f299078e7239d1a7b5825a645a2d1eefe8))
+
+
+### Fixes
+
+* **CI/release:** Fix the cronjob expression for releases ([#54](https://github.com/aaron70/nix/issues/54)) ([43168df](https://github.com/aaron70/nix/commit/43168dfb59bc5b680cb3d58ef65cf19abab4b4c6))
+* **features/gaming:** Disable pokemmo package since causing build error ([#63](https://github.com/aaron70/nix/issues/63)) ([d4d0660](https://github.com/aaron70/nix/commit/d4d06609be40bb8bf82414d773da6992963ebcc6))
+* **modules:** Fix evaluation warnings ([75cc78d](https://github.com/aaron70/nix/commit/75cc78d3b7aa632f3377355e524e01dbc6b6d0c2))
+* **programs/pi:** Extension manager managed itself ([#69](https://github.com/aaron70/nix/issues/69)) ([3078619](https://github.com/aaron70/nix/commit/307861936cbc33a55d3eb43f7e660c8dde6621fa))
+* **programs/pi:** Give jailed PI write access to nix flake ([#68](https://github.com/aaron70/nix/issues/68)) ([f7e0938](https://github.com/aaron70/nix/commit/f7e09389764b843bfc08eb55f320c90ddee534f7))
+* **programs/tmux:** Fix tmux popups theme colors ([#64](https://github.com/aaron70/nix/issues/64)) ([e91f1f5](https://github.com/aaron70/nix/commit/e91f1f5142c418ca001f74ae7a489d70b557c5bb))
+
 ## [0.2.0](https://github.com/aaron70/nix/compare/v0.1.0...v0.2.0) (2026-10-20)
 
 

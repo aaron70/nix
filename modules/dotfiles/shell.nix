@@ -70,7 +70,6 @@ with lib; {
             gh
             imgcat
             jq
-            lazygit
             nh
             ripgrep
             sesh

@@ -22,7 +22,6 @@ with lib; let
 
     environment.systemPackages = with pkgs; [
       package
-      lazygit
       gh
     ];
 
@@ -41,6 +40,7 @@ with lib; let
   };
 in {
   anvil.programs.git = {
+    programs = ["lazygit"];
     features = ["sops"];
     getPackage = {
       pkgs,

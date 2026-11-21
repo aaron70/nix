@@ -7,6 +7,7 @@
 with lib; {
   anvil.programs.desktop = {
     programs = [
+      "luciole"
     ];
     features = [
       "usb"
@@ -18,7 +19,7 @@ with lib; {
       home.packages = [pkgs.fastfetch];
       xdg.mimeApps = mkIf pkgs.stdenv.hostPlatform.isLinux {
         enable = true;
-        defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
+        defaultApplications."inode/directory" = "dev.noctalia.luciole.desktop";
       };
     };
     nixos = {
@@ -68,7 +69,6 @@ with lib; {
         (global.config.anvil.programs.zen.getPackage {inherit pkgs;}) # Browser
 
         # Essentials
-        nautilus # File browser
         vlc # Videos
         shotwell # Images
         wdisplays

@@ -1,15 +1,42 @@
 {...}: {
   anvil.programs.lazygit = {
     home = {...}: {
+      programs.delta = {
+        enable = true;
+        options = {
+          features = "tokyonight_night";
+
+          # Brighter, more saturated diff colors (overrides the tokyonight palette)
+          minus-style = "syntax #6e2634";
+          minus-non-emph-style = "syntax #6e2634";
+          minus-emph-style = "syntax #9e2e48";
+          minus-empty-line-marker-style = "syntax #6e2634";
+          line-numbers-minus-style = "#f7768e";
+          plus-style = "syntax #2f5d32";
+          plus-non-emph-style = "syntax #2f5d32";
+          plus-emph-style = "syntax #437f3f";
+          plus-empty-line-marker-style = "syntax #2f5d32";
+          line-numbers-plus-style = "#9ece6a";
+        };
+      };
+
       programs.lazygit = {
         enable = true;
 
         settings = {
+          gui = {
+            showIcons = true;
+            nerdFontsVersion = "3";
+          };
           git = {
-            # Blocks the built-in "Force push" popup on the normal push key
             disableForcePushing = true;
-            # Don't fast-forward other branches on fetch/pull
             autoForwardBranches = "none";
+            diffRenderers = [
+              {
+                colorArg = "always";
+                command = "delta --paging=never";
+              }
+            ];
           };
 
           customCommands = [
